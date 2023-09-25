@@ -1,13 +1,12 @@
 //
-//  ViewController.swift
+//  TrackersViewController.swift
 //  Tracker
 //
 //  Created by Artem Dubovitsky on 05.09.2023.
 //
-
 import UIKit
 
-class ViewController: UIViewController {
+final class TrackersViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
