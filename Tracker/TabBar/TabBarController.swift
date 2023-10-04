@@ -17,13 +17,13 @@ final class TabBarController: UITabBarController {
             selectedImage: nil
         )
         
-//        let staticticsViewController = TrackersViewController() // заменить / сделать / на экран статистики
-//        trackersViewController.tabBarItem = UITabBarItem(
-//            title: "Статистика",
-//            image: UIImage(named: "Stats"),
-//            selectedImage: nil
-//        )
-        self.viewControllers = [trackersViewController] //, staticticsViewController]
+        let staticticsViewController = StaticticsViewController()
+        staticticsViewController.tabBarItem = UITabBarItem(
+            title: "Статистика",
+            image: UIImage(named: "Stats"),
+            selectedImage: nil
+        )
+        self.viewControllers = [trackersViewController, staticticsViewController]
     }
 }
 

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */; };
 		91469F232AA6876B003A3B06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F222AA6876B003A3B06 /* AppDelegate.swift */; };
 		91469F252AA6876B003A3B06 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F242AA6876B003A3B06 /* SceneDelegate.swift */; };
 		91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F262AA6876B003A3B06 /* TrackersViewController.swift */; };
@@ -19,6 +20,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticsViewController.swift; sourceTree = "<group>"; };
 		91469F1F2AA6876B003A3B06 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91469F222AA6876B003A3B06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91469F242AA6876B003A3B06 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -43,6 +45,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		910C998D2ACDEFDB00931D57 /* Statistics */ = {
+			isa = PBXGroup;
+			children = (
+				910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */,
+			);
+			path = Statistics;
+			sourceTree = "<group>";
+		};
 		91469F162AA6876B003A3B06 = {
 			isa = PBXGroup;
 			children = (
@@ -63,6 +73,7 @@
 			isa = PBXGroup;
 			children = (
 				91C4AD202AC1F63900488630 /* Extensions */,
+				910C998D2ACDEFDB00931D57 /* Statistics */,
 				91C4AD262AC20C6400488630 /* Trackers */,
 				91C4AD252AC20C1A00488630 /* TabBar */,
 				91C4AD242AC20BA500488630 /* Presentation */,
@@ -190,6 +201,7 @@
 				91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */,
 				91469F232AA6876B003A3B06 /* AppDelegate.swift in Sources */,
 				91469F252AA6876B003A3B06 /* SceneDelegate.swift in Sources */,
+				910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */,
 				91C4AD2A2AC323C100488630 /* TabBarController.swift in Sources */,
 				91C4AD282AC317A400488630 /* TrackerStructures.swift in Sources */,
 				91C4AD222AC1FF1200488630 /* UIColor+Extension.swift in Sources */,

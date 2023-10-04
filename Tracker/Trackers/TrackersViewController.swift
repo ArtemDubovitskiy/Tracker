@@ -91,7 +91,6 @@ final class TrackersViewController: UIViewController {
         setupTrackersViewConstrains()
     }
     // MARK: - Private Methods
-    
     func setupTrackersView() {
         view.backgroundColor = .ypWhiteDay
         
