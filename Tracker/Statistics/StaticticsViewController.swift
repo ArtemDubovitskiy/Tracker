@@ -8,7 +8,7 @@
 import UIKit
 
 final class StaticticsViewController: UIViewController {
-    
+    // MARK: - Private Properties
     private let titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Статистика"

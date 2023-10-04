@@ -91,7 +91,7 @@ final class TrackersViewController: UIViewController {
         setupTrackersViewConstrains()
     }
     // MARK: - Private Methods
-    func setupTrackersView() {
+    private func setupTrackersView() {
         view.backgroundColor = .ypWhiteDay
         
         view.addSubview(addTrackerButton)
@@ -105,7 +105,7 @@ final class TrackersViewController: UIViewController {
 
     }
     
-    func setupTrackersViewConstrains() {
+    private func setupTrackersViewConstrains() {
         NSLayoutConstraint.activate([
             addTrackerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             addTrackerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
@@ -129,7 +129,9 @@ final class TrackersViewController: UIViewController {
     
     @objc
     private func didTapAddTrackerButton() {
-        
+        let addTrackersViewController = AddTrackersViewController()
+        addTrackersViewController.trackersViewController = self
+        present(addTrackersViewController, animated: true, completion: nil)
     }
     
     @objc
