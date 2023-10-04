@@ -4,5 +4,26 @@
 //
 //  Created by Artem Dubovitsky on 26.09.2023.
 //
+import UIKit
 
-import Foundation
+final class TabBarController: UITabBarController {
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        let trackersViewController = TrackersViewController()
+        trackersViewController.tabBarItem = UITabBarItem(
+            title: "Трекеры",
+            image: UIImage(named: "Trackers"),
+            selectedImage: nil
+        )
+        
+//        let staticticsViewController = TrackersViewController() // заменить / сделать / на экран статистики
+//        trackersViewController.tabBarItem = UITabBarItem(
+//            title: "Статистика",
+//            image: UIImage(named: "Stats"),
+//            selectedImage: nil
+//        )
+        self.viewControllers = [trackersViewController] //, staticticsViewController]
+    }
+}
+
