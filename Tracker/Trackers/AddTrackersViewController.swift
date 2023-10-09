@@ -4,7 +4,6 @@
 //
 //  Created by Artem Dubovitsky on 04.10.2023.
 //
-
 import UIKit
 
 final class AddTrackersViewController: UIViewController {
@@ -19,7 +18,7 @@ final class AddTrackersViewController: UIViewController {
         return label
     }()
     
-    private let habitButton: UIButton = {
+    private lazy var habitButton: UIButton = {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -31,7 +30,7 @@ final class AddTrackersViewController: UIViewController {
         return button
     }()
     
-    private let irregularEventButton: UIButton = {
+    private lazy var irregularEventButton: UIButton = {
         let button = UIButton()
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -49,6 +48,16 @@ final class AddTrackersViewController: UIViewController {
         
         setupAddTrackersView()
         setupAddTrackersViewConstrains()
+    }
+    // MARK: - Actions
+    @objc
+    private func didTapHabitButton() {
+        
+    }
+    
+    @objc
+    private func didTapIrregularEventButton() {
+        
     }
     // MARK: - Private Methods
     private func setupAddTrackersView() {
@@ -73,15 +82,5 @@ final class AddTrackersViewController: UIViewController {
             irregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             irregularEventButton.heightAnchor.constraint(equalToConstant: 60),
         ])
-    }
-    
-    @objc
-    private func didTapHabitButton() {
-        
-    }
-    
-    @objc
-    private func didTapIrregularEventButton() {
-        
     }
 }

@@ -54,10 +54,12 @@ final class StaticticsViewController: UIViewController {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            
             staticticsImage.heightAnchor.constraint(equalToConstant: 80),
             staticticsImage.widthAnchor.constraint(equalToConstant: 80),
             staticticsImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             staticticsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
             staticticsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             staticticsLabel.topAnchor.constraint(equalTo: staticticsImage.bottomAnchor, constant: 8)
         ])
