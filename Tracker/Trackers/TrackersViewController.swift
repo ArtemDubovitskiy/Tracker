@@ -49,6 +49,19 @@ final class TrackersViewController: UIViewController {
         return search
     }()
     
+    private let collectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewFlowLayout()
+        )
+        collectionView.register(
+            TrackerCollectionViewCell.self,
+            forCellWithReuseIdentifier: "Cell")
+        collectionView.allowsMultipleSelection = false
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
     private let trackersImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub tracker")
@@ -68,7 +81,7 @@ final class TrackersViewController: UIViewController {
     
     private let searchImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "Stub tracker")
+        imageView.image = UIImage(named: "Stub search")
         imageView.layer.masksToBounds = true
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
@@ -89,6 +102,9 @@ final class TrackersViewController: UIViewController {
         
         setupTrackersView()
         setupTrackersViewConstrains()
+        
+        collectionView.dataSource = self
+        collectionView.delegate = self
     }
     // MARK: - Actions
     @objc
@@ -112,6 +128,7 @@ final class TrackersViewController: UIViewController {
         view.addSubview(searchField)
         view.addSubview(trackersImage)
         view.addSubview(trackersLabel)
+        view.addSubview(collectionView)
 //        view.addSubview(searchImage) // добавить функцию показывающую изображение и текст при пустом поиске
 //        view.addSubview(searchLabel)
 
@@ -133,6 +150,7 @@ final class TrackersViewController: UIViewController {
             searchField.topAnchor.constraint(equalTo: titleTrackersLabel.bottomAnchor, constant: 7),
             searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             searchField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            searchField.heightAnchor.constraint(equalToConstant: 36),
             
             trackersImage.heightAnchor.constraint(equalToConstant: 80),
             trackersImage.widthAnchor.constraint(equalToConstant: 80),
@@ -140,7 +158,54 @@ final class TrackersViewController: UIViewController {
             trackersImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             trackersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            trackersLabel.topAnchor.constraint(equalTo: trackersImage.bottomAnchor, constant: 8)
+            trackersLabel.topAnchor.constraint(equalTo: trackersImage.bottomAnchor, constant: 8),
+            
+            collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
+    }
+}
+// MARK: - UICollectionViewDataSource
+extension TrackersViewController: UICollectionViewDataSource {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return visibleCategories[section].trackers.count
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! TrackerCollectionViewCell
+        // TODO - дополнить конфигурацию ячейки
+        return cell
+    }
+}
+// MARK: - UICollectionViewDelegate
+extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension TrackersViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: collectionView.bounds.width / 2, height: 148)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return 9
     }
 }
