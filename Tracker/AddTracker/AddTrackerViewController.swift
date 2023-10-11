@@ -1,12 +1,12 @@
 //
-//  AddTrackersViewController.swift
+//  AddTrackerViewController.swift
 //  Tracker
 //
 //  Created by Artem Dubovitsky on 04.10.2023.
 //
 import UIKit
 
-final class AddTrackersViewController: UIViewController {
+final class AddTrackerViewController: UIViewController {
     var trackersViewController = TrackersViewController()
     // MARK: - Private Properties
     private let titleAddTrackersLabel: UILabel = {
@@ -52,12 +52,14 @@ final class AddTrackersViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func didTapHabitButton() {
-        
+        let createTracker = CreateTrackerViewController()
+        present(createTracker, animated: true, completion: nil)
     }
     
     @objc
     private func didTapIrregularEventButton() {
-        
+        let createTracker = CreateTrackerViewController()
+        present(createTracker, animated: true, completion: nil)
     }
     // MARK: - Private Methods
     private func setupAddTrackersView() {
@@ -80,7 +82,7 @@ final class AddTrackersViewController: UIViewController {
             irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
             irregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             irregularEventButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            irregularEventButton.heightAnchor.constraint(equalToConstant: 60),
+            irregularEventButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
 }

@@ -13,33 +13,17 @@ final class TrackersViewController: UIViewController {
     private var completedTrackers: [TrackerRecord] = []
     
     // MARK: - Private Properties
-    private lazy var addTrackerButton: UIButton = {
-        let button = UIButton.systemButton(
-            with: UIImage(named: "Add tracker")!,
-            target: TrackersViewController?.self,
-            action: #selector(didTapAddTrackerButton))
-        button.tintColor = .ypBlackDay
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
         date.datePickerMode = .date
         date.preferredDatePickerStyle = .compact
         date.calendar.firstWeekday = 2
         date.addTarget(self, action: #selector(dateSelection), for: .valueChanged)
+        date.locale = Locale(identifier: "ru_RU")
+        date.tintColor = .ypBlue
+        date.clipsToBounds = true
         date.translatesAutoresizingMaskIntoConstraints = false
         return date
-    }()
-    
-    private let titleTrackersLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Трекеры"
-        label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .ypBlackDay
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
     }()
     
     private let searchField: UISearchTextField = {
@@ -100,6 +84,7 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        setupNavBar()
         setupTrackersView()
         setupTrackersViewConstrains()
         
@@ -109,9 +94,9 @@ final class TrackersViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func didTapAddTrackerButton() {
-        let addTrackersViewController = AddTrackersViewController()
-        addTrackersViewController.trackersViewController = self
-        present(addTrackersViewController, animated: true, completion: nil)
+        let addTrackerViewController = AddTrackerViewController()
+        addTrackerViewController.trackersViewController = self
+        present(addTrackerViewController, animated: true, completion: nil)
     }
     
     @objc
@@ -119,35 +104,30 @@ final class TrackersViewController: UIViewController {
         
     }
     // MARK: - Private Methods
+    private func setupNavBar() {
+        navigationItem.title = "Трекеры"
+        navigationController?.navigationBar.prefersLargeTitles = true
+        navigationController?.navigationBar.tintColor = .ypBlackDay
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "Add tracker"),
+            style: .plain,
+            target: self,
+            action: #selector(didTapAddTrackerButton))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
+    }
+    
     private func setupTrackersView() {
         view.backgroundColor = .ypWhiteDay
         
-        view.addSubview(addTrackerButton)
-        view.addSubview(titleTrackersLabel)
-        view.addSubview(datePicker)
         view.addSubview(searchField)
         view.addSubview(trackersImage)
         view.addSubview(trackersLabel)
         view.addSubview(collectionView)
-//        view.addSubview(searchImage) // добавить функцию показывающую изображение и текст при пустом поиске
-//        view.addSubview(searchLabel)
-
     }
     
     private func setupTrackersViewConstrains() {
         NSLayoutConstraint.activate([
-            addTrackerButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            addTrackerButton.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 6),
-            addTrackerButton.heightAnchor.constraint(equalToConstant: 42),
-            addTrackerButton.widthAnchor.constraint(equalToConstant: 42),
-            
-            datePicker.centerYAnchor.constraint(equalTo: addTrackerButton.centerYAnchor),
-            datePicker.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            
-            titleTrackersLabel.topAnchor.constraint(equalTo: addTrackerButton.bottomAnchor, constant: 1),
-            titleTrackersLabel.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            
-            searchField.topAnchor.constraint(equalTo: titleTrackersLabel.bottomAnchor, constant: 7),
+            searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
             searchField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
             searchField.heightAnchor.constraint(equalToConstant: 36),
@@ -173,7 +153,8 @@ extension TrackersViewController: UICollectionViewDataSource {
         _ collectionView: UICollectionView,
         numberOfItemsInSection section: Int
     ) -> Int {
-        return visibleCategories[section].trackers.count
+        return 1 // заглушка
+//        return visibleCategories[section].trackers.count
     }
     
     func collectionView(
