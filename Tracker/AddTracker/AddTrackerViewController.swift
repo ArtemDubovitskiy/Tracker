@@ -37,7 +37,7 @@ final class AddTrackerViewController: UIViewController {
         button.tintColor = .ypBlackDay
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlackDay
-        button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
+        button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,12 +53,14 @@ final class AddTrackerViewController: UIViewController {
     @objc
     private func didTapHabitButton() {
         let createTracker = CreateTrackerViewController()
+        createTracker.irregularEvent = false
         present(createTracker, animated: true, completion: nil)
     }
     
     @objc
     private func didTapIrregularEventButton() {
         let createTracker = CreateTrackerViewController()
+        createTracker.irregularEvent = true
         present(createTracker, animated: true, completion: nil)
     }
     // MARK: - Private Methods

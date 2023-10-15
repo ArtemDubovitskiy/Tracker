@@ -20,7 +20,7 @@ final class TrackersViewController: UIViewController {
         date.calendar.firstWeekday = 2
         date.addTarget(self, action: #selector(dateSelection), for: .valueChanged)
         date.locale = Locale(identifier: "ru_RU")
-        date.tintColor = .ypBlue
+        date.tintColor = .ypBlackDay
         date.clipsToBounds = true
         date.translatesAutoresizingMaskIntoConstraints = false
         return date
