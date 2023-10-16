@@ -8,9 +8,9 @@ import UIKit
 
 final class EmojiCollectionViewCell: UICollectionViewCell {
     
-    static let identifier = "cell"
+    static let identifier = "emojiCell"
     // MARK: - Private Properties
-    let titleLabel: UILabel = {
+    let emojiLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32)
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -20,11 +20,11 @@ final class EmojiCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
-        contentView.addSubview(titleLabel)
+        contentView.addSubview(emojiLabel)
         
         NSLayoutConstraint.activate([
-            titleLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            titleLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            emojiLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            emojiLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor)
         ])
     }
     

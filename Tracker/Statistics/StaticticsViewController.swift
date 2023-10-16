@@ -42,7 +42,7 @@ final class StaticticsViewController: UIViewController {
         setupStaticticsView()
         setupStaticticsViewConstrains()
     }
-    // MARK: - Private Methods
+    // MARK: - Setup View
     private func setupStaticticsView() {
         view.backgroundColor = .ypWhiteDay
         view.addSubview(titleLabel)

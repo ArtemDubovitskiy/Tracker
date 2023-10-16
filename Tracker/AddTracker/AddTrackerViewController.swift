@@ -63,7 +63,7 @@ final class AddTrackerViewController: UIViewController {
         createTracker.irregularEvent = true
         present(createTracker, animated: true, completion: nil)
     }
-    // MARK: - Private Methods
+    // MARK: - Setup View
     private func setupAddTrackersView() {
         view.backgroundColor = .ypWhiteDay
         view.addSubview(titleAddTrackersLabel)
@@ -76,7 +76,8 @@ final class AddTrackerViewController: UIViewController {
             titleAddTrackersLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
             titleAddTrackersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             habitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            habitButton.topAnchor.constraint(equalTo: titleAddTrackersLabel.bottomAnchor, constant: 295),
+            habitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//            habitButton.topAnchor.constraint(equalTo: titleAddTrackersLabel.bottomAnchor, constant: 295),
             habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             habitButton.heightAnchor.constraint(equalToConstant: 60),

@@ -92,8 +92,6 @@ final class CreateTrackerViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        collectionView.register(EmojiCollectionViewCell.self,
-                                     forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
@@ -139,10 +137,8 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.createTrackerCollectionView.dataSource = self
-        self.createTrackerCollectionView.delegate = self
-        
         setupTableView()
+        setupCollectionView()
         setupCreateTrackerView()
         setupCreateTrackerViewConstrains()
         
@@ -156,6 +152,15 @@ final class CreateTrackerViewController: UIViewController {
         
         createTrackerTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
         createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier) // заменить на
+    }
+    
+    private func setupCollectionView() {
+        self.createTrackerCollectionView.dataSource = self
+        self.createTrackerCollectionView.delegate = self
+        
+        createTrackerCollectionView.register(EmojiCollectionViewCell.self,
+                                     forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
+        createTrackerCollectionView.register(ColorsCollectionViewCell.self, forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
     }
     
     private func setupCreateTrackerView() {
@@ -196,13 +201,15 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerTableView.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 24), // добавить изменение высоты при >38 символов
             createTrackerTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
+            createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 74 : 149), // высота меньше на 1
             
-            createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 300),
+            createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 400),
             createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 10),
+//            createTrackerCollectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: 16),
         
+//            buttonStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -217,7 +224,6 @@ final class CreateTrackerViewController: UIViewController {
             self.titleLabel.text = "Новое нерегулярное событие"
         }
     }
-
     // MARK: - Actions
     @objc
     private func cancelButtonTapped() {
@@ -237,7 +243,15 @@ extension CreateTrackerViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
+        if indexPath.row == 0 {
+//            let categoryViewController = TrackersViewController() // заменить на категорию
+//            present(categoryViewController, animated: true, completion: nil)
+            present(CreateTrackerViewController(), animated: false, completion: nil)
+        } else
+        if indexPath.row == 1 {
+            let scheduleViewController = ScheduleViewController()
+            present(scheduleViewController, animated: true, completion: nil)
+        }
     }
 }
 // MARK: - UITableViewDataSource
@@ -267,7 +281,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
 // MARK: - UICollectionViewDataSource
 extension CreateTrackerViewController: UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return 2
     }
     
     func collectionView(
@@ -280,9 +294,22 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.identifier, for: indexPath) as! EmojiCollectionViewCell
-        cell.titleLabel.text = emojies[indexPath.row]
-        return cell
+        if indexPath.section == 0 {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: EmojiCollectionViewCell.identifier,
+                for: indexPath) as? EmojiCollectionViewCell else { return UICollectionViewCell() }
+            cell.emojiLabel.text = emojies[indexPath.row]
+            //        cell.layer.cornerRadius = 16
+            return cell
+        } else if indexPath.section == 1 {
+            guard let cell = collectionView.dequeueReusableCell(
+                withReuseIdentifier: ColorsCollectionViewCell.identifier,
+                for: indexPath) as? ColorsCollectionViewCell else { return UICollectionViewCell() }
+            cell.colorView.backgroundColor = colors[indexPath.row]
+            //        cell.layer.cornerRadius = 16
+            return cell
+        }
+        return UICollectionViewCell()
 
     }
 }

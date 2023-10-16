@@ -20,7 +20,7 @@ final class TrackersViewController: UIViewController {
         date.calendar.firstWeekday = 2
         date.addTarget(self, action: #selector(dateSelection), for: .valueChanged)
         date.locale = Locale(identifier: "ru_RU")
-        date.tintColor = .ypBlackDay
+//        date.tintColor = .ypBlackDay
         date.clipsToBounds = true
         date.translatesAutoresizingMaskIntoConstraints = false
         return date
@@ -104,7 +104,7 @@ final class TrackersViewController: UIViewController {
     private func dateSelection() {
         
     }
-    // MARK: - Private Methods
+    // MARK: - Setup View
     private func setupNavBar() {
         navigationItem.title = "Трекеры"
         navigationController?.navigationBar.prefersLargeTitles = true
