@@ -41,6 +41,7 @@ final class TrackersViewController: UIViewController {
         collectionView.register(
             TrackerCollectionViewCell.self,
             forCellWithReuseIdentifier: "Cell")
+        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -10)
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -141,8 +142,8 @@ final class TrackersViewController: UIViewController {
             trackersLabel.topAnchor.constraint(equalTo: trackersImage.bottomAnchor, constant: 8),
             
             collectionView.topAnchor.constraint(equalTo: searchField.bottomAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -188,5 +189,9 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         return 9
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }

@@ -11,6 +11,21 @@ final class CreateTrackerViewController: UIViewController {
     var irregularEvent: Bool = false
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     
+    private let emojies = [
+        "🙂","😻","🌺","🐶","❤️","😱",
+        "😇","😡","🥶","🤔","🙌","🍔",
+        "🥦","🏓","🥇","🎸","🏝","😪"
+    ]
+    
+    private let colors: [UIColor] = [
+        .colorSelection1, .colorSelection2, .colorSelection3,
+        .colorSelection4, .colorSelection5, .colorSelection6,
+        .colorSelection7, .colorSelection8, .colorSelection9,
+        .colorSelection10, .colorSelection11, .colorSelection12,
+        .colorSelection13, .colorSelection14, .colorSelection15,
+        .colorSelection16, .colorSelection17, .colorSelection18
+    ]
+    
     // MARK: - Private Properties
     private var titleLabel: UILabel = {
         let label = UILabel()
@@ -62,14 +77,6 @@ final class CreateTrackerViewController: UIViewController {
         return tableView
     }()
     
-    // test view / заменить на коллекции
-    private lazy var supplyViewTest: UIView = {
-        let view = UIView()
-        view.backgroundColor = .ypWhiteDay
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
         scrollView.backgroundColor = .ypWhiteDay
@@ -78,6 +85,19 @@ final class CreateTrackerViewController: UIViewController {
         scrollView.isScrollEnabled = true
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         return scrollView
+    }()
+    
+    private lazy var createTrackerCollectionView: UICollectionView = {
+        let collectionView = UICollectionView(
+            frame: .zero,
+            collectionViewLayout: UICollectionViewFlowLayout()
+        )
+        collectionView.register(EmojiCollectionViewCell.self,
+                                     forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
+        collectionView.backgroundColor = .ypWhiteDay
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        collectionView.isScrollEnabled = false
+        return collectionView
     }()
     
     private lazy var cancelButton: UIButton = {
@@ -119,6 +139,9 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        self.createTrackerCollectionView.dataSource = self
+        self.createTrackerCollectionView.delegate = self
+        
         setupTableView()
         setupCreateTrackerView()
         setupCreateTrackerViewConstrains()
@@ -132,7 +155,7 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerTableView.dataSource = self
         
         createTrackerTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier) // заменить на 
+        createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier) // заменить на
     }
     
     private func setupCreateTrackerView() {
@@ -145,9 +168,9 @@ final class CreateTrackerViewController: UIViewController {
         scrollView.addSubview(limitTrackerNameLabel)
         limitTrackerNameLabel.isHidden = true
         scrollView.addSubview(createTrackerTableView)
-        scrollView.addSubview(buttonStackView)
-        scrollView.addSubview(supplyViewTest)
+        scrollView.addSubview(createTrackerCollectionView)
         
+        scrollView.addSubview(buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
     }
@@ -171,20 +194,20 @@ final class CreateTrackerViewController: UIViewController {
             limitTrackerNameLabel.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 8),
             
             createTrackerTableView.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 24), // добавить изменение высоты при >38 символов
-            createTrackerTableView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 16),
+            createTrackerTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
+            
+            createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 300),
+            createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 10),
         
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             buttonStackView.heightAnchor.constraint(equalToConstant: 60),
-            buttonStackView.topAnchor.constraint(equalTo: supplyViewTest.bottomAnchor, constant: 20),
-            
-            supplyViewTest.heightAnchor.constraint(equalToConstant: 350),
-            supplyViewTest.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            supplyViewTest.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            supplyViewTest.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 20)
+            buttonStackView.topAnchor.constraint(equalTo: createTrackerCollectionView.bottomAnchor, constant: 16)
         ])
     }
     // MARK: - Private Methods
@@ -241,3 +264,58 @@ extension CreateTrackerViewController: UITableViewDataSource {
         return cell
     }
 }
+// MARK: - UICollectionViewDataSource
+extension CreateTrackerViewController: UICollectionViewDataSource {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        numberOfItemsInSection section: Int
+    ) -> Int {
+        return 18
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EmojiCollectionViewCell.identifier, for: indexPath) as! EmojiCollectionViewCell
+        cell.titleLabel.text = emojies[indexPath.row]
+        return cell
+
+    }
+}
+// MARK: - UICollectionViewDelegate
+extension CreateTrackerViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, 
+                        didSelectItemAt indexPath: IndexPath) {
+        // add select item
+    }
+}
+
+// MARK: - UICollectionViewDelegateFlowLayout
+extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAt indexPath: IndexPath
+    ) -> CGSize {
+        return CGSize(width: 52, height: 52)
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumInteritemSpacingForSectionAt section: Int
+    ) -> CGFloat {
+        return 5
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        layout collectionViewLayout: UICollectionViewLayout,
+        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 5
+    }
+}
+

@@ -22,6 +22,7 @@
 		91C4AD222AC1FF1200488630 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */; };
 		91C4AD282AC317A400488630 /* TrackerStructures.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD272AC317A400488630 /* TrackerStructures.swift */; };
 		91C4AD2A2AC323C100488630 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD292AC323C100488630 /* TabBarController.swift */; };
+		91F94DEA2ADCB3200060C89E /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +43,7 @@
 		91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		91C4AD272AC317A400488630 /* TrackerStructures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerStructures.swift; sourceTree = "<group>"; };
 		91C4AD292AC323C100488630 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -98,8 +100,9 @@
 			isa = PBXGroup;
 			children = (
 				915EB0AC2AD619990083981B /* TrackerType.swift */,
-				917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */,
 				915EB0AE2AD71C6D0083981B /* CreateTrackerCell.swift */,
+				91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */,
+				917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */,
 			);
 			path = CreateTracker;
 			sourceTree = "<group>";
@@ -229,6 +232,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				91F94DEA2ADCB3200060C89E /* EmojiCollectionViewCell.swift in Sources */,
 				917E26BC2ACF0837009AF644 /* TrackerCollectionViewCell.swift in Sources */,
 				915EB0AD2AD619990083981B /* TrackerType.swift in Sources */,
 				917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */,
