@@ -265,10 +265,8 @@ extension CreateTrackerViewController: UITableViewDelegate {
                    didSelectRowAt indexPath: IndexPath
     ) {
         if indexPath.row == 0 {
-            // TODO: Добавить переход на экран выбора категории
-            //            let categoryViewController = CategoryViewController() // заменить на экран выбора категории
-            //            present(categoryViewController, animated: true, completion: nil)
-            present(CreateTrackerViewController(), animated: false, completion: nil)
+            let categoryViewController = CategoryViewController()
+            present(categoryViewController, animated: true, completion: nil)
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()

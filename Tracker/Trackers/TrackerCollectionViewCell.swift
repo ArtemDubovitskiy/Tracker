@@ -48,7 +48,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypWhiteDay
-        label.text = "Делать спринт не значит делать спринт"
+        label.text = "Делать спринт"
         label.numberOfLines = 2
         
         label.translatesAutoresizingMaskIntoConstraints = false

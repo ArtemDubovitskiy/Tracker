@@ -28,6 +28,7 @@
 		91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF02ADDC2880060C89E /* ColorsCollectionViewCell.swift */; };
 		91F94DF42ADDF0DA0060C89E /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF32ADDF0DA0060C89E /* WeekDay.swift */; };
 		91F94DF72ADFF9A80060C89E /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */; };
+		91F94DFA2AE47A320060C89E /* CategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF92AE47A320060C89E /* CategoryViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		91F94DF02ADDC2880060C89E /* ColorsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollectionViewCell.swift; sourceTree = "<group>"; };
 		91F94DF32ADDF0DA0060C89E /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
 		91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
+		91F94DF92AE47A320060C89E /* CategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,14 +96,15 @@
 		91469F212AA6876B003A3B06 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				91C4AD202AC1F63900488630 /* Extensions */,
-				910C998D2ACDEFDB00931D57 /* Statistics */,
 				915EB0AB2AD6066B0083981B /* AddTracker */,
-				91F94DF52ADFF9790060C89E /* Supplementary */,
+				91F94DF82AE479BC0060C89E /* Category */,
 				915EB0AA2AD600FE0083981B /* CreateTracker */,
+				91C4AD202AC1F63900488630 /* Extensions */,
+				91F94DF52ADFF9790060C89E /* Header */,
 				91F94DEB2ADD99DE0060C89E /* Schedule */,
-				91C4AD262AC20C6400488630 /* Trackers */,
+				910C998D2ACDEFDB00931D57 /* Statistics */,
 				91C4AD252AC20C1A00488630 /* TabBar */,
+				91C4AD262AC20C6400488630 /* Trackers */,
 				91C4AD242AC20BA500488630 /* Presentation */,
 				91C4AD232AC20B2900488630 /* Resources */,
 			);
@@ -184,12 +187,20 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
-		91F94DF52ADFF9790060C89E /* Supplementary */ = {
+		91F94DF52ADFF9790060C89E /* Header */ = {
 			isa = PBXGroup;
 			children = (
 				91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */,
 			);
-			path = Supplementary;
+			path = Header;
+			sourceTree = "<group>";
+		};
+		91F94DF82AE479BC0060C89E /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				91F94DF92AE47A320060C89E /* CategoryViewController.swift */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -266,6 +277,7 @@
 				91F94DEA2ADCB3200060C89E /* EmojiCollectionViewCell.swift in Sources */,
 				917E26BC2ACF0837009AF644 /* TrackerCollectionViewCell.swift in Sources */,
 				91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */,
+				91F94DFA2AE47A320060C89E /* CategoryViewController.swift in Sources */,
 				915EB0AD2AD619990083981B /* TrackerType.swift in Sources */,
 				917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */,
 				91F94DEF2ADD9A650060C89E /* ScheduleCell.swift in Sources */,
