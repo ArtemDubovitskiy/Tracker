@@ -4,7 +4,6 @@
 //
 //  Created by Artem Dubovitsky on 26.09.2023.
 //
-
 import UIKit
 
 struct Tracker {

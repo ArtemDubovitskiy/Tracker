@@ -9,14 +9,14 @@ import UIKit
 final class CreateTrackerViewController: UIViewController {
 
     var irregularEvent: Bool = false
+    // MARK: - Private Properties
     private var cellButtonText: [String] = ["Категория", "Расписание"]
-    
+    private var collectionViewHeightContraint: NSLayoutConstraint!
     private let emojies = [
         "🙂","😻","🌺","🐶","❤️","😱",
         "😇","😡","🥶","🤔","🙌","🍔",
         "🥦","🏓","🥇","🎸","🏝","😪"
     ]
-    
     private let colors: [UIColor] = [
         .colorSelection1, .colorSelection2, .colorSelection3,
         .colorSelection4, .colorSelection5, .colorSelection6,
@@ -25,8 +25,7 @@ final class CreateTrackerViewController: UIViewController {
         .colorSelection13, .colorSelection14, .colorSelection15,
         .colorSelection16, .colorSelection17, .colorSelection18
     ]
-    
-    // MARK: - Private Properties
+    // MARK: - UI-Elements
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новая привычка"
@@ -68,9 +67,6 @@ final class CreateTrackerViewController: UIViewController {
         tableView.backgroundColor = .ypBackgroundDay
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
-//        tableView.layer.masksToBounds = true
-//        tableView.estimatedRowHeight = 75
-//        tableView.rowHeight = 75
         tableView.isScrollEnabled = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
         tableView.translatesAutoresizingMaskIntoConstraints = false
@@ -141,7 +137,7 @@ final class CreateTrackerViewController: UIViewController {
         setupCollectionView()
         setupCreateTrackerView()
         setupCreateTrackerViewConstrains()
-        
+        createTrackerCollectionViewHeight()
         trackerTypeIrregularEvent()
     }
     
@@ -151,16 +147,21 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerTableView.dataSource = self
         
         createTrackerTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier) // заменить на
+        createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier)
     }
     
     private func setupCollectionView() {
-        self.createTrackerCollectionView.dataSource = self
         self.createTrackerCollectionView.delegate = self
+        self.createTrackerCollectionView.dataSource = self
         
         createTrackerCollectionView.register(EmojiCollectionViewCell.self,
-                                     forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
-        createTrackerCollectionView.register(ColorsCollectionViewCell.self, forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
+                                             forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
+        createTrackerCollectionView.register(ColorsCollectionViewCell.self,
+                                             forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
+        createTrackerCollectionView.register(HeaderViewCell.self, 
+                                             forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+                                             withReuseIdentifier: HeaderViewCell.identifier)
+        collectionViewHeightContraint = createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 0)
     }
     
     private func setupCreateTrackerView() {
@@ -178,6 +179,12 @@ final class CreateTrackerViewController: UIViewController {
         scrollView.addSubview(buttonStackView)
         buttonStackView.addArrangedSubview(cancelButton)
         buttonStackView.addArrangedSubview(createButton)
+    }
+    
+    private func createTrackerCollectionViewHeight() {
+        createTrackerCollectionView.collectionViewLayout.invalidateLayout()
+        createTrackerCollectionView.layoutIfNeeded()
+        collectionViewHeightContraint.constant = createTrackerCollectionView.contentSize.height
     }
     
     private func setupCreateTrackerViewConstrains() {
@@ -201,15 +208,13 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerTableView.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 24), // добавить изменение высоты при >38 символов
             createTrackerTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 74 : 149), // высота меньше на 1
+            createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
             
-            createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 400),
+            collectionViewHeightContraint,
             createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 10),
-//            createTrackerCollectionView.bottomAnchor.constraint(equalTo: buttonStackView.topAnchor, constant: 16),
-        
-//            buttonStackView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 20),
+            createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 16),
+
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             buttonStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             buttonStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
@@ -228,6 +233,7 @@ final class CreateTrackerViewController: UIViewController {
     @objc
     private func cancelButtonTapped() {
         dismiss(animated: true)
+        // TODO: Добавить сброс заполненных данных
     }
     
     @objc
@@ -238,14 +244,30 @@ final class CreateTrackerViewController: UIViewController {
 
 // MARK: - UITableViewDelegate
 extension CreateTrackerViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         return 75
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, 
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        if indexPath.row == (irregularEvent ? 0 : 1) {
+            tableView.separatorInset = UIEdgeInsets(top: 0,
+                                                    left: 0,
+                                                    bottom: 0,
+                                                    right: 500)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   didSelectRowAt indexPath: IndexPath
+    ) {
         if indexPath.row == 0 {
-//            let categoryViewController = TrackersViewController() // заменить на категорию
-//            present(categoryViewController, animated: true, completion: nil)
+            // TODO: Добавить переход на экран выбора категории
+            //            let categoryViewController = CategoryViewController() // заменить на экран выбора категории
+            //            present(categoryViewController, animated: true, completion: nil)
             present(CreateTrackerViewController(), animated: false, completion: nil)
         } else
         if indexPath.row == 1 {
@@ -256,7 +278,9 @@ extension CreateTrackerViewController: UITableViewDelegate {
 }
 // MARK: - UITableViewDataSource
 extension CreateTrackerViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int
+    ) -> Int {
         if irregularEvent == false {
             return 2
         } else {
@@ -264,11 +288,12 @@ extension CreateTrackerViewController: UITableViewDataSource {
         }
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.text = cellButtonText[indexPath.row]
-//        сell.detailTextLabel?.text = //
         cell.textLabel?.textColor = .ypBlackDay
         cell.layer.masksToBounds = true
         
@@ -280,13 +305,13 @@ extension CreateTrackerViewController: UITableViewDataSource {
 }
 // MARK: - UICollectionViewDataSource
 extension CreateTrackerViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView
+    ) -> Int {
         return 2
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int
     ) -> Int {
         return 18
     }
@@ -299,14 +324,12 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
                 withReuseIdentifier: EmojiCollectionViewCell.identifier,
                 for: indexPath) as? EmojiCollectionViewCell else { return UICollectionViewCell() }
             cell.emojiLabel.text = emojies[indexPath.row]
-            //        cell.layer.cornerRadius = 16
             return cell
         } else if indexPath.section == 1 {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: ColorsCollectionViewCell.identifier,
                 for: indexPath) as? ColorsCollectionViewCell else { return UICollectionViewCell() }
             cell.colorView.backgroundColor = colors[indexPath.row]
-            //        cell.layer.cornerRadius = 16
             return cell
         }
         return UICollectionViewCell()
@@ -317,10 +340,32 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
 extension CreateTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, 
                         didSelectItemAt indexPath: IndexPath) {
-        // add select item
+        // TODO: add select item
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, 
+                        viewForSupplementaryElementOfKind kind: String,
+                        at indexPath: IndexPath
+    ) -> UICollectionReusableView {
+        var id: String
+        switch kind {
+        case UICollectionView.elementKindSectionHeader:
+            id = HeaderViewCell.identifier
+        default:
+            id = ""
+        }
+        
+        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, 
+                                                                   withReuseIdentifier: id,
+                                                                   for: indexPath) as! HeaderViewCell
+        if indexPath.section == 0 {
+            view.titleLabel.text = "Emoji"
+        } else {
+            view.titleLabel.text = "Цвет"
+        }
+        return view
     }
 }
-
 // MARK: - UICollectionViewDelegateFlowLayout
 extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
@@ -330,19 +375,39 @@ extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
         return CGSize(width: 52, height: 52)
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumInteritemSpacingForSectionAt section: Int
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        insetForSectionAt section: Int
+    ) -> UIEdgeInsets {
+        UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        let indexPath = IndexPath(row: 0, section: section)
+        let headerView = self.collectionView(collectionView, 
+                                             viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+                                             at: indexPath)
+        
+        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
+                                                         height: UIView.layoutFittingExpandedSize.height),
+                                                         withHorizontalFittingPriority: .required,
+                                                         verticalFittingPriority: .fittingSizeLevel)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int
     ) -> CGFloat {
         return 5
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        layout collectionViewLayout: UICollectionViewLayout,
-        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int
+    ) -> CGFloat {
         return 5
     }
 }
-

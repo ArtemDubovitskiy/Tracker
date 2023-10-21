@@ -9,7 +9,7 @@ import UIKit
 final class EmojiCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "emojiCell"
-    // MARK: - Private Properties
+    
     let emojiLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32)

@@ -7,8 +7,8 @@
 import UIKit
 
 final class TrackerCollectionViewCell: UICollectionViewCell {
-    
-    // MARK: - Private Properties
+    static let identifier = "trackerCell"
+    // MARK: - UI-Elements
     // Card/Tracker
     private let trackerCard: UIView = {
         let view = UIView()
@@ -88,12 +88,12 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Actions
     @objc
     private func pinTrackerButtonTapped() {
-        
+        // TODO: - Добавление карточки в Закрепленные
     }
     
     @objc
     private func plusTrackerButtonTapped() {
-        
+        // TODO: - Добавить отметку выполнен
     }
     // MARK: - Private Methods
     private func setupTrackerсollectionView() {
@@ -130,8 +130,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             
             trackerDescritionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
             trackerDescritionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),
+            trackerDescritionLabel.topAnchor.constraint(equalTo: emojiBackgroundView.bottomAnchor, constant: 8),
             trackerDescritionLabel.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
-//            trackerDescritionLabel.heightAnchor.constraint(equalToConstant: 34),
             
             numberOfDaysLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
             numberOfDaysLabel.centerYAnchor.constraint(equalTo: plusTrackerButton.centerYAnchor),

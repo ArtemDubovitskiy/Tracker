@@ -27,6 +27,7 @@
 		91F94DEF2ADD9A650060C89E /* ScheduleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DEE2ADD9A650060C89E /* ScheduleCell.swift */; };
 		91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF02ADDC2880060C89E /* ColorsCollectionViewCell.swift */; };
 		91F94DF42ADDF0DA0060C89E /* WeekDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF32ADDF0DA0060C89E /* WeekDay.swift */; };
+		91F94DF72ADFF9A80060C89E /* HeaderViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		91F94DEE2ADD9A650060C89E /* ScheduleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleCell.swift; sourceTree = "<group>"; };
 		91F94DF02ADDC2880060C89E /* ColorsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorsCollectionViewCell.swift; sourceTree = "<group>"; };
 		91F94DF32ADDF0DA0060C89E /* WeekDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeekDay.swift; sourceTree = "<group>"; };
+		91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +97,7 @@
 				91C4AD202AC1F63900488630 /* Extensions */,
 				910C998D2ACDEFDB00931D57 /* Statistics */,
 				915EB0AB2AD6066B0083981B /* AddTracker */,
+				91F94DF52ADFF9790060C89E /* Supplementary */,
 				915EB0AA2AD600FE0083981B /* CreateTracker */,
 				91F94DEB2ADD99DE0060C89E /* Schedule */,
 				91C4AD262AC20C6400488630 /* Trackers */,
@@ -181,6 +184,14 @@
 			path = Schedule;
 			sourceTree = "<group>";
 		};
+		91F94DF52ADFF9790060C89E /* Supplementary */ = {
+			isa = PBXGroup;
+			children = (
+				91F94DF62ADFF9A80060C89E /* HeaderViewCell.swift */,
+			);
+			path = Supplementary;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -264,6 +275,7 @@
 				91469F232AA6876B003A3B06 /* AppDelegate.swift in Sources */,
 				91469F252AA6876B003A3B06 /* SceneDelegate.swift in Sources */,
 				910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */,
+				91F94DF72ADFF9A80060C89E /* HeaderViewCell.swift in Sources */,
 				91C4AD2A2AC323C100488630 /* TabBarController.swift in Sources */,
 				91F94DF42ADDF0DA0060C89E /* WeekDay.swift in Sources */,
 				91C4AD282AC317A400488630 /* TrackerStructures.swift in Sources */,

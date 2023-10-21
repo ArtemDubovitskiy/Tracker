@@ -4,13 +4,12 @@
 //
 //  Created by Artem Dubovitsky on 16.10.2023.
 //
-
 import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
     
     static let identifier = "colorCell"
-    // MARK: - Private Properties
+
     let colorView: UILabel = {
         let view = UILabel()
         view.layer.cornerRadius = 8

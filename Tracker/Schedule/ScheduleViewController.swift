@@ -7,7 +7,7 @@
 import UIKit
 
 final class ScheduleViewController: UIViewController {
-    // MARK: - Private Properties
+    // MARK: - UI-Elements
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Расписание"
@@ -82,7 +82,7 @@ final class ScheduleViewController: UIViewController {
             scheduleTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 38),
             scheduleTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             scheduleTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            scheduleTableView.heightAnchor.constraint(equalToConstant: 524),
+            scheduleTableView.heightAnchor.constraint(equalToConstant: 525),
             
             doneButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -16),
             doneButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -97,6 +97,17 @@ final class ScheduleViewController: UIViewController {
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        if indexPath.row == 6 {
+            tableView.separatorInset = UIEdgeInsets(top: 0,
+                                                    left: 0,
+                                                    bottom: 0,
+                                                    right: 500)
+        }
     }
 }
 // MARK: - UITableViewDataSource

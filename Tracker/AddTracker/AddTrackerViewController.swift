@@ -8,7 +8,7 @@ import UIKit
 
 final class AddTrackerViewController: UIViewController {
     var trackersViewController = TrackersViewController()
-    // MARK: - Private Properties
+    // MARK: - UI-Elements
     private let titleAddTrackersLabel: UILabel = {
         let label = UILabel()
         label.text = "Создание трекера"
@@ -75,12 +75,13 @@ final class AddTrackerViewController: UIViewController {
         NSLayoutConstraint.activate([
             titleAddTrackersLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
             titleAddTrackersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            
             habitButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             habitButton.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//            habitButton.topAnchor.constraint(equalTo: titleAddTrackersLabel.bottomAnchor, constant: 295),
             habitButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             habitButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             habitButton.heightAnchor.constraint(equalToConstant: 60),
+            
             irregularEventButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             irregularEventButton.topAnchor.constraint(equalTo: habitButton.bottomAnchor, constant: 16),
             irregularEventButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
