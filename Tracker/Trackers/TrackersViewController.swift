@@ -10,7 +10,24 @@ final class TrackersViewController: UIViewController {
     // MARK: - Private Properties
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
-    private var visibleCategories: [TrackerCategory] = []
+    private var visibleCategories: [TrackerCategory] = [
+        // Test:
+        TrackerCategory(
+            title: "Радостные мелочи",
+            trackers: [
+                Tracker(title: "Кошка заслонила камеру на созвоне",
+                        color: .colorSelection2,
+                        emoji: "😻",
+                        schedule: [.monday, .friday]),
+                Tracker(title: "Бабушка прислала открытку в вотсапе",
+                        color: .colorSelection1,
+                        emoji: "🌺",
+                        schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+                Tracker(title: "Свидание в апреле",
+                        color: .colorSelection14,
+                        emoji: "❤️",
+                        schedule: [.saturday])]
+        )]
     private var completedTrackers: [TrackerRecord] = []
     
     // MARK: - UI-Elements
@@ -39,7 +56,7 @@ final class TrackersViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        collectionView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: -10)
+        collectionView.backgroundColor = .ypWhiteDay
         collectionView.allowsMultipleSelection = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -137,7 +154,7 @@ final class TrackersViewController: UIViewController {
         NSLayoutConstraint.activate([
             searchField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             searchField.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            searchField.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor, constant: -16),
+            searchField.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
             searchField.heightAnchor.constraint(equalToConstant: 36),
             
             trackersImage.heightAnchor.constraint(equalToConstant: 80),
@@ -160,8 +177,7 @@ extension TrackersViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         numberOfItemsInSection section: Int
     ) -> Int {
-        return 1 // заглушка
-//        return visibleCategories[section].trackers.count
+        return visibleCategories[section].trackers.count
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -171,10 +187,16 @@ extension TrackersViewController: UICollectionViewDataSource {
             withReuseIdentifier: TrackerCollectionViewCell.identifier,
             for: indexPath
         ) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
+        
+        cell.prepareForReuse()
+        let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
+        cell.updateTrackerDetail(tracker: tracker)
         // TODO - дополнить конфигурацию ячейки
         return cell
     }
-
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return visibleCategories.count
+    }
 }
 // MARK: - UICollectionViewDelegate
 extension TrackersViewController: UICollectionViewDelegate {
@@ -193,8 +215,11 @@ extension TrackersViewController: UICollectionViewDelegate {
                                                                    withReuseIdentifier: id,
                                                                    for: indexPath
         ) as! HeaderViewCell
-        
-//        view.titleLabel.text = "Test"
+        guard indexPath.section < visibleCategories.count else {
+            return view
+        }
+        let headerText = visibleCategories[indexPath.section].title
+        view.headerTextLabel = headerText
         return view
     }
 }
@@ -205,7 +230,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath
     ) -> CGSize {
-        return CGSize(width: collectionView.bounds.width / 2, height: 148)
+        return CGSize(width: (collectionView.bounds.width - 9) / 2, height: 148)
     }
     
     func collectionView(_ collectionView: UICollectionView,

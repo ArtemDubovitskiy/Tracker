@@ -46,7 +46,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypWhiteDay
-        label.numberOfLines = 2
+        label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -73,7 +73,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         
-        setupTrackerсollectionView()
+        setupTrackerCollectionView()
         setupTrackerCollectionViewConstrains()
     }
     
@@ -90,8 +90,18 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private func plusTrackerButtonTapped() {
         // TODO: - Добавить отметку выполнен
     }
-    // MARK: - Private Methods
-    private func setupTrackerсollectionView() {
+    // MARK: - Public Methods
+    func updateTrackerDetail(tracker: Tracker) {
+        trackerCard.backgroundColor = tracker.color
+        trackerDescritionLabel.text = tracker.title
+        emojiLabel.text = tracker.emoji
+        plusTrackerButton.tintColor = trackerCard.backgroundColor
+        numberOfDaysLabel.text = "5 дней"
+        // TODO: - Настроить закрепленные карточки:
+        pinTrackerButton.isHidden = true // test
+    }
+    // MARK: - Setup View
+    private func setupTrackerCollectionView() {
         contentView.backgroundColor = .ypWhiteDay
         
         contentView.addSubview(trackerCard)

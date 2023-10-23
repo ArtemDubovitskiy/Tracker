@@ -1,5 +1,5 @@
 //
-//  TrackerStructures.swift
+//  Tracker.swift
 //  Tracker
 //
 //  Created by Artem Dubovitsky on 26.09.2023.
@@ -12,14 +12,4 @@ struct Tracker {
     let color: UIColor
     let emoji: String
     let schedule: [WeekDay]
-}
-
-struct TrackerCategory {
-    let title: String
-    let trackers: [Tracker]
-}
-
-struct TrackerRecord {
-    let trakerId: UUID
-    let date: Date
 }

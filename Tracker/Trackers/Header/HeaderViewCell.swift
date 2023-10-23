@@ -6,10 +6,16 @@
 //
 import UIKit
 
-class HeaderViewCell: UICollectionReusableView {
+final class HeaderViewCell: UICollectionReusableView {
     static let identifier = "headerCell"
     
-    let titleLabel: UILabel = {
+    var headerTextLabel: String? {
+        didSet {
+            titleLabel.text = headerTextLabel
+        }
+    }
+    
+    private let titleLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 19, weight: .bold)
         label.textColor = .ypBlackDay

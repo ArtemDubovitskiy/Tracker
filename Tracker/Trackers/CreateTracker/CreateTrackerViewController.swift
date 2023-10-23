@@ -371,9 +371,9 @@ extension CreateTrackerViewController: UICollectionViewDelegate {
                                                                    withReuseIdentifier: id,
                                                                    for: indexPath) as! HeaderViewCell
         if indexPath.section == 0 {
-            view.titleLabel.text = "Emoji"
+            view.headerTextLabel = "Emoji"
         } else {
-            view.titleLabel.text = "Цвет"
+            view.headerTextLabel = "Цвет"
         }
         return view
     }
