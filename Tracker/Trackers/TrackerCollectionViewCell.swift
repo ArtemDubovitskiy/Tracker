@@ -12,7 +12,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // Card/Tracker
     private let trackerCard: UIView = {
         let view = UIView()
-        view.backgroundColor = .colorSelection2 // test
         view.layer.cornerRadius = 16
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -20,7 +19,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiLabel: UILabel = {
         let label = UILabel()
-        label.text = "🥶"
         label.font = .systemFont(ofSize: 16, weight: .medium)
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -48,9 +46,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypWhiteDay
-        label.text = "Делать спринт"
         label.numberOfLines = 2
-        
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -60,7 +56,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypBlackDay
-        label.text = "5 days" // test
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

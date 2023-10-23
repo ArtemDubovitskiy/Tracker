@@ -10,11 +10,13 @@ final class ScheduleCell: UITableViewCell {
     static let cellIdentifier = "scheduleCell"
     
     var selectedSwitcher = false
-    
-    private let switcher: UISwitch = {
+
+    private lazy var switcher: UISwitch = {
         let swith = UISwitch()
         swith.onTintColor = .ypBlue
-        swith.addTarget(self, action: #selector(switcherTapped), for: .touchUpInside)
+        swith.addTarget(self, 
+                        action: #selector(switcherTapped),
+                        for: .touchUpInside)
         swith.translatesAutoresizingMaskIntoConstraints = false
         return swith
     }()
@@ -33,7 +35,6 @@ final class ScheduleCell: UITableViewCell {
             switcher.centerYAnchor.constraint(equalTo: centerYAnchor),
             switcher.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])
-        
     }
     
     required init?(coder: NSCoder) {

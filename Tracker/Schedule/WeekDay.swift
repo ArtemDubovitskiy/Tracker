@@ -4,11 +4,10 @@
 //
 //  Created by Artem Dubovitsky on 17.10.2023.
 //
-
 import Foundation
 
 enum WeekDay: Int, CaseIterable {
-
+    
     case monday = 2
     case tuesday = 3
     case wednesday = 4
@@ -19,8 +18,6 @@ enum WeekDay: Int, CaseIterable {
     
     var daysName: String {
         switch self {
-        case .sunday:
-            "Воскресенье"
         case .monday:
             "Понедельник"
         case .tuesday:
@@ -33,6 +30,27 @@ enum WeekDay: Int, CaseIterable {
             "Пятница"
         case .saturday:
             "Суббота"
+        case .sunday:
+            "Воскресенье"
+        }
+    }
+    
+    var shortDaysName: String {
+        switch self {
+        case .monday:
+            "Пн"
+        case .tuesday:
+            "Вт"
+        case .wednesday:
+            "Ср"
+        case .thursday:
+            "Чт"
+        case .friday:
+            "Пт"
+        case .saturday:
+            "Сб"
+        case .sunday:
+            "Вс"
         }
     }
 }

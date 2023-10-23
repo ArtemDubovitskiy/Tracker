@@ -7,7 +7,6 @@
 import UIKit
 
 final class EmojiCollectionViewCell: UICollectionViewCell {
-    
     static let identifier = "emojiCell"
     
     let emojiLabel: UILabel = {

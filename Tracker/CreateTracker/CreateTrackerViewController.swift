@@ -7,10 +7,11 @@
 import UIKit
 
 final class CreateTrackerViewController: UIViewController {
-
     var irregularEvent: Bool = false
     // MARK: - Private Properties
     private var cellButtonText: [String] = ["Категория", "Расписание"]
+    private var selectedCategory: String?
+    private var selectedDays: [WeekDay] = []
     private var collectionViewHeightContraint: NSLayoutConstraint!
     private let emojies = [
         "🙂","😻","🌺","🐶","❤️","😱",
@@ -84,10 +85,7 @@ final class CreateTrackerViewController: UIViewController {
     }()
     
     private lazy var createTrackerCollectionView: UICollectionView = {
-        let collectionView = UICollectionView(
-            frame: .zero,
-            collectionViewLayout: UICollectionViewFlowLayout()
-        )
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
@@ -132,6 +130,7 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .ypWhiteDay
         
         setupTableView()
         setupCollectionView()
@@ -146,8 +145,10 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerTableView.delegate = self
         createTrackerTableView.dataSource = self
         
-        createTrackerTableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        createTrackerTableView.register(CreateTrackerCell.self, forCellReuseIdentifier: CreateTrackerCell.cellIdentifier)
+        createTrackerTableView.register(UITableViewCell.self, 
+                                        forCellReuseIdentifier: "cell")
+        createTrackerTableView.register(CreateTrackerCell.self, 
+                                        forCellReuseIdentifier: CreateTrackerCell.cellIdentifier)
     }
     
     private func setupCollectionView() {
@@ -241,24 +242,21 @@ final class CreateTrackerViewController: UIViewController {
         // TODO: - Добавить переход на экран Трекеров (TabBarController)
     }
 }
-
+// MARK: - ScheduleViewControllerDelegate
+extension CreateTrackerViewController: ScheduleViewControllerDelegate {
+    func saveSelectedDays(list: [Int]) {
+        for index in list {
+            self.selectedDays.append(WeekDay.allCases[index])
+            self.createTrackerTableView.reloadData()
+        }
+    }
+}
 // MARK: - UITableViewDelegate
 extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    heightForRowAt indexPath: IndexPath
     ) -> CGFloat {
         return 75
-    }
-    
-    func tableView(_ tableView: UITableView, 
-                   willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath) {
-        if indexPath.row == (irregularEvent ? 0 : 1) {
-            tableView.separatorInset = UIEdgeInsets(top: 0,
-                                                    left: 0,
-                                                    bottom: 0,
-                                                    right: 500)
-        }
     }
     
     func tableView(_ tableView: UITableView,
@@ -270,8 +268,11 @@ extension CreateTrackerViewController: UITableViewDelegate {
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
+            scheduleViewController.delegate = self
             present(scheduleViewController, animated: true, completion: nil)
+            selectedDays = []
         }
+        createTrackerTableView.deselectRow(at: indexPath, animated: true)
     }
 }
 // MARK: - UITableViewDataSource
@@ -289,7 +290,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        let cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
+        let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.text = cellButtonText[indexPath.row]
         cell.textLabel?.textColor = .ypBlackDay
@@ -298,6 +299,19 @@ extension CreateTrackerViewController: UITableViewDataSource {
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .clear
         
+        guard let detailTextLabel = cell.detailTextLabel else { return cell }
+        detailTextLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
+        detailTextLabel.textColor = .ypGray
+        
+        if indexPath.row == 0 {
+            detailTextLabel.text = "" //add selectedCategory
+        } else if indexPath.row == 1 {
+            if selectedDays.count == 7 {
+                detailTextLabel.text = "Каждый день"
+            } else {
+                detailTextLabel.text = selectedDays.map { $0.shortDaysName }.joined(separator: ", ")
+            }
+        }
         return cell
     }
 }
@@ -331,13 +345,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
             return cell
         }
         return UICollectionViewCell()
-
     }
 }
 // MARK: - UICollectionViewDelegate
 extension CreateTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, 
-                        didSelectItemAt indexPath: IndexPath) {
+                        didSelectItemAt indexPath: IndexPath
+    ) {
         // TODO: add select item
     }
     
@@ -382,8 +396,8 @@ extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int) -> CGSize {
-        
+                        referenceSizeForHeaderInSection section: Int
+    ) -> CGSize {
         let indexPath = IndexPath(row: 0, section: section)
         let headerView = self.collectionView(collectionView, 
                                              viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,

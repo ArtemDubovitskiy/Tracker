@@ -15,7 +15,6 @@
 		91469F2A2AA6876B003A3B06 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91469F282AA6876B003A3B06 /* Main.storyboard */; };
 		91469F2C2AA6876D003A3B06 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 91469F2B2AA6876D003A3B06 /* Assets.xcassets */; };
 		91469F2F2AA6876D003A3B06 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 91469F2D2AA6876D003A3B06 /* LaunchScreen.storyboard */; };
-		915EB0AD2AD619990083981B /* TrackerType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915EB0AC2AD619990083981B /* TrackerType.swift */; };
 		915EB0AF2AD71C6D0083981B /* CreateTrackerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915EB0AE2AD71C6D0083981B /* CreateTrackerCell.swift */; };
 		917E26BC2ACF0837009AF644 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */; };
 		917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */; };
@@ -42,7 +41,6 @@
 		91469F2B2AA6876D003A3B06 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		91469F2E2AA6876D003A3B06 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		91469F302AA6876D003A3B06 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		915EB0AC2AD619990083981B /* TrackerType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerType.swift; sourceTree = "<group>"; };
 		915EB0AE2AD71C6D0083981B /* CreateTrackerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerCell.swift; sourceTree = "<group>"; };
 		917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
@@ -97,14 +95,14 @@
 			isa = PBXGroup;
 			children = (
 				915EB0AB2AD6066B0083981B /* AddTracker */,
-				91F94DF82AE479BC0060C89E /* Category */,
 				915EB0AA2AD600FE0083981B /* CreateTracker */,
-				91C4AD202AC1F63900488630 /* Extensions */,
+				91F94DF82AE479BC0060C89E /* Category */,
 				91F94DF52ADFF9790060C89E /* Header */,
 				91F94DEB2ADD99DE0060C89E /* Schedule */,
 				910C998D2ACDEFDB00931D57 /* Statistics */,
 				91C4AD252AC20C1A00488630 /* TabBar */,
 				91C4AD262AC20C6400488630 /* Trackers */,
+				91C4AD202AC1F63900488630 /* Extensions */,
 				91C4AD242AC20BA500488630 /* Presentation */,
 				91C4AD232AC20B2900488630 /* Resources */,
 			);
@@ -114,10 +112,9 @@
 		915EB0AA2AD600FE0083981B /* CreateTracker */ = {
 			isa = PBXGroup;
 			children = (
-				915EB0AC2AD619990083981B /* TrackerType.swift */,
 				915EB0AE2AD71C6D0083981B /* CreateTrackerCell.swift */,
-				91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */,
 				91F94DF02ADDC2880060C89E /* ColorsCollectionViewCell.swift */,
+				91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */,
 				917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */,
 			);
 			path = CreateTracker;
@@ -278,7 +275,6 @@
 				917E26BC2ACF0837009AF644 /* TrackerCollectionViewCell.swift in Sources */,
 				91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */,
 				91F94DFA2AE47A320060C89E /* CategoryViewController.swift in Sources */,
-				915EB0AD2AD619990083981B /* TrackerType.swift in Sources */,
 				917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */,
 				91F94DEF2ADD9A650060C89E /* ScheduleCell.swift in Sources */,
 				91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */,

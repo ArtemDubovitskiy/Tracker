@@ -4,7 +4,6 @@
 //
 //  Created by Artem Dubovitsky on 04.10.2023.
 //
-
 import UIKit
 
 final class StaticticsViewController: UIViewController {
@@ -50,7 +49,7 @@ final class StaticticsViewController: UIViewController {
         view.addSubview(staticticsLabel)
     }
     
-    func setupStaticticsViewConstrains() {
+    private func setupStaticticsViewConstrains() {
         NSLayoutConstraint.activate([
             titleLabel.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 44),
             titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),

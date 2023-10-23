@@ -7,7 +7,6 @@
 import UIKit
 
 final class ColorsCollectionViewCell: UICollectionViewCell {
-    
     static let identifier = "colorCell"
 
     let colorView: UILabel = {

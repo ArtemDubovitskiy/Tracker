@@ -6,7 +6,13 @@
 //
 import UIKit
 
+protocol ScheduleViewControllerDelegate: AnyObject {
+    func saveSelectedDays(list: [Int])
+}
+
 final class ScheduleViewController: UIViewController {
+    weak var delegate: ScheduleViewControllerDelegate?
+    private var selectedDays: [Int] = []
     // MARK: - UI-Elements
     private var titleLabel: UILabel = {
         let label = UILabel()
@@ -37,7 +43,9 @@ final class ScheduleViewController: UIViewController {
         button.tintColor = .ypBlackDay
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlackDay
-        button.addTarget(self, action: #selector(doneButtonTapped), for: .touchUpInside)
+        button.addTarget(self, 
+                         action: #selector(doneButtonTapped),
+                         for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -53,17 +61,22 @@ final class ScheduleViewController: UIViewController {
     // MARK: - Actions
     @objc 
     private func doneButtonTapped() {
-        // TODO: - Добавить сохранение выбранных дней недели
+        for (index, list) in scheduleTableView.visibleCells.enumerated() {
+            guard let cell = list as? ScheduleCell else { return }
+            if cell.selectedSwitcher {
+                selectedDays.append(index)
+            }
+        }
+        self.delegate?.saveSelectedDays(list: selectedDays)
         dismiss(animated: true)
     }
-    
     // MARK: - Setup View
     private func setupTableView() {
         scheduleTableView.delegate = self
         scheduleTableView.dataSource = self
         
-        scheduleTableView.register(ScheduleCell.self, forCellReuseIdentifier: ScheduleCell.cellIdentifier)
-        // добавить хедер
+        scheduleTableView.register(ScheduleCell.self, 
+                                   forCellReuseIdentifier: ScheduleCell.cellIdentifier)
     }
     
     private func setupScheduleView() {
@@ -90,18 +103,19 @@ final class ScheduleViewController: UIViewController {
             doneButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    // MARK: - Private Methods
 }
-
 // MARK: - UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, 
+                   heightForRowAt indexPath: IndexPath
+    ) -> CGFloat {
         return 75
     }
     
-    func tableView(_ tableView: UITableView,
+    func tableView(_ tableView: UITableView, 
                    willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath) {
+                   forRowAt indexPath: IndexPath
+    ) {
         if indexPath.row == 6 {
             tableView.separatorInset = UIEdgeInsets(top: 0,
                                                     left: 0,
@@ -109,14 +123,24 @@ extension ScheduleViewController: UITableViewDelegate {
                                                     right: 500)
         }
     }
+    
+    func tableView(_ tableView: UITableView, 
+                   didSelectRowAt indexPath: IndexPath
+    ) {
+        scheduleTableView.deselectRow(at: indexPath, animated: true)
+    }
 }
 // MARK: - UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, 
+                   numberOfRowsInSection section: Int
+    ) -> Int {
         return 7
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, 
+                   cellForRowAt indexPath: IndexPath
+    ) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.cellIdentifier, for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
         let days = WeekDay.allCases[indexPath.row]

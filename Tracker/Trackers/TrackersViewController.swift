@@ -87,8 +87,6 @@ final class TrackersViewController: UIViewController {
         setupTrackersView()
         setupCollectionView()
         setupTrackersViewConstrains()
-        
-        let category = TrackerCategory(title: "Домашний уют", trackers: trackers)
     }
     // MARK: - Actions
     @objc
@@ -159,21 +157,20 @@ final class TrackersViewController: UIViewController {
 }
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
-    func collectionView(
-        _ collectionView: UICollectionView,
-        numberOfItemsInSection section: Int
+    func collectionView(_ collectionView: UICollectionView,
+                        numberOfItemsInSection section: Int
     ) -> Int {
         return 1 // заглушка
 //        return visibleCategories[section].trackers.count
     }
     
-    func collectionView(
-        _ collectionView: UICollectionView,
-        cellForItemAt indexPath: IndexPath
+    func collectionView(_ collectionView: UICollectionView,
+                        cellForItemAt indexPath: IndexPath
     ) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: TrackerCollectionViewCell.identifier,
-                                                      for: indexPath
-        ) as! TrackerCollectionViewCell
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: TrackerCollectionViewCell.identifier,
+            for: indexPath
+        ) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
         // TODO - дополнить конфигурацию ячейки
         return cell
     }
@@ -197,7 +194,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                                                                    for: indexPath
         ) as! HeaderViewCell
         
-        view.titleLabel.text = "Test"
+//        view.titleLabel.text = "Test"
         return view
     }
 }
@@ -226,7 +223,7 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
         let headerView = self.collectionView(collectionView,
                                              viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
                                              at: indexPath)
-        
+
         return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
                                                          height: UIView.layoutFittingExpandedSize.height),
                                                          withHorizontalFittingPriority: .required,
