@@ -94,11 +94,6 @@
 		91469F212AA6876B003A3B06 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
-				915EB0AB2AD6066B0083981B /* AddTracker */,
-				915EB0AA2AD600FE0083981B /* CreateTracker */,
-				91F94DF82AE479BC0060C89E /* Category */,
-				91F94DF52ADFF9790060C89E /* Header */,
-				91F94DEB2ADD99DE0060C89E /* Schedule */,
 				910C998D2ACDEFDB00931D57 /* Statistics */,
 				91C4AD252AC20C1A00488630 /* TabBar */,
 				91C4AD262AC20C6400488630 /* Trackers */,
@@ -170,6 +165,11 @@
 				91C4AD272AC317A400488630 /* TrackerStructures.swift */,
 				917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */,
 				91469F262AA6876B003A3B06 /* TrackersViewController.swift */,
+				915EB0AB2AD6066B0083981B /* AddTracker */,
+				915EB0AA2AD600FE0083981B /* CreateTracker */,
+				91F94DF52ADFF9790060C89E /* Header */,
+				91F94DF82AE479BC0060C89E /* Category */,
+				91F94DEB2ADD99DE0060C89E /* Schedule */,
 			);
 			path = Trackers;
 			sourceTree = "<group>";
