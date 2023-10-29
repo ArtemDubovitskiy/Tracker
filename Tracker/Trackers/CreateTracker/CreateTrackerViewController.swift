@@ -12,6 +12,7 @@ final class CreateTrackerViewController: UIViewController {
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
     private var selectedDays: [WeekDay] = []
+    private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
     private let emojies = [
         "🙂","😻","🌺","🐶","❤️","😱",
@@ -132,6 +133,7 @@ final class CreateTrackerViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .ypWhiteDay
         
+        setupCreateTrackerNameTextField()
         setupTableView()
         setupCollectionView()
         setupCreateTrackerView()
@@ -141,6 +143,10 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     // MARK: - Setup View
+    private func setupCreateTrackerNameTextField() {
+        createTrackerName.delegate = self
+    }
+    
     private func setupTableView() {
         createTrackerTableView.delegate = self
         createTrackerTableView.dataSource = self
@@ -189,6 +195,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func setupCreateTrackerViewConstrains() {
+        limitTrackerNameLabelHeightContraint = limitTrackerNameLabel.heightAnchor.constraint(equalToConstant: 0)
         NSLayoutConstraint.activate([
             titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 27),
@@ -203,10 +210,11 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerName.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
             createTrackerName.heightAnchor.constraint(equalToConstant: 75),
             
+            limitTrackerNameLabelHeightContraint,
             limitTrackerNameLabel.centerXAnchor.constraint(equalTo: createTrackerName.centerXAnchor),
-            limitTrackerNameLabel.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 8),
+            limitTrackerNameLabel.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor),
             
-            createTrackerTableView.topAnchor.constraint(equalTo: createTrackerName.bottomAnchor, constant: 24), // добавить изменение высоты при >38 символов
+            createTrackerTableView.topAnchor.constraint(equalTo: limitTrackerNameLabel.bottomAnchor, constant: 24),
             createTrackerTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
@@ -230,6 +238,16 @@ final class CreateTrackerViewController: UIViewController {
             self.titleLabel.text = "Новое нерегулярное событие"
         }
     }
+    
+    private func updateCreateButton() {
+        if createTrackerName.text?.isEmpty == true { // добавить категорию и т.д.
+            createButton.isEnabled = false
+            createButton.backgroundColor = .ypGray
+        } else {
+            createButton.isEnabled = true
+            createButton.backgroundColor = .ypBlackDay
+        }
+    }
     // MARK: - Actions
     @objc
     private func cancelButtonTapped() {
@@ -239,9 +257,45 @@ final class CreateTrackerViewController: UIViewController {
     
     @objc
     private func createButtonTapped() {
+        print("button tapped") // для теста (удалить)
         // TODO: - Добавить переход на экран Трекеров (TabBarController)
     }
 }
+extension CreateTrackerViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField
+    ) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String
+    ) -> Bool {
+        let maxLength = 38
+        let currentText = (textField.text ?? "") as NSString
+        let newText = currentText.replacingCharacters(in: range, with: string)
+        
+        if newText.count >= maxLength {
+            limitTrackerNameLabel.isHidden = false
+            limitTrackerNameLabelHeightContraint.constant = 38
+        } else {
+            limitTrackerNameLabel.isHidden = true
+            limitTrackerNameLabelHeightContraint.constant = 0
+        }
+        updateCreateButton()
+        return newText.count <= maxLength
+    }
+    
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        createTrackerName.text = .none
+        limitTrackerNameLabel.isHidden = true
+        limitTrackerNameLabelHeightContraint.constant = 0
+        updateCreateButton()
+        return true
+    }
+}
+
 // MARK: - ScheduleViewControllerDelegate
 extension CreateTrackerViewController: ScheduleViewControllerDelegate {
     func saveSelectedDays(list: [Int]) {
@@ -298,6 +352,13 @@ extension CreateTrackerViewController: UITableViewDataSource {
         
         cell.accessoryType = .disclosureIndicator
         cell.backgroundColor = .clear
+        
+        if indexPath.row == (irregularEvent ? 0 : 1) {
+            cell.separatorInset = UIEdgeInsets(top: 0,
+                                                    left: 0,
+                                                    bottom: 0,
+                                                    right: 500)
+        }
         
         guard let detailTextLabel = cell.detailTextLabel else { return cell }
         detailTextLabel.font = UIFont.systemFont(ofSize: 17, weight: .regular)
