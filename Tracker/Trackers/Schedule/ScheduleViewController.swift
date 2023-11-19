@@ -107,15 +107,13 @@ final class ScheduleViewController: UIViewController {
 // MARK: - UITableViewDelegate
 extension ScheduleViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, 
-                   heightForRowAt indexPath: IndexPath
-    ) -> CGFloat {
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
     
     func tableView(_ tableView: UITableView, 
                    willDisplay cell: UITableViewCell,
-                   forRowAt indexPath: IndexPath
-    ) {
+                   forRowAt indexPath: IndexPath) {
         if indexPath.row == 6 {
             tableView.separatorInset = UIEdgeInsets(top: 0,
                                                     left: 0,
@@ -125,23 +123,23 @@ extension ScheduleViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, 
-                   didSelectRowAt indexPath: IndexPath
-    ) {
+                   didSelectRowAt indexPath: IndexPath) {
         scheduleTableView.deselectRow(at: indexPath, animated: true)
     }
 }
 // MARK: - UITableViewDataSource
 extension ScheduleViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, 
-                   numberOfRowsInSection section: Int
-    ) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         return 7
     }
     
-    func tableView(_ tableView: UITableView, 
+    func tableView(_ tableView: UITableView,
                    cellForRowAt indexPath: IndexPath
     ) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: ScheduleCell.cellIdentifier, for: indexPath) as? ScheduleCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: ScheduleCell.cellIdentifier,
+            for: indexPath) as? ScheduleCell else { return UITableViewCell() }
         
         let days = WeekDay.allCases[indexPath.row]
         

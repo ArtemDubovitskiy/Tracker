@@ -4,7 +4,6 @@
 //
 //  Created by Artem Dubovitsky on 05.09.2023.
 //
-
 import UIKit
 
 @main
@@ -27,4 +26,3 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {
     }
 }
-

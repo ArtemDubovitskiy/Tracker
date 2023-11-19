@@ -31,7 +31,6 @@ final class ScheduleCell: UITableViewCell {
         self.accessoryView = switcher
         
         NSLayoutConstraint.activate([
-            switcher.trailingAnchor.constraint(equalTo: trailingAnchor),
             switcher.centerYAnchor.constraint(equalTo: centerYAnchor),
             switcher.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16)
         ])

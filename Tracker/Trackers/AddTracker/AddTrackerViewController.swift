@@ -53,6 +53,7 @@ final class AddTrackerViewController: UIViewController {
     private func didTapHabitButton() {
         let createTracker = CreateTrackerViewController()
         createTracker.irregularEvent = false
+        createTracker.delegate = self.trackersViewController
         present(createTracker, animated: true, completion: nil)
     }
     
@@ -60,6 +61,7 @@ final class AddTrackerViewController: UIViewController {
     private func didTapIrregularEventButton() {
         let createTracker = CreateTrackerViewController()
         createTracker.irregularEvent = true
+        createTracker.delegate = self.trackersViewController
         present(createTracker, animated: true, completion: nil)
     }
     // MARK: - Setup View

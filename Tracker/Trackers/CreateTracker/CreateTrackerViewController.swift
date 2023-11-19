@@ -6,7 +6,12 @@
 //
 import UIKit
 
+protocol CreateTrackerViewControllerDelegate: AnyObject {
+    func createNewTracker(tracker: Tracker)
+}
+
 final class CreateTrackerViewController: UIViewController {
+    weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
     // MARK: - Private Properties
     private var cellButtonText: [String] = ["Категория", "Расписание"]
@@ -257,21 +262,42 @@ final class CreateTrackerViewController: UIViewController {
     
     @objc
     private func createButtonTapped() {
-        print("button tapped") // для теста (удалить)
-        // TODO: - Добавить переход на экран Трекеров (TabBarController)
+        guard let trackerName = createTrackerName.text, !trackerName.isEmpty else {
+            return
+        }
+        if irregularEvent == false {
+            guard !selectedDays.isEmpty else {
+                return
+            }
+            let newTracker = Tracker(
+                id: UUID(),
+                title: trackerName,
+                color: colors[Int.random(in: 0...17)], // заменить позже на выбранный цвет
+                emoji: emojies[Int.random(in: 0...17)], // заменить позже на выбранный emoji
+                schedule: self.selectedDays)
+            delegate?.createNewTracker(tracker: newTracker)
+        } else {
+            let newTracker = Tracker(
+                id: UUID(),
+                title: trackerName,
+                color: colors[Int.random(in: 0...17)], // заменить позже на выбранный цвет
+                emoji: emojies[Int.random(in: 0...17)], // заменить позже на выбранный emoji
+                schedule: WeekDay.allCases)
+            delegate?.createNewTracker(tracker: newTracker)
+        }
+        self.view.window?.rootViewController?.dismiss(animated: true)
     }
 }
+// MARK: - UITextFieldDelegate
 extension CreateTrackerViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField
-    ) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
     func textField(_ textField: UITextField,
                    shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String
-    ) -> Bool {
+                   replacementString string: String) -> Bool {
         let maxLength = 38
         let currentText = (textField.text ?? "") as NSString
         let newText = currentText.replacingCharacters(in: range, with: string)
@@ -308,14 +334,12 @@ extension CreateTrackerViewController: ScheduleViewControllerDelegate {
 // MARK: - UITableViewDelegate
 extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
-                   heightForRowAt indexPath: IndexPath
-    ) -> CGFloat {
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
     
     func tableView(_ tableView: UITableView,
-                   didSelectRowAt indexPath: IndexPath
-    ) {
+                   didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
             let categoryViewController = CategoryViewController()
             present(categoryViewController, animated: true, completion: nil)
@@ -332,8 +356,7 @@ extension CreateTrackerViewController: UITableViewDelegate {
 // MARK: - UITableViewDataSource
 extension CreateTrackerViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
-                   numberOfRowsInSection section: Int
-    ) -> Int {
+                   numberOfRowsInSection section: Int) -> Int {
         if irregularEvent == false {
             return 2
         } else {
@@ -342,8 +365,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView,
-                   cellForRowAt indexPath: IndexPath
-    ) -> UITableViewCell {
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.text = cellButtonText[indexPath.row]
@@ -378,20 +400,17 @@ extension CreateTrackerViewController: UITableViewDataSource {
 }
 // MARK: - UICollectionViewDataSource
 extension CreateTrackerViewController: UICollectionViewDataSource {
-    func numberOfSections(in collectionView: UICollectionView
-    ) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 2
     }
     
     func collectionView(_ collectionView: UICollectionView,
-                        numberOfItemsInSection section: Int
-    ) -> Int {
+                        numberOfItemsInSection section: Int) -> Int {
         return 18
     }
     
     func collectionView(_ collectionView: UICollectionView,
-                        cellForItemAt indexPath: IndexPath
-    ) -> UICollectionViewCell {
+                        cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
             guard let cell = collectionView.dequeueReusableCell(
                 withReuseIdentifier: EmojiCollectionViewCell.identifier,
@@ -411,15 +430,13 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegate
 extension CreateTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, 
-                        didSelectItemAt indexPath: IndexPath
-    ) {
+                        didSelectItemAt indexPath: IndexPath) {
         // TODO: add select item
     }
     
     func collectionView(_ collectionView: UICollectionView, 
                         viewForSupplementaryElementOfKind kind: String,
-                        at indexPath: IndexPath
-    ) -> UICollectionReusableView {
+                        at indexPath: IndexPath) -> UICollectionReusableView {
         var id: String
         switch kind {
         case UICollectionView.elementKindSectionHeader:
@@ -443,44 +460,31 @@ extension CreateTrackerViewController: UICollectionViewDelegate {
 extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        sizeForItemAt indexPath: IndexPath
-    ) -> CGSize {
+                        sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 52, height: 52)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        insetForSectionAt section: Int
-    ) -> UIEdgeInsets {
+                        insetForSectionAt section: Int) -> UIEdgeInsets {
         UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        referenceSizeForHeaderInSection section: Int
-    ) -> CGSize {
-        let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, 
-                                             viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
-                                             at: indexPath)
-        
-        return headerView.systemLayoutSizeFitting(CGSize(width: collectionView.frame.width,
-                                                         height: UIView.layoutFittingExpandedSize.height),
-                                                         withHorizontalFittingPriority: .required,
-                                                         verticalFittingPriority: .fittingSizeLevel)
+                        referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.bounds.width, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        minimumInteritemSpacingForSectionAt section: Int
-    ) -> CGFloat {
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
-                        minimumLineSpacingForSectionAt section: Int
-    ) -> CGFloat {
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 5
     }
 }

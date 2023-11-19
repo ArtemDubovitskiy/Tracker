@@ -96,7 +96,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerDescritionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
         plusTrackerButton.tintColor = trackerCard.backgroundColor
-        numberOfDaysLabel.text = "5 дней"
+        numberOfDaysLabel.text = "5 дней" // исправить на счетчик дней
         // TODO: - Настроить закрепленные карточки:
         pinTrackerButton.isHidden = true // test
     }
@@ -105,8 +105,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         contentView.backgroundColor = .ypWhiteDay
         
         contentView.addSubview(trackerCard)
-        contentView.addSubview(emojiLabel)
         contentView.addSubview(emojiBackgroundView)
+        contentView.addSubview(emojiLabel)
         contentView.addSubview(pinTrackerButton)
         contentView.addSubview(trackerDescritionLabel)
         contentView.addSubview(numberOfDaysLabel)
@@ -135,7 +135,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
             
             trackerDescritionLabel.leadingAnchor.constraint(equalTo: trackerCard.leadingAnchor, constant: 12),
             trackerDescritionLabel.bottomAnchor.constraint(equalTo: trackerCard.bottomAnchor, constant: -12),
-            trackerDescritionLabel.topAnchor.constraint(equalTo: emojiBackgroundView.bottomAnchor, constant: 8),
             trackerDescritionLabel.trailingAnchor.constraint(equalTo: trackerCard.trailingAnchor, constant: -12),
             
             numberOfDaysLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 12),
