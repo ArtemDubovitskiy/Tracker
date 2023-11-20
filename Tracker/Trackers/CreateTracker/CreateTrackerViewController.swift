@@ -19,6 +19,8 @@ final class CreateTrackerViewController: UIViewController {
     private var selectedDays: [WeekDay] = []
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
+    private var isEmojiSelected: IndexPath? = nil
+    private var isColorSelected: IndexPath? = nil
     private let emojies = [
         "🙂","😻","🌺","🐶","❤️","😱",
         "😇","😡","🥶","🤔","🙌","🍔",
@@ -245,12 +247,16 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func updateCreateButton() {
-        if createTrackerName.text?.isEmpty == true { // добавить категорию и т.д.
-            createButton.isEnabled = false
-            createButton.backgroundColor = .ypGray
-        } else {
+        if createTrackerName.text?.isEmpty == true &&
+            irregularEvent == false ? selectedDays.count > 0 : true &&
+            isEmojiSelected != nil &&
+            isColorSelected != nil 
+        {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlackDay
+        } else {
+            createButton.isEnabled = false
+            createButton.backgroundColor = .ypGray
         }
     }
     // MARK: - Actions
@@ -265,6 +271,14 @@ final class CreateTrackerViewController: UIViewController {
         guard let trackerName = createTrackerName.text, !trackerName.isEmpty else {
             return
         }
+        guard let selectedEmoji = isEmojiSelected,
+              let selectedColor = isColorSelected else {
+            return
+        }
+        
+        let emoji = emojies[selectedEmoji.row]
+        let color = colors[selectedColor.row]
+        
         if irregularEvent == false {
             guard !selectedDays.isEmpty else {
                 return
@@ -272,16 +286,16 @@ final class CreateTrackerViewController: UIViewController {
             let newTracker = Tracker(
                 id: UUID(),
                 title: trackerName,
-                color: colors[Int.random(in: 0...17)], // заменить позже на выбранный цвет
-                emoji: emojies[Int.random(in: 0...17)], // заменить позже на выбранный emoji
+                color: color,
+                emoji: emoji,
                 schedule: self.selectedDays)
             delegate?.createNewTracker(tracker: newTracker)
         } else {
             let newTracker = Tracker(
                 id: UUID(),
                 title: trackerName,
-                color: colors[Int.random(in: 0...17)], // заменить позже на выбранный цвет
-                emoji: emojies[Int.random(in: 0...17)], // заменить позже на выбранный emoji
+                color: color,
+                emoji: emoji,
                 schedule: WeekDay.allCases)
             delegate?.createNewTracker(tracker: newTracker)
         }
@@ -431,7 +445,28 @@ extension CreateTrackerViewController: UICollectionViewDataSource {
 extension CreateTrackerViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, 
                         didSelectItemAt indexPath: IndexPath) {
-        // TODO: add select item
+        if indexPath.section == 0 {
+            if let selectedEmoji = isEmojiSelected {
+                let cell = collectionView.cellForItem(at: selectedEmoji)
+                cell?.backgroundColor = .clear
+            }
+            let cell = collectionView.cellForItem(at: indexPath) as? EmojiCollectionViewCell
+            cell?.layer.cornerRadius = 16
+            cell?.backgroundColor = .ypLightGray
+            isEmojiSelected = indexPath
+        } else if indexPath.section == 1 {
+            if let selectedColor = isColorSelected {
+                let cell = collectionView.cellForItem(at: selectedColor)
+                cell?.layer.borderWidth = 0
+                cell?.layer.borderColor = .none
+            }
+            let cell = collectionView.cellForItem(at: indexPath) as? ColorsCollectionViewCell
+            cell?.layer.cornerRadius = 11
+            cell?.layer.borderWidth = 3
+            cell?.layer.borderColor = cell?.colorView.backgroundColor?.withAlphaComponent(0.3).cgColor
+            isColorSelected = indexPath
+        }
+        updateCreateButton()
     }
     
     func collectionView(_ collectionView: UICollectionView, 
