@@ -10,31 +10,10 @@ final class TrackersViewController: UIViewController {
     // MARK: - Private Properties
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
-        // Mock - для отладки поиска и фильтра по дате:
-//        TrackerCategory(
-//            title: "Радостные мелочи",
-//            trackers: [
-//                Tracker(id: UUID(),
-//                        title: "Кошка заслонила камеру на созвоне",
-//                        color: .colorSelection2,
-//                        emoji: "😻",
-//                        schedule: [.monday, .friday]),
-//                Tracker(id: UUID(),
-//                        title: "Бабушка прислала открытку в вотсапе",
-//                        color: .colorSelection1,
-//                        emoji: "🌺",
-//                        schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-//                Tracker(id: UUID(),
-//                        title: "Свидание в апреле",
-//                        color: .colorSelection14,
-//                        emoji: "❤️",
-//                        schedule: [.saturday])]
-//        )]
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDay: Int?
     private var filterText: String?
-    
     // MARK: - UI-Elements
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()

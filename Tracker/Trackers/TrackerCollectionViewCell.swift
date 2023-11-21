@@ -132,11 +132,10 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         emojiLabel.text = tracker.emoji
         // TODO: - Настроить закрепленные карточки:
         pinTrackerButton.isHidden = true // test
-        numberOfDaysLabel.text = "\(completedDays) дней"
+        numberOfDaysLabel.text = formattedDays(completedDays)
         plusButtonSettings()
     }
     // MARK: - Private Methods
-    // TODO: - Добавить преобразование текста в зависимости от числа
     private func plusButtonSettings() {
         plusTrackerButton.backgroundColor = trackerCard.backgroundColor
         
@@ -145,6 +144,17 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
         let image = isCompletedToday ? doneButtonImage : plusButtonImage
         plusTrackerButton.setImage(image, for: .normal)
+    }
+    
+    func formattedDays(_ completedDays: Int) -> String {
+        let number = completedDays % 10
+        if number == 1 && number != 0 {
+            return "\(completedDays) день"
+        } else if number <= 4 && number > 1 {
+            return "\(completedDays) дня"
+        } else {
+            return "\(completedDays) дней"
+        }
     }
     // MARK: - Setup View
     private func setupTrackerCollectionView() {
