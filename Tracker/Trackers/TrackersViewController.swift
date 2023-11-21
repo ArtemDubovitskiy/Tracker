@@ -9,27 +9,27 @@ import UIKit
 final class TrackersViewController: UIViewController {
     // MARK: - Private Properties
     private var trackers: [Tracker] = []
-    private var categories: [TrackerCategory] = [
+    private var categories: [TrackerCategory] = []
         // Mock - для отладки поиска и фильтра по дате:
-        TrackerCategory(
-            title: "Радостные мелочи",
-            trackers: [
-                Tracker(id: UUID(),
-                        title: "Кошка заслонила камеру на созвоне",
-                        color: .colorSelection2,
-                        emoji: "😻",
-                        schedule: [.monday, .friday]),
-                Tracker(id: UUID(),
-                        title: "Бабушка прислала открытку в вотсапе",
-                        color: .colorSelection1,
-                        emoji: "🌺",
-                        schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
-                Tracker(id: UUID(),
-                        title: "Свидание в апреле",
-                        color: .colorSelection14,
-                        emoji: "❤️",
-                        schedule: [.saturday])]
-        )]
+//        TrackerCategory(
+//            title: "Радостные мелочи",
+//            trackers: [
+//                Tracker(id: UUID(),
+//                        title: "Кошка заслонила камеру на созвоне",
+//                        color: .colorSelection2,
+//                        emoji: "😻",
+//                        schedule: [.monday, .friday]),
+//                Tracker(id: UUID(),
+//                        title: "Бабушка прислала открытку в вотсапе",
+//                        color: .colorSelection1,
+//                        emoji: "🌺",
+//                        schedule: [.monday, .tuesday, .wednesday, .thursday, .friday, .saturday, .sunday]),
+//                Tracker(id: UUID(),
+//                        title: "Свидание в апреле",
+//                        color: .colorSelection14,
+//                        emoji: "❤️",
+//                        schedule: [.saturday])]
+//        )]
     private var visibleCategories: [TrackerCategory] = []
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDay: Int?
@@ -66,11 +66,13 @@ final class TrackersViewController: UIViewController {
         )
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.allowsMultipleSelection = false
+        collectionView.showsVerticalScrollIndicator = false
+        collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
     
-    private let trackersImage: UIImageView = {
+    private let initialImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub tracker")
         imageView.layer.masksToBounds = true
@@ -78,7 +80,7 @@ final class TrackersViewController: UIViewController {
         return imageView
     }()
     
-    private let trackersLabel: UILabel = {
+    private let initialLabel: UILabel = {
         let label = UILabel()
         label.text = "Что будем отслеживать?"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -107,7 +109,9 @@ final class TrackersViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        addTapGestureToHideKeyboard()
         visibleCategories = categories
+        showInitialStub()
         
         testCategory()
         setupNavBar()
@@ -141,8 +145,10 @@ final class TrackersViewController: UIViewController {
     private func setupTrackersView() {
         view.backgroundColor = .ypWhiteDay
         
-        view.addSubview(trackersImage)
-        view.addSubview(trackersLabel)
+        view.addSubview(initialImage)
+        view.addSubview(initialLabel)        
+        view.addSubview(searchImage)
+        view.addSubview(searchLabel)
         view.addSubview(collectionView)
     }
     
@@ -159,13 +165,21 @@ final class TrackersViewController: UIViewController {
     
     private func setupTrackersViewConstrains() {
         NSLayoutConstraint.activate([
-            trackersImage.heightAnchor.constraint(equalToConstant: 80),
-            trackersImage.widthAnchor.constraint(equalToConstant: 80),
-            trackersImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            trackersImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            initialImage.heightAnchor.constraint(equalToConstant: 80),
+            initialImage.widthAnchor.constraint(equalToConstant: 80),
+            initialImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            initialImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            trackersLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            trackersLabel.topAnchor.constraint(equalTo: trackersImage.bottomAnchor, constant: 8),
+            initialLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            initialLabel.topAnchor.constraint(equalTo: initialImage.bottomAnchor, constant: 8),
+                        
+            searchImage.heightAnchor.constraint(equalToConstant: 80),
+            searchImage.widthAnchor.constraint(equalToConstant: 80),
+            searchImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            
+            searchLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            searchLabel.topAnchor.constraint(equalTo: searchImage.bottomAnchor, constant: 8),
             
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
@@ -187,6 +201,35 @@ final class TrackersViewController: UIViewController {
         reloadVisibleCategories()
     }
     // MARK: - Private Methods
+    private func showInitialStub() {
+        // добавить проверку по categories (после удаления тестовой)
+        if visibleCategories.isEmpty {
+            collectionView.isHidden = true
+            searchImage.isHidden = true
+            searchLabel.isHidden = true
+        } else {
+            collectionView.isHidden = false
+            searchImage.isHidden = false
+            searchLabel.isHidden = false
+        }
+    }
+    
+    private func showSearchStub() {
+        if visibleCategories.isEmpty {
+            collectionView.isHidden = true
+            initialImage.isHidden = true
+            initialLabel.isHidden = true
+            searchImage.isHidden = false
+            searchLabel.isHidden = false
+        } else {
+            collectionView.isHidden = false
+            initialImage.isHidden = false
+            initialLabel.isHidden = false
+            searchImage.isHidden = true
+            searchLabel.isHidden = true
+        }
+    }
+    
     private func dateFiltering() {
         let calendar = Calendar.current
         let filterWeekday = calendar.component(.weekday, from: datePicker.date)
@@ -216,16 +259,17 @@ final class TrackersViewController: UIViewController {
                 trackers: trackers
             )
         }
+        showSearchStub()
         collectionView.reloadData()
     }
 }
-// MARK: - UITextFieldDelegate
+// MARK: - UISearchControllerDelegate
 extension TrackersViewController: UISearchControllerDelegate {
     func didDismissSearchController(_ searchController: UISearchController) {
         dateFiltering()
     }
 }
-
+// MARK: - UISearchResultsUpdating
 extension TrackersViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         self.filterText = searchController.searchBar.searchTextField.text?.description

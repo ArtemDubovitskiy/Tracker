@@ -138,6 +138,7 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        addTapGestureToHideKeyboard()
         view.backgroundColor = .ypWhiteDay
         
         setupCreateTrackerNameTextField()
