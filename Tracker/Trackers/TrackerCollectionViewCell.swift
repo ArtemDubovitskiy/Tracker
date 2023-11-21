@@ -6,8 +6,17 @@
 //
 import UIKit
 
+protocol TrackerCollectionViewCellDelegate: AnyObject {
+    func completeTracker(id: UUID, at indexPath: IndexPath)
+    func uncompleteTracker(id: UUID, at indexPath: IndexPath)
+}
+
 final class TrackerCollectionViewCell: UICollectionViewCell {
     static let identifier = "trackerCell"
+    weak var delegate: TrackerCollectionViewCellDelegate?
+    private var isCompletedToday: Bool = false
+    private var trackerId: UUID?
+    private var indexPath: IndexPath?
     // MARK: - UI-Elements
     // Card/Tracker
     private let trackerCard: UIView = {
@@ -60,12 +69,23 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
+    private let plusButtonImage: UIImage = {
+        let image = UIImage(systemName: "plus")!
+        return image
+    }()
+    
+    private let doneButtonImage: UIImage = {
+        let image = UIImage(named: "Done")!
+        return image
+    }()
+    
     private lazy var plusTrackerButton: UIButton = {
-        let button = UIButton.systemButton(
-            with: UIImage(named: "Plus button")!,
-            target: self,
-            action: #selector(plusTrackerButtonTapped))
+        let button = UIButton(type: .custom)
         button.layer.cornerRadius = 17
+        button.tintColor = .ypWhiteDay
+        button.addTarget(self,
+                         action: #selector(plusTrackerButtonTapped),
+                         for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
@@ -88,17 +108,43 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     @objc
     private func plusTrackerButtonTapped() {
-        // TODO: - Добавить отметку выполнен
+        guard let trackerId = trackerId, let indexPath = indexPath else {
+            assertionFailure("no trackerId")
+            return }
+        if isCompletedToday {
+            delegate?.uncompleteTracker(id: trackerId, at: indexPath)
+        } else {
+            delegate?.completeTracker(id: trackerId, at: indexPath)
+        }
     }
     // MARK: - Public Methods
-    func updateTrackerDetail(tracker: Tracker) {
+    func updateTrackerDetail(
+        tracker: Tracker,
+        isCompletedToday: Bool,
+        completedDays: Int,
+        indexPath: IndexPath
+    ) {
+        self.trackerId = tracker.id
+        self.isCompletedToday = isCompletedToday
+        self.indexPath = indexPath
         trackerCard.backgroundColor = tracker.color
         trackerDescritionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        plusTrackerButton.tintColor = trackerCard.backgroundColor
-        numberOfDaysLabel.text = "5 дней" // исправить на счетчик дней
         // TODO: - Настроить закрепленные карточки:
         pinTrackerButton.isHidden = true // test
+        numberOfDaysLabel.text = "\(completedDays) дней"
+        plusButtonSettings()
+    }
+    // MARK: - Private Methods
+    // TODO: - Добавить преобразование текста в зависимости от числа
+    private func plusButtonSettings() {
+        plusTrackerButton.backgroundColor = trackerCard.backgroundColor
+        
+        let plusTrackerButtonOpacity: Float = isCompletedToday ? 0.3 : 1
+        plusTrackerButton.layer.opacity = plusTrackerButtonOpacity
+
+        let image = isCompletedToday ? doneButtonImage : plusButtonImage
+        plusTrackerButton.setImage(image, for: .normal)
     }
     // MARK: - Setup View
     private func setupTrackerCollectionView() {

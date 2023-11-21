@@ -262,6 +262,17 @@ final class TrackersViewController: UIViewController {
         showSearchStub()
         collectionView.reloadData()
     }
+    
+    private func isTrackerCompletedToday(id: UUID) -> Bool {
+        completedTrackers.contains { trackerRecord in
+            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        }
+    }
+    
+    private func isSameTrackerRecord(trackerRecord: TrackerRecord, id: UUID) -> Bool {
+        let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+        return trackerRecord.trakerId == id && isSameDay
+    }
 }
 // MARK: - UISearchControllerDelegate
 extension TrackersViewController: UISearchControllerDelegate {
@@ -274,6 +285,32 @@ extension TrackersViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         self.filterText = searchController.searchBar.searchTextField.text?.description
         reloadVisibleCategories()
+    }
+}
+// MARK: - TrackerCollectionViewCellDelegate
+extension TrackersViewController: TrackerCollectionViewCellDelegate {
+    func completeTracker(id: UUID, at indexPath: IndexPath) {
+        let currentDate = Date()
+        let selectedDate = datePicker.date
+        let currentCalendar = Calendar.current
+        let trackerRecord = TrackerRecord(trakerId: id, date: selectedDate)
+        
+        if currentCalendar.compare(selectedDate,
+                            to: currentDate,
+                            toGranularity: .day
+        ) != .orderedDescending {
+            completedTrackers.append(trackerRecord)
+            collectionView.reloadItems(at: [indexPath])
+        } else {
+            return
+        }
+    }
+    
+    func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
+        completedTrackers.removeAll { trackerRecord in
+            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        }
+        collectionView.reloadItems(at: [indexPath])
     }
 }
 // MARK: - CreateTrackerViewControllerDelegate
@@ -305,8 +342,20 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         cell.prepareForReuse()
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
-        cell.updateTrackerDetail(tracker: tracker)
-        // TODO - дополнить конфигурацию ячейки
+        cell.delegate = self
+        
+        let isCopletedToday = isTrackerCompletedToday(id: tracker.id)
+        let completedDays = completedTrackers.filter {
+            $0.trakerId == tracker.id
+        }.count
+        
+        cell.updateTrackerDetail(
+            tracker: tracker,
+            isCompletedToday: isCopletedToday, 
+            completedDays: completedDays,
+            indexPath: indexPath
+        )
+
         return cell
     }
     
