@@ -182,31 +182,20 @@ final class TrackersViewController: UIViewController {
     // MARK: - Private Methods
     private func showInitialStub() {
         // добавить проверку по categories (после удаления тестовой)
-        if visibleCategories.isEmpty {
-            collectionView.isHidden = true
-            searchImage.isHidden = true
-            searchLabel.isHidden = true
-        } else {
-            collectionView.isHidden = false
-            searchImage.isHidden = false
-            searchLabel.isHidden = false
-        }
+        let emptyVisibleCategories = visibleCategories.isEmpty
+        collectionView.isHidden = emptyVisibleCategories
+        searchImage.isHidden = emptyVisibleCategories
+        searchLabel.isHidden = emptyVisibleCategories
     }
     
     private func showSearchStub() {
-        if visibleCategories.isEmpty {
-            collectionView.isHidden = true
-            initialImage.isHidden = true
-            initialLabel.isHidden = true
-            searchImage.isHidden = false
-            searchLabel.isHidden = false
-        } else {
-            collectionView.isHidden = false
-            initialImage.isHidden = false
-            initialLabel.isHidden = false
-            searchImage.isHidden = true
-            searchLabel.isHidden = true
-        }
+        // добавить проверку по categories (после удаления тестовой)
+        let emptyVisibleCategories = visibleCategories.isEmpty
+        collectionView.isHidden = emptyVisibleCategories
+        initialImage.isHidden = emptyVisibleCategories
+        initialLabel.isHidden = emptyVisibleCategories
+        searchImage.isHidden = !emptyVisibleCategories
+        searchLabel.isHidden = !emptyVisibleCategories
     }
     
     private func dateFiltering() {
@@ -225,7 +214,7 @@ final class TrackersViewController: UIViewController {
                         return true
                     }
                     return day.rawValue == cerrentDate
-                } == true
+                }
                 return textCondition && dateCondition
             }
             
@@ -243,8 +232,8 @@ final class TrackersViewController: UIViewController {
     }
     
     private func isTrackerCompletedToday(id: UUID) -> Bool {
-        completedTrackers.contains { trackerRecord in
-            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        completedTrackers.contains {
+            isSameTrackerRecord(trackerRecord: $0, id: id)
         }
     }
     
@@ -273,21 +262,20 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
         let selectedDate = datePicker.date
         let currentCalendar = Calendar.current
         let trackerRecord = TrackerRecord(trakerId: id, date: selectedDate)
-        
-        if currentCalendar.compare(selectedDate,
-                            to: currentDate,
-                            toGranularity: .day
-        ) != .orderedDescending {
-            completedTrackers.append(trackerRecord)
-            collectionView.reloadItems(at: [indexPath])
-        } else {
+    
+        guard currentCalendar.compare(selectedDate,
+                                      to: currentDate,
+                                      toGranularity: .day
+        ) == .orderedDescending else {
+            completedTrackers.append(trackerRecord);
+            collectionView.reloadItems(at: [indexPath]);
             return
         }
     }
     
     func uncompleteTracker(id: UUID, at indexPath: IndexPath) {
-        completedTrackers.removeAll { trackerRecord in
-            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
+        completedTrackers.removeAll {
+            isSameTrackerRecord(trackerRecord: $0, id: id)
         }
         collectionView.reloadItems(at: [indexPath])
     }
@@ -347,13 +335,11 @@ extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
-        var id: String
-        switch kind {
-        case UICollectionView.elementKindSectionHeader:
+        var id: String = ""
+        if case UICollectionView.elementKindSectionHeader = kind {
             id = HeaderViewCell.identifier
-        default:
-            id = ""
         }
+        
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind,
             withReuseIdentifier: id,

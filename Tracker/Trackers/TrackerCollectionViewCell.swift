@@ -146,7 +146,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         plusTrackerButton.setImage(image, for: .normal)
     }
     
-    func formattedDays(_ completedDays: Int) -> String {
+    private func formattedDays(_ completedDays: Int) -> String {
         let number = completedDays % 10
         if number == 1 && number != 0 {
             return "\(completedDays) день"
