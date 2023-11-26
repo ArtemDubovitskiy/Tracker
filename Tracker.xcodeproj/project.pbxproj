@@ -20,6 +20,7 @@
 		91C4AD222AC1FF1200488630 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */; };
 		91C4AD282AC317A400488630 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD272AC317A400488630 /* Tracker.swift */; };
 		91C4AD2A2AC323C100488630 /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD292AC323C100488630 /* TabBarController.swift */; };
+		91D905D02B13C7B6009C638A /* TrackerModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 91D905CE2B13C7B6009C638A /* TrackerModel.xcdatamodeld */; };
 		91E7A2502B0C965200DE7ABE /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91E7A24F2B0C965200DE7ABE /* UIViewController+Extensions.swift */; };
 		91F94DEA2ADCB3200060C89E /* EmojiCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */; };
 		91F94DED2ADD9A040060C89E /* ScheduleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91F94DEC2ADD9A040060C89E /* ScheduleViewController.swift */; };
@@ -48,6 +49,7 @@
 		91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		91C4AD272AC317A400488630 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		91C4AD292AC323C100488630 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
+		91D905CF2B13C7B6009C638A /* TrackerModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = TrackerModel.xcdatamodel; sourceTree = "<group>"; };
 		91E7A24F2B0C965200DE7ABE /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		91F94DE92ADCB3200060C89E /* EmojiCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmojiCollectionViewCell.swift; sourceTree = "<group>"; };
 		91F94DEC2ADD9A040060C89E /* ScheduleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleViewController.swift; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		91469F212AA6876B003A3B06 /* Tracker */ = {
 			isa = PBXGroup;
 			children = (
+				91D905CD2B13C71E009C638A /* CoreDate */,
 				910C998D2ACDEFDB00931D57 /* Statistics */,
 				91C4AD252AC20C1A00488630 /* TabBar */,
 				91C4AD262AC20C6400488630 /* Trackers */,
@@ -170,6 +173,14 @@
 				91F94DEB2ADD99DE0060C89E /* Schedule */,
 			);
 			path = Trackers;
+			sourceTree = "<group>";
+		};
+		91D905CD2B13C71E009C638A /* CoreDate */ = {
+			isa = PBXGroup;
+			children = (
+				91D905CE2B13C7B6009C638A /* TrackerModel.xcdatamodeld */,
+			);
+			path = CoreDate;
 			sourceTree = "<group>";
 		};
 		91F94DEB2ADD99DE0060C89E /* Schedule */ = {
@@ -276,6 +287,7 @@
 				91F94E002AE7215A0060C89E /* TrackerRecord.swift in Sources */,
 				91F94DEF2ADD9A650060C89E /* ScheduleCell.swift in Sources */,
 				91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */,
+				91D905D02B13C7B6009C638A /* TrackerModel.xcdatamodeld in Sources */,
 				91F94DED2ADD9A040060C89E /* ScheduleViewController.swift in Sources */,
 				910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */,
 				91E7A2502B0C965200DE7ABE /* UIViewController+Extensions.swift in Sources */,
@@ -504,6 +516,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		91D905CE2B13C7B6009C638A /* TrackerModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				91D905CF2B13C7B6009C638A /* TrackerModel.xcdatamodel */,
+			);
+			currentVersion = 91D905CF2B13C7B6009C638A /* TrackerModel.xcdatamodel */;
+			path = TrackerModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 91469F172AA6876B003A3B06 /* Project object */;
 }
