@@ -47,6 +47,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             do {
                 try context.save()
             } catch {
+                context.rollback() // откат изменений
                 let nserror = error as NSError
                 // TODO: Заменить на реализацию кодом обработку ошибки до отправки на ревью:
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
