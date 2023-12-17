@@ -8,7 +8,7 @@ import UIKit
 import CoreData
 
 final class TrackerStore: NSObject {
-    private let uiColorMarshalling = UIColorMarshalling()
+    private let colorMarshalling = UIColorMarshalling()
     private let context: NSManagedObjectContext
     
     convenience override init() {
