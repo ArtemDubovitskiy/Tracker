@@ -92,7 +92,6 @@ final class TrackersViewController: UIViewController {
         visibleCategories = categories
         showInitialStub()
         
-        testCategory()
         setupNavBar()
         setupTrackersView()
         setupCollectionView()
@@ -100,12 +99,6 @@ final class TrackersViewController: UIViewController {
         dateFiltering()
     }
     // MARK: - Setup View
-    // TODO: Тестовая категория, удалить после создания категорий:
-    private func testCategory() {
-        let testCategory = TrackerCategory(title: "Test category", trackers: trackers)
-        categories.append(testCategory)
-    }
-    
     private func setupNavBar() {
         navigationItem.title = "Трекеры"
         navigationController?.navigationBar.prefersLargeTitles = true
@@ -144,6 +137,8 @@ final class TrackersViewController: UIViewController {
     
     private func setupTrackersViewConstrains() {
         NSLayoutConstraint.activate([
+            datePicker.widthAnchor.constraint(equalToConstant: 120),
+            
             initialImage.heightAnchor.constraint(equalToConstant: 80),
             initialImage.widthAnchor.constraint(equalToConstant: 80),
             initialImage.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -282,15 +277,25 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
 }
 // MARK: - CreateTrackerViewControllerDelegate
 extension TrackersViewController: CreateTrackerViewControllerDelegate {
-    func createNewTracker(tracker: Tracker) {
-        // TODO: Добавить выбранную категорию в следующих спринтах.
-        self.categories = self.categories.map { testCategory in
-            var updateTrackers = testCategory.trackers
-            updateTrackers.append(tracker)
-            return TrackerCategory(title: testCategory.title, trackers: updateTrackers)
+    func createNewTracker(tracker: Tracker, category: String?) {
+        guard let newCategory = category else { return }
+        let savedCategory = self.categories.first { category in
+            category.title == newCategory
+        }
+        if savedCategory != nil {
+            self.categories = self.categories.map { category in
+                if (category.title == newCategory) {
+                    var updateTrackers = category.trackers
+                    updateTrackers.append(tracker)
+                    return TrackerCategory(title: category.title, trackers: updateTrackers)
+                } else {
+                    return TrackerCategory(title: category.title, trackers: category.trackers)
+                }
+            }
+        } else {
+            self.categories.append(TrackerCategory(title: newCategory, trackers: [tracker]))
         }
         reloadVisibleCategories()
-        collectionView.reloadData()
     }
 }
 // MARK: - UICollectionViewDataSource

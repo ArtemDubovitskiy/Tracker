@@ -7,7 +7,7 @@
 import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
-    func createNewTracker(tracker: Tracker)
+    func createNewTracker(tracker: Tracker, category: String?)
 }
 
 final class CreateTrackerViewController: UIViewController {
@@ -16,6 +16,7 @@ final class CreateTrackerViewController: UIViewController {
     // MARK: - Private Properties
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
+    private let testCategory = "Test Category" // удалить после реализации Категорий в 16-м спринте
     private var selectedDays: [WeekDay] = []
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
@@ -290,7 +291,7 @@ final class CreateTrackerViewController: UIViewController {
                 color: color,
                 emoji: emoji,
                 schedule: self.selectedDays)
-            delegate?.createNewTracker(tracker: newTracker)
+            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
         } else {
             let newTracker = Tracker(
                 id: UUID(),
@@ -298,7 +299,7 @@ final class CreateTrackerViewController: UIViewController {
                 color: color,
                 emoji: emoji,
                 schedule: WeekDay.allCases)
-            delegate?.createNewTracker(tracker: newTracker)
+            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
     }
@@ -356,8 +357,11 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            let categoryViewController = CategoryViewController()
-            present(categoryViewController, animated: true, completion: nil)
+            /* Добавление тестовой категории при нажатии на ячейку "Категория"
+             Для упрощения нет перехода на экран выбора категорий, выбирается тестовая категория.
+             Удалить после реализации Категорий в 16-м спринте */
+            selectedCategory = testCategory
+            createTrackerTableView.reloadData()
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
@@ -402,7 +406,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         detailTextLabel.textColor = .ypGray
         
         if indexPath.row == 0 {
-            detailTextLabel.text = "" //add selectedCategory
+            detailTextLabel.text = selectedCategory
         } else if indexPath.row == 1 {
             if selectedDays.count == 7 {
                 detailTextLabel.text = "Каждый день"
