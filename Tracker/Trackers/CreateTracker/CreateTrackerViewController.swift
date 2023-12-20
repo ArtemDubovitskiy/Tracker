@@ -14,6 +14,7 @@ final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
     // MARK: - Private Properties
+    private let trackerCategoryStore = TrackerCategoryStore()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
     private let testCategory = "Test Category" // удалить после реализации Категорий в 16-м спринте
@@ -292,6 +293,11 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: self.selectedDays)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
+            do {
+                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
+            } catch {
+                print("Error create new tracker to category: \(error)")
+            }
         } else {
             let newTracker = Tracker(
                 id: UUID(),
@@ -300,6 +306,11 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: WeekDay.allCases)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
+            do {
+                try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
+            } catch {
+                print("Error create new tracker to category: \(error)")
+            }
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
     }
