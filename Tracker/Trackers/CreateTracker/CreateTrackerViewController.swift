@@ -15,6 +15,7 @@ final class CreateTrackerViewController: UIViewController {
     var irregularEvent: Bool = false
     // MARK: - Private Properties
     private let trackerCategoryStore = TrackerCategoryStore()
+    private let errorReporting = ErrorReporting()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
     private let testCategory = "Test Category" // удалить после реализации Категорий в 16-м спринте
@@ -296,7 +297,7 @@ final class CreateTrackerViewController: UIViewController {
             do {
                 try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
             } catch {
-                ErrorReporting.showAlert(
+                errorReporting.showAlert(
                     message: "Error create new tracker to category: \(error)",
                     controller: self)
             }
@@ -311,7 +312,7 @@ final class CreateTrackerViewController: UIViewController {
             do {
                 try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
             } catch {
-                ErrorReporting.showAlert(
+                errorReporting.showAlert(
                     message: "Error create new tracker to category: \(error)",
                     controller: self)
             }

@@ -11,6 +11,7 @@ final class TrackersViewController: UIViewController {
     private var trackerStore = TrackerStore()
     private let trackerCategoryStore = TrackerCategoryStore()
     private var trackerRecordStore = TrackerRecordStore()
+    private let errorReporting = ErrorReporting()
     private var trackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
@@ -301,7 +302,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             do {
                 try self.trackerRecordStore.addTrackerRecord(trackerRecord)
             } catch {
-                ErrorReporting.showAlert(
+                errorReporting.showAlert(
                     message: "Error add a record to TrackerRecord: \(error)",
                     controller: self)
             }
@@ -318,7 +319,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
                 try self.trackerRecordStore.deleteTrackerRecord(removeComplete)
             }
         } catch {
-            ErrorReporting.showAlert(
+            errorReporting.showAlert(
                 message: "Error deleting a record TrackerRecord: \(error)",
                 controller: self)
         }

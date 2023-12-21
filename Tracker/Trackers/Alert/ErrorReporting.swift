@@ -7,7 +7,7 @@
 import UIKit
 
 final class ErrorReporting {
-    static func showAlert(message: String, controller: UIViewController) {
+    func showAlert(message: String, controller: UIViewController) {
         let alert = UIAlertController(
             title: "Error!",
             message: message,
