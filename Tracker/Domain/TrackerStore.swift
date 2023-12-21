@@ -34,17 +34,7 @@ final class TrackerStore: NSObject {
     private let colorMarshalling = UIColorMarshalling()
     private let daysValueTransformer = DaysValueTransformer()
     private let context: NSManagedObjectContext
-    private var fetchedResultsController: NSFetchedResultsController<TrackerCoreData>!
-    // MARK: - Initializers
-    convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        try! self.init(context: context)
-    }
-    
-    init(context: NSManagedObjectContext) throws {
-        self.context = context
-        super.init()
-        
+    private lazy var fetchedResultsController = {
         let fetchRequest = TrackerCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCoreData.id, ascending: true)
@@ -55,11 +45,24 @@ final class TrackerStore: NSObject {
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-        controller.delegate = self
-        self.fetchedResultsController = controller
-        try controller.performFetch()
+        try? controller.performFetch()
+        return controller
+    }()
+    // MARK: - Initializers
+    convenience override init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.init()
+            return
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        self.init(context: context)
     }
     
+    init(context: NSManagedObjectContext) {
+        self.context = context
+        super.init()
+        fetchedResultsController.delegate = self
+    }
     // MARK: - Public Methods
     func createTracker(_ tracker: Tracker) throws -> TrackerCoreData {
         let trackerCoreData = TrackerCoreData(context: context)
@@ -68,7 +71,7 @@ final class TrackerStore: NSObject {
         return trackerCoreData
     }
     
-    func updateExistingTracker(_ trackerCoreData: TrackerCoreData, 
+    func updateExistingTracker(_ trackerCoreData: TrackerCoreData,
                                with tracker: Tracker
     ) {
         trackerCoreData.id = tracker.id

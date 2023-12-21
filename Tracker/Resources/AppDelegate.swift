@@ -34,7 +34,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let container = NSPersistentContainer(name: "TrackerModel")
         container.loadPersistentStores(completionHandler: { (storeDescription, error) in
             if let error = error as NSError? {
-                // TODO: Заменить на реализацию кодом обработку ошибки до отправки на ревью:
+                // TODO: Заменить на реализацию кодом обработку ошибки:
                 fatalError("Unresolved error \(error), \(error.userInfo)")
             }
             
@@ -51,7 +51,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             } catch {
                 context.rollback() // откат изменений
                 let nserror = error as NSError
-                // TODO: Заменить на реализацию кодом обработку ошибки до отправки на ревью:
+                // TODO: Заменить на реализацию кодом обработку ошибки:
                 fatalError("Unresolved error \(nserror), \(nserror.userInfo)")
             }
         }

@@ -301,7 +301,9 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             do {
                 try self.trackerRecordStore.addTrackerRecord(trackerRecord)
             } catch {
-                print("Error add a record to TrackerRecord: \(error)")
+                ErrorReporting.showAlert(
+                    message: "Error add a record to TrackerRecord: \(error)",
+                    controller: self)
             }
             return
         }
@@ -316,7 +318,9 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
                 try self.trackerRecordStore.deleteTrackerRecord(removeComplete)
             }
         } catch {
-            print("Error deleting a record TrackerRecord: \(error)")
+            ErrorReporting.showAlert(
+                message: "Error deleting a record TrackerRecord: \(error)",
+                controller: self)
         }
     }
 }
@@ -372,7 +376,6 @@ extension TrackersViewController: UICollectionViewDataSource {
             completedDays: completedDays,
             indexPath: indexPath
         )
-
         return cell
     }
     

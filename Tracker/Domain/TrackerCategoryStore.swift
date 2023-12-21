@@ -28,21 +28,9 @@ final class TrackerCategoryStore: NSObject {
         else { return [] }
         return trackers
     }
-    
     // MARK: - Private Properties
     private let context: NSManagedObjectContext
-    private var fetchedResultsController: NSFetchedResultsController<TrackerCategoryCoreData>!
-    private let trackerStore = TrackerStore()
-    // MARK: - Initializers
-    convenience override init() {
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        try! self.init(context: context)
-    }
-    
-    init(context: NSManagedObjectContext) throws {
-        self.context = context
-        super.init()
-        
+    private lazy var fetchedResultsController = {
         let fetchRequest = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.sortDescriptors = [
             NSSortDescriptor(keyPath: \TrackerCategoryCoreData.title, ascending: true)
@@ -53,9 +41,24 @@ final class TrackerCategoryStore: NSObject {
             sectionNameKeyPath: nil,
             cacheName: nil
         )
-        controller.delegate = self
-        self.fetchedResultsController = controller
-        try controller.performFetch()
+        try? controller.performFetch()
+        return controller
+    }()
+    private let trackerStore = TrackerStore()
+    // MARK: - Initializers
+    convenience override init() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            self.init()
+            return
+        }
+        let context = appDelegate.persistentContainer.viewContext
+        self.init(context: context)
+    }
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+        super.init()
+        fetchedResultsController.delegate = self
     }
     // MARK: - Public Methods
     func addCategory(_ category: TrackerCategory) throws {

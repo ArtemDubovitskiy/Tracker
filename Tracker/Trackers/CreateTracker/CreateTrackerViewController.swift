@@ -296,7 +296,9 @@ final class CreateTrackerViewController: UIViewController {
             do {
                 try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
             } catch {
-                print("Error create new tracker to category: \(error)")
+                ErrorReporting.showAlert(
+                    message: "Error create new tracker to category: \(error)",
+                    controller: self)
             }
         } else {
             let newTracker = Tracker(
@@ -309,7 +311,9 @@ final class CreateTrackerViewController: UIViewController {
             do {
                 try trackerCategoryStore.addNewTrackerToCategory(to: selectedCategory, tracker: newTracker)
             } catch {
-                print("Error create new tracker to category: \(error)")
+                ErrorReporting.showAlert(
+                    message: "Error create new tracker to category: \(error)",
+                    controller: self)
             }
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
