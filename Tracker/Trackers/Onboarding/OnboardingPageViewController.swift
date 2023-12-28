@@ -27,7 +27,8 @@ final class OnboardingPageViewController: UIPageViewController {
         return pageControl
     }()
     /* Визуально зафиксированная кнопка смотрится лучше.
-    Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController */
+    Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController
+    Альтернативный вариант реализации добавлен в отдельную ветку "sprint_16_onboarding_2" */
     private lazy var onboardingButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)

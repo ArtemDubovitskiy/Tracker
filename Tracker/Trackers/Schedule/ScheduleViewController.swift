@@ -14,7 +14,7 @@ final class ScheduleViewController: UIViewController {
     weak var delegate: ScheduleViewControllerDelegate?
     private var selectedDays: [Int] = []
     // MARK: - UI-Elements
-    private var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)

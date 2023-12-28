@@ -8,7 +8,7 @@ import UIKit
 
 final class CategoryViewController: UIViewController {
     // MARK: - UI-Elements
-    private var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
@@ -18,7 +18,7 @@ final class CategoryViewController: UIViewController {
         return label
     }()
     
-    private let stubImage: UIImageView = {
+    private lazy var stubImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub tracker")
         imageView.layer.masksToBounds = true
@@ -26,7 +26,7 @@ final class CategoryViewController: UIViewController {
         return imageView
     }()
     
-    private let stubLabel: UILabel = {
+    private lazy var stubLabel: UILabel = {
         let label = UILabel()
         label.text = "Привычки и события можно\n объединять по смыслу"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)

@@ -38,7 +38,7 @@ final class CreateTrackerViewController: UIViewController {
         .colorSelection16, .colorSelection17, .colorSelection18
     ]
     // MARK: - UI-Elements
-    private var titleLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)

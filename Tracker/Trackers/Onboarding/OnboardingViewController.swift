@@ -8,14 +8,14 @@ import UIKit
 
 final class OnboardingViewController: UIViewController {
     // MARK: - UI-Elements
-    private let onboardingImageView: UIImageView = {
+    private lazy var onboardingImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let onboardingLabel: UILabel = {
+    private lazy var onboardingLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.textAlignment = .center
