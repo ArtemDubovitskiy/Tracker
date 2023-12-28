@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */; };
 		910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C99902ACE044300931D57 /* AddTrackerViewController.swift */; };
+		912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E01792B388E5B00813647 /* OnboardingPageViewController.swift */; };
+		912E017C2B39B5F900813647 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E017B2B39B5F900813647 /* OnboardingViewController.swift */; };
 		91469F232AA6876B003A3B06 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F222AA6876B003A3B06 /* AppDelegate.swift */; };
 		91469F252AA6876B003A3B06 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F242AA6876B003A3B06 /* SceneDelegate.swift */; };
 		91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91469F262AA6876B003A3B06 /* TrackersViewController.swift */; };
@@ -42,6 +44,8 @@
 /* Begin PBXFileReference section */
 		910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticsViewController.swift; sourceTree = "<group>"; };
 		910C99902ACE044300931D57 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
+		912E01792B388E5B00813647 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
+		912E017B2B39B5F900813647 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		91469F1F2AA6876B003A3B06 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		91469F222AA6876B003A3B06 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		91469F242AA6876B003A3B06 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -91,6 +95,15 @@
 				910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */,
 			);
 			path = Statistics;
+			sourceTree = "<group>";
+		};
+		912E01782B388E3900813647 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				912E01792B388E5B00813647 /* OnboardingPageViewController.swift */,
+				912E017B2B39B5F900813647 /* OnboardingViewController.swift */,
+			);
+			path = Onboarding;
 			sourceTree = "<group>";
 		};
 		91469F162AA6876B003A3B06 = {
@@ -182,6 +195,7 @@
 		91C4AD262AC20C6400488630 /* Trackers */ = {
 			isa = PBXGroup;
 			children = (
+				912E01782B388E3900813647 /* Onboarding */,
 				9178020A2B3447D4008289E2 /* Alert */,
 				91C4AD272AC317A400488630 /* Tracker.swift */,
 				91F94DFD2AE7213B0060C89E /* TrackerCategory.swift */,
@@ -320,12 +334,14 @@
 				91D905FE2B2FACB5009C638A /* DaysValueTransformer.swift in Sources */,
 				91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */,
 				91F94DFA2AE47A320060C89E /* CategoryViewController.swift in Sources */,
+				912E017C2B39B5F900813647 /* OnboardingViewController.swift in Sources */,
 				917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */,
 				91F94E002AE7215A0060C89E /* TrackerRecord.swift in Sources */,
 				91F94DEF2ADD9A650060C89E /* ScheduleCell.swift in Sources */,
 				91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */,
 				91D905D02B13C7B6009C638A /* TrackerModel.xcdatamodeld in Sources */,
 				91F94DED2ADD9A040060C89E /* ScheduleViewController.swift in Sources */,
+				912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */,
 				910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */,
 				91E7A2502B0C965200DE7ABE /* UIViewController+Extensions.swift in Sources */,
 				91469F232AA6876B003A3B06 /* AppDelegate.swift in Sources */,
