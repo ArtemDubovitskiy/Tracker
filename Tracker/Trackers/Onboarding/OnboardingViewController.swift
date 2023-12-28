@@ -7,7 +7,7 @@
 import UIKit
 
 final class OnboardingViewController: UIViewController {
-    
+    // MARK: - UI-Elements
     private let onboardingImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill

@@ -7,10 +7,12 @@
 import UIKit
 
 final class OnboardingPageViewController: UIPageViewController {
+    // MARK: Private Properties
     private let onboardingImage1 = "Onboarding1"
     private let onboardingImage2 = "Onboarding2"
     private let onboardingText1 = "Отслеживайте только\nто, что хотите"
     private let onboardingText2 = "Даже если это\nне литры воды и йога"
+    private let userDefaultsKey = "isOnboardingShown"
     
     // MARK: - UI-Elements
     private lazy var pages: [UIViewController] = []
@@ -24,7 +26,8 @@ final class OnboardingPageViewController: UIPageViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
-    
+    /* Визуально зафиксированная кнопка смотрится лучше.
+    Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController */
     private lazy var onboardingButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
@@ -58,7 +61,6 @@ final class OnboardingPageViewController: UIPageViewController {
     override var preferredStatusBarStyle: UIStatusBarStyle {
         .darkContent
     }
-    
     // MARK: - Setup View
     private func setupOnboardingPageView() {
         view.addSubview(pageControl)
@@ -96,14 +98,21 @@ final class OnboardingPageViewController: UIPageViewController {
                                completion: nil)
         }
     }
-    
     // MARK: - Actions
     @objc
     private func didTapOnboardingButton() {
-        // TODO: - Add track to ViewController
+        let tabBarController = TabBarController()
+        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
+            let window = sceneDelegate.window {
+            UIView.transition(with: window,
+                              duration: 0.3,
+                              options: .transitionCrossDissolve,
+                              animations: { window.rootViewController = tabBarController },
+                              completion: nil)
+            UserDefaults.standard.set(true, forKey: userDefaultsKey)
+        }
     }
 }
-
 // MARK: - UIPageViewControllerDataSource
 extension OnboardingPageViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController,

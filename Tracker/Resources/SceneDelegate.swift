@@ -14,10 +14,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
                options connectionOptions: UIScene.ConnectionOptions
     ) {
         guard let scene = (scene as? UIWindowScene) else { return }
-        window = UIWindow(windowScene: scene)
-        window?.rootViewController = OnboardingPageViewController()
-//        window?.rootViewController = TabBarController()
-        window?.makeKeyAndVisible()
+        let window = UIWindow(windowScene: scene)
+        let onboardingShow = UserDefaults.standard.bool(forKey: "isOnboardingShown")
+        if onboardingShow {
+            window.rootViewController = TabBarController()
+        } else {
+            window.rootViewController = OnboardingPageViewController()
+        }
+        window.makeKeyAndVisible()
+        self.window = window
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
