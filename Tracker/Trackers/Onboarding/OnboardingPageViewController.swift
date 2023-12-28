@@ -12,8 +12,7 @@ final class OnboardingPageViewController: UIPageViewController {
     private let onboardingImage2 = "Onboarding2"
     private let onboardingText1 = "Отслеживайте только\nто, что хотите"
     private let onboardingText2 = "Даже если это\nне литры воды и йога"
-    private let userDefaultsKey = "isOnboardingShown"
-    
+    private let buttonText = "Вот это технологии!"
     // MARK: - UI-Elements
     private lazy var pages: [UIViewController] = []
     
@@ -26,20 +25,6 @@ final class OnboardingPageViewController: UIPageViewController {
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         return pageControl
     }()
-    /* Визуально зафиксированная кнопка смотрится лучше.
-    Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController */
-    private lazy var onboardingButton: UIButton = {
-        let button = UIButton()
-        button.setTitle("Вот это технологии!", for: .normal)
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhiteDay, for: .normal)
-        button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
-        button.addTarget(self, action: #selector(didTapOnboardingButton), for: .touchUpInside)
-        button.translatesAutoresizingMaskIntoConstraints = false
-        return button
-    }()
-    
     // MARK: - Initializers
     init() {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -64,29 +49,25 @@ final class OnboardingPageViewController: UIPageViewController {
     // MARK: - Setup View
     private func setupOnboardingPageView() {
         view.addSubview(pageControl)
-        view.addSubview(onboardingButton)
     }
     
     private func setupOnboardingPageViewConstrains() {
         NSLayoutConstraint.activate([
             pageControl.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            pageControl.bottomAnchor.constraint(equalTo: onboardingButton.topAnchor, constant: -24),
-            
-            onboardingButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            onboardingButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
-            onboardingButton.heightAnchor.constraint(equalToConstant: 60),
-            onboardingButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -50)
+            pageControl.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -168)
         ])
     }
     
     private func setupOnboardingViewControllers() {
         let page1 = OnboardingViewController(
             onboardingImageName: onboardingImage1,
-            onboardingText: onboardingText1)
+            onboardingText: onboardingText1, 
+            onboardingButtonText: buttonText)
         
         let page2 = OnboardingViewController(
             onboardingImageName: onboardingImage2,
-            onboardingText: onboardingText2)
+            onboardingText: onboardingText2, 
+            onboardingButtonText: buttonText)
         
         pages.append(page1)
         pages.append(page2)
@@ -96,20 +77,6 @@ final class OnboardingPageViewController: UIPageViewController {
                                direction: .forward,
                                animated: true,
                                completion: nil)
-        }
-    }
-    // MARK: - Actions
-    @objc
-    private func didTapOnboardingButton() {
-        let tabBarController = TabBarController()
-        if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-            let window = sceneDelegate.window {
-            UIView.transition(with: window,
-                              duration: 0.3,
-                              options: .transitionCrossDissolve,
-                              animations: { window.rootViewController = tabBarController },
-                              completion: nil)
-            UserDefaults.standard.set(true, forKey: userDefaultsKey)
         }
     }
 }
