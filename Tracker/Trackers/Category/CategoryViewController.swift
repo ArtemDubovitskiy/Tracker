@@ -58,7 +58,8 @@ final class CategoryViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func didTapAddCategoryButton() {
-        // TODO: - Добавить переход на содание категории
+        let createCategoryViewController = CreateCategoryViewController()
+        present(createCategoryViewController, animated: true, completion: nil)
     }
     
     // MARK: - Setup View

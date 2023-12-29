@@ -18,7 +18,6 @@ final class CreateTrackerViewController: UIViewController {
     private let errorReporting = ErrorReporting()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
-    private let testCategory = "Test Category" // удалить после реализации Категорий в 16-м спринте
     private var selectedDays: [WeekDay] = []
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
@@ -373,11 +372,10 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            /* Добавление тестовой категории при нажатии на ячейку "Категория"
-             Для упрощения нет перехода на экран выбора категорий, выбирается тестовая категория.
-             Удалить после реализации Категорий в 16-м спринте */
-            selectedCategory = testCategory
-            createTrackerTableView.reloadData()
+//            selectedCategory = testCategory
+//            createTrackerTableView.reloadData()
+            let categoryViewController = CategoryViewController()
+            present(categoryViewController, animated: true, completion: nil)
         } else
         if indexPath.row == 1 {
             let scheduleViewController = ScheduleViewController()
