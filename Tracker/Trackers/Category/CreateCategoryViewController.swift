@@ -6,7 +6,12 @@
 //
 import UIKit
 
+protocol CreateCategoryViewControllerDelegate: AnyObject {
+    func addNewCategory(category: String)
+}
+
 final class CreateCategoryViewController: UIViewController {
+    weak var delegate: CreateCategoryViewControllerDelegate?
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -57,17 +62,33 @@ final class CreateCategoryViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func didTapCreateCategoryButton() {
-        // Добавить сохранение категории в Core Data
+        guard let newCategory = createCategoryName.text, !newCategory.isEmpty else {
+            return
+        }
+        delegate?.addNewCategory(category: newCategory)
         dismiss(animated: true, completion: nil)
     }
     
+    @objc
+    private func updateCreateCategoryButton() {
+        if createCategoryName.text?.isEmpty == true {
+            createCategoryButton.isEnabled = false
+            createCategoryButton.backgroundColor = .ypGray
+        } else {
+            createCategoryButton.isEnabled = true
+            createCategoryButton.backgroundColor = .ypBlackDay
+        }
+    }
     // MARK: - Setup View
     private func setupCreateCategoryView() {
         view.backgroundColor = .ypWhiteDay
+        createCategoryName.delegate = self
+        createCategoryName.addTarget(self, 
+                                     action: #selector(updateCreateCategoryButton),
+                                     for: .editingChanged)
         view.addSubview(titleLabel)
         view.addSubview(createCategoryName)
         view.addSubview(createCategoryButton)
-        createCategoryName.delegate = self
     }
     
     private func setupCreateCategoryViewConstrains() {
@@ -86,38 +107,24 @@ final class CreateCategoryViewController: UIViewController {
             createCategoryButton.heightAnchor.constraint(equalToConstant: 60)
         ])
     }
-    // MARK: - Private Methods
-    private func updateCreateCategoryButton() {
-        if createCategoryName.text?.isEmpty == true {
-            createCategoryButton.isEnabled = false
-            createCategoryButton.backgroundColor = .ypGray
-        } else {
-            createCategoryButton.isEnabled = true
-            createCategoryButton.backgroundColor = .ypBlackDay
-        }
-    }
 }
-
 // MARK: - UITextFieldDelegate
 extension CreateCategoryViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String
+    ) -> Bool {
+        let currentText = (textField.text ?? "") as NSString
+        currentText.replacingCharacters(in: range, with: string)
         return true
     }
     
-    func textField(_ textField: UITextField,
-                   shouldChangeCharactersIn range: NSRange,
-                   replacementString string: String) -> Bool {
-        let maxLength = 38
-        let currentText = (textField.text ?? "") as NSString
-        let newText = currentText.replacingCharacters(in: range, with: string)
-        updateCreateCategoryButton()
-        return newText.count <= maxLength
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
+        return true
     }
     
-    func textFieldShouldClear(_ textField: UITextField) -> Bool {
-        createCategoryName.text = .none
-        updateCreateCategoryButton()
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
         return true
     }
 }
