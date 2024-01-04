@@ -64,7 +64,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        categoryViewModel.categoryStore()
+//        categoryViewModel.categoryStore()
         setupCategoryTableView()
         setupCategoryView()
         setupCategoryViewConstrains()
@@ -205,7 +205,8 @@ extension CategoryViewController: UITableViewDataSource {
 // MARK: - CreateCategoryViewControllerDelegate
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
     func addNewCategory(category: String) {
-        self.categoryViewModel.addCategory(category)
+        categoryViewModel.addCategory(category)
         self.categoryTableView.reloadData()
+        showInitialStub()
     }
 }
