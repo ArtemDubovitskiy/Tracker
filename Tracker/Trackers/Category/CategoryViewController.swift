@@ -64,7 +64,7 @@ final class CategoryViewController: UIViewController {
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-//        categoryViewModel.categoryStore()
+        categoryViewModel.categoryStore()
         setupCategoryTableView()
         setupCategoryView()
         setupCategoryViewConstrains()

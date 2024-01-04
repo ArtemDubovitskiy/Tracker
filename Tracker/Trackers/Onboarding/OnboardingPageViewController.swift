@@ -16,7 +16,6 @@ final class OnboardingPageViewController: UIPageViewController {
     
     // MARK: - UI-Elements
     private lazy var pages: [UIViewController] = []
-    
     private lazy var pageControl: UIPageControl = {
         let pageControl = UIPageControl()
         pageControl.numberOfPages = pages.count
@@ -27,8 +26,8 @@ final class OnboardingPageViewController: UIPageViewController {
         return pageControl
     }()
     /* Визуально зафиксированная кнопка смотрится лучше.
-    Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController
-    Альтернативный вариант реализации добавлен в отдельную ветку "sprint_16_onboarding_2" */
+     Прошу не ставить как критическое замечание, могу добавить ее в OnboardingViewController
+     Альтернативный вариант реализации добавлен в отдельную ветку "sprint_16_onboarding_2" */
     private lazy var onboardingButton: UIButton = {
         let button = UIButton()
         button.setTitle("Вот это технологии!", for: .normal)
@@ -104,7 +103,7 @@ final class OnboardingPageViewController: UIPageViewController {
     private func didTapOnboardingButton() {
         let tabBarController = TabBarController()
         if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate,
-            let window = sceneDelegate.window {
+           let window = sceneDelegate.window {
             UIView.transition(with: window,
                               duration: 0.3,
                               options: .transitionCrossDissolve,
