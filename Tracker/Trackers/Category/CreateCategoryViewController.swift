@@ -7,11 +7,13 @@
 import UIKit
 
 protocol CreateCategoryViewControllerDelegate: AnyObject {
-    func addNewCategory(category: String)
+    func reload()
 }
 
 final class CreateCategoryViewController: UIViewController {
     weak var delegate: CreateCategoryViewControllerDelegate?
+    private (set) var categoryViewModel = CategoryViewModel()
+    private let errorReporting = ErrorReporting()
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -65,8 +67,16 @@ final class CreateCategoryViewController: UIViewController {
         guard let newCategory = createCategoryName.text, !newCategory.isEmpty else {
             return
         }
-        delegate?.addNewCategory(category: newCategory)
-        dismiss(animated: true, completion: nil)
+        if categoryViewModel.checkingSavedCategory(newCategory) {
+            errorReporting.showAlert(
+                title: "Warning!",
+                message: "This category already exists.\nPlease, create another name.",
+                controller: self)
+        } else {
+            categoryViewModel.addCategory(newCategory)
+            delegate?.reload()
+            dismiss(animated: true, completion: nil)
+        }
     }
     
     @objc

@@ -37,6 +37,10 @@ final class CategoryViewModel {
     func selectCategory(_ index: Int) {
         self.selectedCategory = self.categories[index]
     }
+    
+    func checkingSavedCategory(_ title: String) -> Bool {
+        return categories.contains(where: { $0.title == title })
+    }
 }
 // MARK: - TrackerCategoryStoreDelegate
 extension CategoryViewModel: TrackerCategoryStoreDelegate {

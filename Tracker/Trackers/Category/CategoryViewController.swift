@@ -204,8 +204,7 @@ extension CategoryViewController: UITableViewDataSource {
 }
 // MARK: - CreateCategoryViewControllerDelegate
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
-    func addNewCategory(category: String) {
-        categoryViewModel.addCategory(category)
+    func reload() {
         self.categoryTableView.reloadData()
         showInitialStub()
     }

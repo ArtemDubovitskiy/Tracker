@@ -303,6 +303,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
                 try self.trackerRecordStore.addTrackerRecord(trackerRecord)
             } catch {
                 errorReporting.showAlert(
+                    title: "Error!",
                     message: "Error add a record to TrackerRecord: \(error)",
                     controller: self)
             }
@@ -320,6 +321,7 @@ extension TrackersViewController: TrackerCollectionViewCellDelegate {
             }
         } catch {
             errorReporting.showAlert(
+                title: "Error!",
                 message: "Error deleting a record TrackerRecord: \(error)",
                 controller: self)
         }

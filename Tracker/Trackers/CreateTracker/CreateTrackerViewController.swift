@@ -14,7 +14,6 @@ final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
     // MARK: - Private Properties
-    private let errorReporting = ErrorReporting()
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: String?
     private var selectedDays: [WeekDay] = []
