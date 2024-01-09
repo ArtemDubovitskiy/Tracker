@@ -229,8 +229,8 @@ final class CreateTrackerViewController: UIViewController {
             createTrackerTableView.heightAnchor.constraint(equalToConstant: irregularEvent ? 75 : 150),
             
             collectionViewHeightContraint,
-            createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            createTrackerCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            createTrackerCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             createTrackerCollectionView.topAnchor.constraint(equalTo: createTrackerTableView.bottomAnchor, constant: 16),
 
             buttonStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
@@ -513,7 +513,7 @@ extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 24, left: 0, bottom: 24, right: 0)
+        UIEdgeInsets(top: 24, left: 18, bottom: 24, right: 18)
     }
     
     func collectionView(_ collectionView: UICollectionView,
@@ -531,6 +531,6 @@ extension CreateTrackerViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 5
+        return 0
     }
 }

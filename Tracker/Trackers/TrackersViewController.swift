@@ -49,7 +49,6 @@ final class TrackersViewController: UIViewController {
         )
         collectionView.backgroundColor = .ypWhiteDay
         collectionView.allowsMultipleSelection = false
-        collectionView.showsVerticalScrollIndicator = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
@@ -170,8 +169,8 @@ final class TrackersViewController: UIViewController {
             searchLabel.topAnchor.constraint(equalTo: searchImage.bottomAnchor, constant: 8),
             
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16),
-            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
+            collectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
         ])
     }
@@ -363,7 +362,7 @@ extension TrackersViewController: UICollectionViewDataSource {
             withReuseIdentifier: TrackerCollectionViewCell.identifier,
             for: indexPath
         ) as? TrackerCollectionViewCell else { return UICollectionViewCell() }
-        
+        cell.contentView.backgroundColor = .clear
         cell.prepareForReuse()
         let tracker = visibleCategories[indexPath.section].trackers[indexPath.row]
         cell.delegate = self
@@ -388,6 +387,46 @@ extension TrackersViewController: UICollectionViewDataSource {
 }
 // MARK: - UICollectionViewDelegate
 extension TrackersViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView,
+                        contextMenuConfigurationForItemAt indexPath: IndexPath,
+                        point: CGPoint) -> UIContextMenuConfiguration? {
+        
+        let index = "\(indexPath.row):\(indexPath.section)" as NSString
+        
+        let configuration = UIContextMenuConfiguration(identifier: index,
+                                                       previewProvider: nil) { _ -> UIMenu? in
+            let pinAction = UIAction(title: "Закрепить", handler: { _ in })
+            
+            let editAction = UIAction(title: "Редактировать", handler: { _ in })
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in }
+            
+            return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
+        }
+        return configuration
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    ) -> UITargetedPreview? {
+        guard let identifier = configuration.identifier as? String else {
+            return nil
+        }
+        let components = identifier.components(separatedBy: ":")
+        guard let rowString = components.first,
+              let sectionString = components.last,
+              let row = Int(rowString),
+              let section = Int(sectionString) else {
+            return nil
+        }
+        let indexPath = IndexPath(row: row, section: section)
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TrackerCollectionViewCell else {
+            return nil
+        }
+        return UITargetedPreview(view: cell.trackerMenu)
+    }
+    
     func collectionView(_ collectionView: UICollectionView,
                         viewForSupplementaryElementOfKind kind: String,
                         at indexPath: IndexPath) -> UICollectionReusableView {
@@ -415,19 +454,19 @@ extension TrackersViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: (collectionView.bounds.width - 9) / 2, height: 148)
+        return CGSize(width: (collectionView.bounds.width - 41) / 2, height: 148)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         insetForSectionAt section: Int) -> UIEdgeInsets {
-        UIEdgeInsets(top: 12, left: 0, bottom: 0, right: 0)
+        UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
     }
     
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         referenceSizeForHeaderInSection section: Int) -> CGSize {
-        return CGSize(width: collectionView.bounds.width, height: 50)
+        return CGSize(width: collectionView.bounds.width - 32, height: 50)
     }
     
     func collectionView(_ collectionView: UICollectionView,
