@@ -55,7 +55,7 @@ final class TrackersViewController: UIViewController {
         return collectionView
     }()
     
-    private let initialImage: UIImageView = {
+    private lazy var initialImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub tracker")
         imageView.layer.masksToBounds = true
@@ -63,7 +63,7 @@ final class TrackersViewController: UIViewController {
         return imageView
     }()
     
-    private let initialLabel: UILabel = {
+    private lazy var initialLabel: UILabel = {
         let label = UILabel()
         label.text = "Что будем отслеживать?"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
@@ -72,7 +72,7 @@ final class TrackersViewController: UIViewController {
         return label
     }()
     
-    private let searchImage: UIImageView = {
+    private lazy var searchImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "Stub search")
         imageView.layer.masksToBounds = true
@@ -80,7 +80,7 @@ final class TrackersViewController: UIViewController {
         return imageView
     }()
     
-    private let searchLabel: UILabel = {
+    private lazy var searchLabel: UILabel = {
         let label = UILabel()
         label.text = "Ничего не найдено"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
