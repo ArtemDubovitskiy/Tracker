@@ -289,7 +289,8 @@ final class CreateTrackerViewController: UIViewController {
                 title: trackerName,
                 color: color,
                 emoji: emoji,
-                schedule: self.selectedDays)
+                schedule: self.selectedDays,
+                pinned: false)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
             categoryViewController.categoryViewModel.addNewTrackerToCategory(
                 to: self.selectedCategory,
@@ -300,7 +301,8 @@ final class CreateTrackerViewController: UIViewController {
                 title: trackerName,
                 color: color,
                 emoji: emoji,
-                schedule: WeekDay.allCases)
+                schedule: WeekDay.allCases,
+                pinned: false)
             delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
             categoryViewController.categoryViewModel.addNewTrackerToCategory(
                 to: self.selectedCategory,

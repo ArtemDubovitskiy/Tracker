@@ -13,8 +13,10 @@ final class TrackersViewController: UIViewController {
     private var trackerRecordStore = TrackerRecordStore()
     private let errorReporting = ErrorReporting()
     private var trackers: [Tracker] = []
+    private var pinnedTrackers: [Tracker] = []
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
+    private var pinnedCategory: TrackerCategory?
     private var completedTrackers: [TrackerRecord] = []
     private var selectedDay: Int?
     private var filterText: String?
@@ -105,7 +107,9 @@ final class TrackersViewController: UIViewController {
     // MARK: - CoreDataSetup
     private func coreDataSetup() {
         trackerStore.delegate = self
-        trackers = trackerStore.trackers
+        trackers = trackerStore.trackers.filter { !$0.pinned }
+        pinnedTrackers = trackerStore.trackers.filter { $0.pinned }
+        
         trackerCategoryStore.delegate = self
         categories = trackerCategoryStore.trackerCategories
         trackerRecordStore.delegate = self
@@ -215,29 +219,29 @@ final class TrackersViewController: UIViewController {
         showSearchStub()
         collectionView.reloadData()
     }
-    
+
     private func reloadVisibleCategories() {
-        visibleCategories = categories.compactMap { category in
-            let trackers = category.trackers.filter { tracker in
-                let textCondition = (self.filterText ?? "").isEmpty ||
-                    tracker.title.contains(self.filterText ?? "")
+        let pinCategory = "Закрепленные"
+        pinnedCategory = TrackerCategory(title: pinCategory, trackers: pinnedTrackers)
+        visibleCategories = categories.map { category -> TrackerCategory in
+            let filterTrackers = category.trackers.filter { tracker -> Bool in
+                let pinnedCondition = pinnedTrackers.contains { $0.id == tracker.id }
                 let dateCondition = tracker.schedule.contains { day in
                     guard let cerrentDate = self.selectedDay else {
                         return true
                     }
                     return day.rawValue == cerrentDate
                 }
-                return textCondition && dateCondition
+                let textCondition = tracker.title.contains(self.filterText ?? "") || (self.filterText ?? "").isEmpty
+                return !pinnedCondition && dateCondition && textCondition
             }
-            
-            if trackers.isEmpty {
-                return nil
-            }
-    
             return TrackerCategory(
                 title: category.title,
-                trackers: trackers
-            )
+                trackers: filterTrackers)
+        }
+        visibleCategories = visibleCategories.filter { !$0.trackers.isEmpty }
+        if let pinCategory = pinnedCategory, !pinCategory.trackers.isEmpty {
+            visibleCategories.insert(pinCategory, at: 0)
         }
     }
     
@@ -268,7 +272,10 @@ extension TrackersViewController: UISearchResultsUpdating {
 // MARK: - TrackerStoreDelegate
 extension TrackersViewController: TrackerStoreDelegate {
     func store() {
-        trackers = trackerStore.trackers
+        let trackerStore = trackerStore.trackers
+        trackers = trackerStore.filter { !$0.pinned }
+        pinnedTrackers = trackerStore.filter { $0.pinned }
+        reloadVisibleCategories()
         collectionView.reloadData()
     }
 }
@@ -390,12 +397,35 @@ extension TrackersViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView,
                         contextMenuConfigurationForItemAt indexPath: IndexPath,
                         point: CGPoint) -> UIContextMenuConfiguration? {
-        
+        let tracker = self.visibleCategories[indexPath.section].trackers[indexPath.row]
         let index = "\(indexPath.row):\(indexPath.section)" as NSString
         
         let configuration = UIContextMenuConfiguration(identifier: index,
                                                        previewProvider: nil) { _ -> UIMenu? in
-            let pinAction = UIAction(title: "Закрепить", handler: { _ in })
+            var pinAction: UIAction
+            if !tracker.pinned {
+                pinAction = UIAction(title: "Закрепить", handler: { [weak self] _ in
+                    guard let self = self else { return }
+                    do {
+                        try self.trackerStore.pinTracker(tracker, value: true)
+                    } catch {
+                        errorReporting.showAlert(title: "Error!", 
+                                                 message: "Ошибка закрепления трекера",
+                                                 controller: self)
+                    }
+                })
+            } else {
+                pinAction = UIAction(title: "Открепить", handler: { [weak self] _ in
+                    guard let self = self else { return }
+                    do {
+                        try self.trackerStore.pinTracker(tracker, value: false)
+                    } catch {
+                        errorReporting.showAlert(title: "Error!", 
+                                                 message: "Ошибка открепления трекера",
+                                                 controller: self)
+                    }
+                })
+            }
             
             let editAction = UIAction(title: "Редактировать", handler: { _ in })
             
