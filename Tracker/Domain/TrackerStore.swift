@@ -96,6 +96,16 @@ final class TrackerStore: NSObject {
         try context.save()
     }
     
+    func editTracker(_ tracker: Tracker, editingTracker: Tracker?) throws {
+        let editTracker = try fetchTracker(with: editingTracker)
+        guard let editTracker = editTracker else { return }
+        editTracker.title = tracker.title
+        editTracker.schedule = tracker.schedule as NSObject
+        editTracker.emoji = tracker.emoji
+        editTracker.color = colorMarshalling.hexString(from: tracker.color)
+        try context.save()
+    }
+    
     func fetchTracker(with tracker: Tracker?) throws -> TrackerCoreData? {
         guard let tracker = tracker else {
             throw TrackerStoreError.decodingErrorInvalidFetchTracker

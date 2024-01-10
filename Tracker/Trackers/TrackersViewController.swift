@@ -355,6 +355,32 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
         }
         filteringTrackers()
     }
+    
+    func editTracker(tracker: Tracker, editingTracker: Tracker?, category: String?) {
+        guard let category = category, let _ = editingTracker else { return }
+        try? self.trackerStore.editTracker(tracker, editingTracker: editingTracker)
+        let foundCategory = self.categories.first { ctgry in
+            ctgry.title == category
+        }
+        if foundCategory != nil {
+            self.categories = self.categories.map { ctgry in
+                if (ctgry.title == category) {
+                    var updatedTrackers = ctgry.trackers
+                    updatedTrackers.append(tracker)
+                    return TrackerCategory(title: ctgry.title, trackers: updatedTrackers)
+                } else {
+                    return TrackerCategory(title: ctgry.title, trackers: ctgry.trackers)
+                }
+            }
+        } else {
+            self.categories.append(TrackerCategory(title: category, trackers: [tracker]))
+        }
+        filteringTrackers()
+    }
+    
+    func reloadCollectionView() {
+        self.collectionView.reloadData()
+    }
 }
 // MARK: - UICollectionViewDataSource
 extension TrackersViewController: UICollectionViewDataSource {
@@ -429,7 +455,23 @@ extension TrackersViewController: UICollectionViewDelegate {
                 })
             }
             
-            let editAction = UIAction(title: "Редактировать", handler: { _ in })
+            let editAction = UIAction(title: "Редактировать", handler: { [weak self] _ in
+                guard let self = self else { return }
+                let createTrackerViewController = CreateTrackerViewController(editTracker: true)
+                createTrackerViewController.delegate = self
+                createTrackerViewController.editTracker(
+                    tracker: tracker,
+                    category: self.categories.first {
+                        $0.trackers.contains {
+                            $0.id == tracker.id
+                        }
+                    }, 
+                    completedCount: self.completedTrackers.filter {
+                        $0.trackerId == tracker.id
+                    }.count
+                )
+                self.present(createTrackerViewController, animated: true)
+            })
             
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
                 guard let self = self else { return }

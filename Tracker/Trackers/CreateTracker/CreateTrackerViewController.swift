@@ -8,16 +8,22 @@ import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
     func createNewTracker(tracker: Tracker, category: String?)
+    func editTracker(tracker: Tracker, editingTracker: Tracker?, category: String?)
+    func reloadCollectionView()
 }
 
 final class CreateTrackerViewController: UIViewController {
     weak var delegate: CreateTrackerViewControllerDelegate?
     var irregularEvent: Bool = false
     // MARK: - Private Properties
+    private var editTracker: Bool?
+    private var editTrackerId: UUID?
+    private var editingTracker: Tracker?
     private var cellButtonText: [String] = ["Категория", "Расписание"]
     private var selectedCategory: TrackerCategory?
     private var selectedDays: [WeekDay] = []
     private let categoryViewController = CategoryViewController()
+    private let colorMarshalling = UIColorMarshalling()
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
     private var collectionViewHeightContraint: NSLayoutConstraint!
     private var isEmojiSelected: IndexPath? = nil
@@ -42,6 +48,15 @@ final class CreateTrackerViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
         label.textColor = .ypBlackDay
         label.backgroundColor = .ypWhiteDay
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+    
+    private lazy var daysCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0 дней"
+        label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .ypBlackDay
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -136,6 +151,15 @@ final class CreateTrackerViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
+    // MARK: - Initializers
+    init(editTracker: Bool) {
+        super.init(nibName: nil, bundle: nil)
+        self.editTracker = editTracker
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -150,7 +174,6 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerCollectionViewHeight()
         trackerTypeIrregularEvent()
     }
-    
     // MARK: - Setup View
     private func setupCreateTrackerNameTextField() {
         createTrackerName.delegate = self
@@ -160,9 +183,9 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerTableView.delegate = self
         createTrackerTableView.dataSource = self
         
-        createTrackerTableView.register(UITableViewCell.self, 
+        createTrackerTableView.register(UITableViewCell.self,
                                         forCellReuseIdentifier: "cell")
-        createTrackerTableView.register(CreateTrackerCell.self, 
+        createTrackerTableView.register(CreateTrackerCell.self,
                                         forCellReuseIdentifier: CreateTrackerCell.cellIdentifier)
     }
     
@@ -174,7 +197,7 @@ final class CreateTrackerViewController: UIViewController {
                                              forCellWithReuseIdentifier: EmojiCollectionViewCell.identifier)
         createTrackerCollectionView.register(ColorsCollectionViewCell.self,
                                              forCellWithReuseIdentifier: ColorsCollectionViewCell.identifier)
-        createTrackerCollectionView.register(HeaderViewCell.self, 
+        createTrackerCollectionView.register(HeaderViewCell.self,
                                              forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
                                              withReuseIdentifier: HeaderViewCell.identifier)
         collectionViewHeightContraint = createTrackerCollectionView.heightAnchor.constraint(equalToConstant: 0)
@@ -216,7 +239,6 @@ final class CreateTrackerViewController: UIViewController {
             
             createTrackerName.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             createTrackerName.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            createTrackerName.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
             createTrackerName.heightAnchor.constraint(equalToConstant: 75),
             
             limitTrackerNameLabelHeightContraint,
@@ -239,6 +261,36 @@ final class CreateTrackerViewController: UIViewController {
             buttonStackView.heightAnchor.constraint(equalToConstant: 60),
             buttonStackView.topAnchor.constraint(equalTo: createTrackerCollectionView.bottomAnchor, constant: 16)
         ])
+        
+        if editTracker ?? false {
+            scrollView.addSubview(daysCountLabel)
+            NSLayoutConstraint.activate([
+                daysCountLabel.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24),
+                daysCountLabel.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
+                createTrackerName.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 102)
+            ])
+        } else {
+            NSLayoutConstraint.activate([
+                createTrackerName.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 24)
+            ])
+        }
+    }
+    
+    func editTracker(tracker: Tracker, category: TrackerCategory?, completedCount: Int) {
+        titleLabel.text = "Редактирование привычки"
+        createButton.setTitle("Сохранить", for: .normal)
+        editingTracker = tracker
+        editTrackerId = tracker.id
+        createTrackerName.text = tracker.title
+        selectedCategory = category
+        selectedDays = tracker.schedule
+
+        isEmojiSelected?.row = emojies.firstIndex(of: tracker.emoji) ?? 0
+        isColorSelected?.row = colors.firstIndex(where: {
+            colorMarshalling.hexString(from: $0) == colorMarshalling.hexString(from: tracker.color)
+        }) ?? 0
+        
+        daysCountLabel.text = "\(completedCount) дней"
     }
     // MARK: - Private Methods
     private func trackerTypeIrregularEvent() {
@@ -252,7 +304,7 @@ final class CreateTrackerViewController: UIViewController {
         if createTrackerName.text?.isEmpty == true &&
             irregularEvent == false ? selectedDays.count > 0 : true &&
             isEmojiSelected != nil &&
-            isColorSelected != nil 
+            isColorSelected != nil
         {
             createButton.isEnabled = true
             createButton.backgroundColor = .ypBlackDay
@@ -287,21 +339,28 @@ final class CreateTrackerViewController: UIViewController {
                 return
             }
             let newTracker = Tracker(
-                id: UUID(),
+                id: editTrackerId ?? UUID(),
                 title: trackerName,
                 color: color,
                 emoji: emoji,
                 schedule: self.selectedDays,
                 pinned: false)
-            delegate?.createNewTracker(
-                tracker: newTracker,
-                category: selectedCategory.title)
-            categoryViewController.categoryViewModel.addTrackerToCategory(
-                to: selectedCategory,
-                tracker: newTracker)
+            if editTracker ?? false {
+                delegate?.editTracker(
+                    tracker: newTracker,
+                    editingTracker: editingTracker,
+                    category: selectedCategory.title)
+            } else {
+                delegate?.createNewTracker(
+                    tracker: newTracker,
+                    category: selectedCategory.title)
+                categoryViewController.categoryViewModel.addTrackerToCategory(
+                    to: selectedCategory,
+                    tracker: newTracker)
+            }
         } else {
             let newTracker = Tracker(
-                id: UUID(),
+                id: editTrackerId ?? UUID(),
                 title: trackerName,
                 color: color,
                 emoji: emoji,
@@ -314,7 +373,8 @@ final class CreateTrackerViewController: UIViewController {
                 to: selectedCategory,
                 tracker: newTracker)
         }
-        self.view.window?.rootViewController?.dismiss(animated: true)
+        delegate?.reloadCollectionView()
+        self.view.window?.rootViewController?.dismiss(animated: true, completion: nil)
     }
 }
 // MARK: - UITextFieldDelegate
