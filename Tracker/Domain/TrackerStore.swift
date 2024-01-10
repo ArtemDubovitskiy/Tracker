@@ -89,6 +89,13 @@ final class TrackerStore: NSObject {
         try context.save()
     }
     
+    func deleteTracker(_ tracker: Tracker?) throws {
+        let deleteTracker = try fetchTracker(with: tracker)
+        guard let deleteTracker = deleteTracker else { return }
+        context.delete(deleteTracker)
+        try context.save()
+    }
+    
     func fetchTracker(with tracker: Tracker?) throws -> TrackerCoreData? {
         guard let tracker = tracker else {
             throw TrackerStoreError.decodingErrorInvalidFetchTracker

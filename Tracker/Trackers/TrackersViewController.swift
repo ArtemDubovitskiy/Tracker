@@ -409,9 +409,10 @@ extension TrackersViewController: UICollectionViewDelegate {
                     do {
                         try self.trackerStore.pinTracker(tracker, value: true)
                     } catch {
-                        errorReporting.showAlert(title: "Error!", 
-                                                 message: "Ошибка закрепления трекера",
-                                                 controller: self)
+                        errorReporting.showAlert(
+                            title: "Error!",
+                            message: "Ошибка закрепления трекера",
+                            controller: self)
                     }
                 })
             } else {
@@ -420,17 +421,48 @@ extension TrackersViewController: UICollectionViewDelegate {
                     do {
                         try self.trackerStore.pinTracker(tracker, value: false)
                     } catch {
-                        errorReporting.showAlert(title: "Error!", 
-                                                 message: "Ошибка открепления трекера",
-                                                 controller: self)
+                        errorReporting.showAlert(
+                            title: "Error!",
+                            message: "Ошибка открепления трекера",
+                            controller: self)
                     }
                 })
             }
             
             let editAction = UIAction(title: "Редактировать", handler: { _ in })
             
-            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { _ in }
-            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                
+                let alertController = UIAlertController(
+                    title: nil,
+                    message: "Уверены что хотите удалить трекер?",
+                    preferredStyle: .actionSheet)
+                
+                let deleteAction = UIAlertAction(
+                    title: "Удалить",
+                    style: .destructive) { _ in
+                        do {
+                            try self.trackerStore.deleteTracker(tracker)
+                        } catch {
+                            self.errorReporting.showAlert(
+                                title: "Error!",
+                                message: "Ошибка удаления трекера",
+                                controller: self)
+                        }
+                        self.reloadVisibleCategories()
+                        self.showInitialStub()
+                    }
+                alertController.addAction(deleteAction)
+                
+                let cancelAction = UIAlertAction(
+                    title: "Отмена",
+                    style: .cancel,
+                    handler: nil)
+                
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
         return configuration
