@@ -15,7 +15,7 @@ final class CreateTrackerViewController: UIViewController {
     var irregularEvent: Bool = false
     // MARK: - Private Properties
     private var cellButtonText: [String] = ["Категория", "Расписание"]
-    private var selectedCategory: String?
+    private var selectedCategory: TrackerCategory?
     private var selectedDays: [WeekDay] = []
     private let categoryViewController = CategoryViewController()
     private var limitTrackerNameLabelHeightContraint: NSLayoutConstraint!
@@ -272,11 +272,13 @@ final class CreateTrackerViewController: UIViewController {
         guard let trackerName = createTrackerName.text, !trackerName.isEmpty else {
             return
         }
+        guard let selectedCategory = selectedCategory else {
+            return
+        }
         guard let selectedEmoji = isEmojiSelected,
               let selectedColor = isColorSelected else {
             return
         }
-        
         let emoji = emojies[selectedEmoji.row]
         let color = colors[selectedColor.row]
         
@@ -291,9 +293,11 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: self.selectedDays,
                 pinned: false)
-            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
-            categoryViewController.categoryViewModel.addNewTrackerToCategory(
-                to: self.selectedCategory,
+            delegate?.createNewTracker(
+                tracker: newTracker,
+                category: selectedCategory.title)
+            categoryViewController.categoryViewModel.addTrackerToCategory(
+                to: selectedCategory,
                 tracker: newTracker)
         } else {
             let newTracker = Tracker(
@@ -303,9 +307,11 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: WeekDay.allCases,
                 pinned: false)
-            delegate?.createNewTracker(tracker: newTracker, category: self.selectedCategory)
-            categoryViewController.categoryViewModel.addNewTrackerToCategory(
-                to: self.selectedCategory,
+            delegate?.createNewTracker(
+                tracker: newTracker,
+                category: selectedCategory.title)
+            categoryViewController.categoryViewModel.addTrackerToCategory(
+                to: selectedCategory,
                 tracker: newTracker)
         }
         self.view.window?.rootViewController?.dismiss(animated: true)
@@ -364,9 +370,9 @@ extension CreateTrackerViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    didSelectRowAt indexPath: IndexPath) {
         if indexPath.row == 0 {
-            categoryViewController.categoryViewModel.$selectedCategory.bind { [weak self] categoryTitle in
+            categoryViewController.categoryViewModel.$selectedCategory.bind { [weak self] category in
                 guard let self = self else { return }
-                self.selectedCategory = categoryTitle?.title
+                self.selectedCategory = category
                 self.createTrackerTableView.reloadData()
             }
             present(categoryViewController, animated: true, completion: nil)
@@ -414,7 +420,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         detailTextLabel.textColor = .ypGray
         
         if indexPath.row == 0 {
-            detailTextLabel.text = selectedCategory
+            detailTextLabel.text = selectedCategory?.title
         } else if indexPath.row == 1 {
             if selectedDays.count == 7 {
                 detailTextLabel.text = "Каждый день"

@@ -456,7 +456,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                 alertController.addAction(deleteAction)
                 
                 let cancelAction = UIAlertAction(
-                    title: "Отмена",
+                    title: "Отменить",
                     style: .cancel,
                     handler: nil)
                 

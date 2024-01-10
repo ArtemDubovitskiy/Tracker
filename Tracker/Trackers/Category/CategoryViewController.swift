@@ -8,6 +8,7 @@ import UIKit
 
 final class CategoryViewController: UIViewController {
     private (set) var categoryViewModel = CategoryViewModel()
+    private let errorReporting = ErrorReporting()
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -169,6 +170,47 @@ extension CategoryViewController: UITableViewDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
             self.dismiss(animated: true)
         }
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        let category = self.categoryViewModel.categories[indexPath.row]
+        
+        let configuration = UIContextMenuConfiguration(identifier: nil,
+                                                       previewProvider: nil) { _ -> UIMenu? in
+            let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                guard let self = self else { return }
+                // TODO: - Добавить редактирование категории
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                let alertController = UIAlertController(
+                    title: nil,
+                    message: "Эта категория точно не нужна?",
+                    preferredStyle: .actionSheet)
+                
+                let deleteAction = UIAlertAction(
+                    title: "Удалить",
+                    style: .destructive) { _ in
+                        self.categoryViewModel.deleteCategory(category)
+                        self.categoryTableView.reloadData()
+                        self.showInitialStub()
+                    }
+                alertController.addAction(deleteAction)
+                
+                let cancelAction = UIAlertAction(
+                    title: "Отменить",
+                    style: .cancel,
+                    handler: nil)
+                
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+        return configuration
     }
 }
 // MARK: - UITableViewDataSource

@@ -26,11 +26,19 @@ final class CategoryViewModel {
         }
     }
     
-    func addNewTrackerToCategory(to title: String?, tracker: Tracker) {
+    func addTrackerToCategory(to category: TrackerCategory, tracker: Tracker) {
         do {
-            try self.trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
+            try self.trackerCategoryStore.addTrackerToCategory(to: category, tracker: tracker)
         } catch {
             print("Error add new tracker to category: \(error.localizedDescription)")
+        }
+    }
+    
+    func deleteCategory(_ category: TrackerCategory) {
+        do {
+            try self.trackerCategoryStore.deleteCategory(category)
+        } catch {
+            print("Error delete category: \(error.localizedDescription)")
         }
     }
     
