@@ -23,6 +23,7 @@ final class TrackersViewController: UIViewController {
     private var selectedDay: Int?
     private var filterText: String?
     private var currentFilterMode = "Все фильтры"
+    private let analyticsService = AnalyticsService()
     // MARK: - UI-Elements
     private lazy var datePicker: UIDatePicker = {
         let date = UIDatePicker()
@@ -95,7 +96,8 @@ final class TrackersViewController: UIViewController {
     
     private lazy var filterButton: UIButton = {
         let button = UIButton()
-        button.setTitle("Фильтры", for: .normal)
+        button.setTitle(NSLocalizedString("filter.title", comment: ""),
+                        for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.backgroundColor = .ypBlue
         button.layer.cornerRadius = 16
@@ -119,6 +121,16 @@ final class TrackersViewController: UIViewController {
         setupCollectionView()
         setupTrackersViewConstrains()
         filterButtonVisibility()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        analyticsService.report(event: "open", params: ["screen": "Main"])
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        analyticsService.report(event: "close", params: ["screen": "Main"])
     }
     // MARK: - CoreDataSetup
     private func coreDataSetup() {
@@ -203,6 +215,7 @@ final class TrackersViewController: UIViewController {
     // MARK: - Actions
     @objc
     private func didTapAddTrackerButton() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "add_track"])
         let addTrackerViewController = AddTrackerViewController()
         addTrackerViewController.trackersViewController = self
         present(addTrackerViewController, animated: true, completion: nil)
@@ -215,6 +228,7 @@ final class TrackersViewController: UIViewController {
     }
     @objc
     private func filterButtonTapped() {
+        analyticsService.report(event: "click", params: ["screen": "Main", "item": "filter"])
         let filterViewController = FilterViewController()
         filterViewController.delegate = self
         present(filterViewController, animated: true, completion: nil)
@@ -564,6 +578,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                         $0.trackerId == tracker.id
                     }.count
                 )
+                self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
                 self.present(createTrackerViewController, animated: true)
             })
             
@@ -586,6 +601,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                                 message: "Ошибка удаления трекера",
                                 controller: self)
                         }
+                        self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
                         self.reloadVisibleCategories()
                         self.showInitialStub()
                     }
