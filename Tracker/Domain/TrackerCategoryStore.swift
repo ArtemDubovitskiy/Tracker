@@ -91,6 +91,13 @@ final class TrackerCategoryStore: NSObject {
         try context.save()
     }
     
+    func editCaregory(category: TrackerCategory?, title: String) throws {
+        let editCaregory = try fetchTrackerCategory(with: category)
+        guard let editCaregory = editCaregory else { return }
+        editCaregory.title = title
+        try context.save()
+    }
+    
     func fetchTrackerCategory(with category: TrackerCategory?) throws -> TrackerCategoryCoreData? {
         guard let category = category else {
             throw TrackerCategoryStoreError.decodingErrorInvalidFetchTitle

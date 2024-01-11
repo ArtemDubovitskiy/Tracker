@@ -275,7 +275,7 @@ final class CreateTrackerViewController: UIViewController {
             ])
         }
     }
-    
+    // MARK: - Public Methods
     func editTracker(tracker: Tracker, category: TrackerCategory?, completedCount: Int) {
         titleLabel.text = "Редактирование привычки"
         createButton.setTitle("Сохранить", for: .normal)

@@ -42,6 +42,14 @@ final class CategoryViewModel {
         }
     }
     
+    func editCategory(category: TrackerCategory?, title: String) {
+        do {
+            try self.trackerCategoryStore.editCaregory(category: category, title: title)
+        } catch {
+            print("Error edit category: \(error.localizedDescription)")
+        }
+    }
+    
     func selectCategory(_ index: Int) {
         self.selectedCategory = self.categories[index]
     }

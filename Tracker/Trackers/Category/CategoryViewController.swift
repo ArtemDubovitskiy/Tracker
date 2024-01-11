@@ -181,7 +181,11 @@ extension CategoryViewController: UITableViewDelegate {
                                                        previewProvider: nil) { _ -> UIMenu? in
             let editAction = UIAction(title: "Редактировать") { [weak self] _ in
                 guard let self = self else { return }
-                // TODO: - Добавить редактирование категории
+                let createCategoryViewController = CreateCategoryViewController()
+                createCategoryViewController.delegate = self
+                createCategoryViewController.editCategory(category)
+                createCategoryViewController.isEditCategory = true
+                self.present(createCategoryViewController, animated: true, completion: nil)
             }
             
             let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in

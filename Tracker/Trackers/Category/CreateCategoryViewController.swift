@@ -12,8 +12,10 @@ protocol CreateCategoryViewControllerDelegate: AnyObject {
 
 final class CreateCategoryViewController: UIViewController {
     weak var delegate: CreateCategoryViewControllerDelegate?
+    var existingCategory: TrackerCategory?
     private (set) var categoryViewModel = CategoryViewModel()
     private let errorReporting = ErrorReporting()
+    var isEditCategory = Bool()
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -61,24 +63,33 @@ final class CreateCategoryViewController: UIViewController {
         setupCreateCategoryViewConstrains()
         updateCreateCategoryButton()
     }
+    // MARK: - Public Methods
+    func editCategory(_ category: TrackerCategory) {
+        titleLabel.text = "Редактирование категории"
+        existingCategory = category
+        createCategoryName.text = category.title
+    }
+    
     // MARK: - Actions
     @objc
     private func didTapCreateCategoryButton() {
         guard let newCategory = createCategoryName.text, !newCategory.isEmpty else {
             return
         }
-        if categoryViewModel.checkingSavedCategory(newCategory) {
+        if isEditCategory {
+            categoryViewModel.editCategory(category: existingCategory, title: newCategory)
+        } else if categoryViewModel.checkingSavedCategory(newCategory) {
             errorReporting.showAlert(
                 title: "Warning!",
                 message: "This category already exists.\nPlease, create another name.",
                 controller: self)
         } else {
             categoryViewModel.addCategory(newCategory)
-            delegate?.reload()
-            dismiss(animated: true, completion: nil)
         }
+        delegate?.reload()
+        dismiss(animated: true, completion: nil)
     }
-    
+
     @objc
     private func updateCreateCategoryButton() {
         if createCategoryName.text?.isEmpty == true {
