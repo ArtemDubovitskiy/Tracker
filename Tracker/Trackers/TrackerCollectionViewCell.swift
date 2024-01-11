@@ -133,8 +133,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerCard.backgroundColor = tracker.color
         trackerDescritionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
-        // TODO: - Настроить закрепленные карточки:
-        pinTrackerImage.isHidden = true // test
+        self.pinTrackerImage.isHidden = tracker.pinned ? false : true
         numberOfDaysLabel.text = formattedDays(completedDays)
         plusButtonSettings()
     }

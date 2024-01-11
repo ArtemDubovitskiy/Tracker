@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */; };
 		910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C99902ACE044300931D57 /* AddTrackerViewController.swift */; };
+		9118AA6A2B4F67590067F306 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118AA692B4F67590067F306 /* FilterViewController.swift */; };
+		9118AA6C2B4F67A70067F306 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118AA6B2B4F67A70067F306 /* FilterCell.swift */; };
 		912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E01792B388E5B00813647 /* OnboardingPageViewController.swift */; };
 		912E017C2B39B5F900813647 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E017B2B39B5F900813647 /* OnboardingViewController.swift */; };
 		912E019E2B3E34FD00813647 /* CreateCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E019D2B3E34FD00813647 /* CreateCategoryViewController.swift */; };
@@ -48,6 +50,8 @@
 /* Begin PBXFileReference section */
 		910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaticticsViewController.swift; sourceTree = "<group>"; };
 		910C99902ACE044300931D57 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
+		9118AA692B4F67590067F306 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
+		9118AA6B2B4F67A70067F306 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
 		912E01792B388E5B00813647 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		912E017B2B39B5F900813647 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		912E019D2B3E34FD00813647 /* CreateCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryViewController.swift; sourceTree = "<group>"; };
@@ -103,6 +107,15 @@
 				910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */,
 			);
 			path = Statistics;
+			sourceTree = "<group>";
+		};
+		9118AA682B4F672C0067F306 /* Filter */ = {
+			isa = PBXGroup;
+			children = (
+				9118AA692B4F67590067F306 /* FilterViewController.swift */,
+				9118AA6B2B4F67A70067F306 /* FilterCell.swift */,
+			);
+			path = Filter;
 			sourceTree = "<group>";
 		};
 		912E01782B388E3900813647 /* Onboarding */ = {
@@ -205,6 +218,7 @@
 			children = (
 				9178020A2B3447D4008289E2 /* Alert */,
 				912E01782B388E3900813647 /* Onboarding */,
+				9118AA682B4F672C0067F306 /* Filter */,
 				91C4AD272AC317A400488630 /* Tracker.swift */,
 				91F94DFD2AE7213B0060C89E /* TrackerCategory.swift */,
 				91F94DFF2AE7215A0060C89E /* TrackerRecord.swift */,
@@ -295,7 +309,7 @@
 		91469F172AA6876B003A3B06 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				BuildIndependentTargetsInParallel = 1;
+				BuildIndependentTargetsInParallel = NO;
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
@@ -353,6 +367,7 @@
 				912E01A02B3E4EA500813647 /* CategoryCell.swift in Sources */,
 				912E01A42B3E69C400813647 /* Observable.swift in Sources */,
 				91469F272AA6876B003A3B06 /* TrackersViewController.swift in Sources */,
+				9118AA6A2B4F67590067F306 /* FilterViewController.swift in Sources */,
 				91D905D02B13C7B6009C638A /* TrackerModel.xcdatamodeld in Sources */,
 				91F94DED2ADD9A040060C89E /* ScheduleViewController.swift in Sources */,
 				912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */,
@@ -363,6 +378,7 @@
 				91469F252AA6876B003A3B06 /* SceneDelegate.swift in Sources */,
 				910C998F2ACDEFFC00931D57 /* StaticticsViewController.swift in Sources */,
 				912E019E2B3E34FD00813647 /* CreateCategoryViewController.swift in Sources */,
+				9118AA6C2B4F67A70067F306 /* FilterCell.swift in Sources */,
 				91F94DF72ADFF9A80060C89E /* HeaderViewCell.swift in Sources */,
 				91C4AD2A2AC323C100488630 /* TabBarController.swift in Sources */,
 				912E01A22B3E67F800813647 /* CategoryViewModel.swift in Sources */,
