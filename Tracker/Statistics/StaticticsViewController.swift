@@ -7,6 +7,8 @@
 import UIKit
 
 final class StaticticsViewController: UIViewController {
+    private let trackerRecordStore = TrackerRecordStore()
+    private var completedTrackers: [TrackerRecord] = []
     // MARK: - UI-Elements
     private let titleLabel: UILabel = {
         let label = UILabel()
@@ -33,19 +35,40 @@ final class StaticticsViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
+    
+    private let statisticsTableView: UITableView = {
+        let statisticTableView = UITableView()
+        statisticTableView.separatorStyle = .none
+        statisticTableView.layer.cornerRadius = 16
+        statisticTableView.translatesAutoresizingMaskIntoConstraints = false
+        return statisticTableView
+    }()
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        trackerRecordStore.delegate = self
+        completedTrackers = trackerRecordStore.trackerRecords
         
+        setupStatisticsTableView()
         setupStaticticsView()
         setupStaticticsViewConstrains()
+        showInitialStub()
     }
     // MARK: - Setup View
+    private func setupStatisticsTableView() {
+        statisticsTableView.backgroundColor = .ypWhiteDay
+        statisticsTableView.delegate = self
+        statisticsTableView.dataSource = self
+        statisticsTableView.register(StatisticsCell.self, forCellReuseIdentifier: StatisticsCell.cellIdentifier)
+        statisticsTableView.reloadData()
+    }
+    
     private func setupStaticticsView() {
         view.backgroundColor = .ypWhiteDay
         view.addSubview(titleLabel)
         view.addSubview(staticticsImage)
         view.addSubview(staticticsLabel)
+        view.addSubview(statisticsTableView)
     }
     
     private func setupStaticticsViewConstrains() {
@@ -59,7 +82,88 @@ final class StaticticsViewController: UIViewController {
             staticticsImage.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
             staticticsLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            staticticsLabel.topAnchor.constraint(equalTo: staticticsImage.bottomAnchor, constant: 8)
+            staticticsLabel.topAnchor.constraint(equalTo: staticticsImage.bottomAnchor, constant: 8),
+            
+            statisticsTableView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 77),
+            statisticsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            statisticsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            statisticsTableView.heightAnchor.constraint(equalToConstant: 500)
         ])
+    }
+    
+    private func showInitialStub() {
+        let empty = completedTrackers.isEmpty
+        statisticsTableView.isHidden = empty
+        staticticsImage.isHidden = !empty
+        statisticsTableView.isHidden = empty
+    }
+}
+// MARK: - UITableViewDelegate
+extension StaticticsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView,
+                   heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 102
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   heightForHeaderInSection section: Int) -> CGFloat {
+        return 12
+    }
+}
+// MARK: - UITableViewDataSource
+extension StaticticsViewController: UITableViewDataSource {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
+        return 4
+    }
+    
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: StatisticsCell.cellIdentifier,
+            for: indexPath) as? StatisticsCell else { return UITableViewCell() }
+        var title = ""
+        
+        switch indexPath.row {
+        case 0:
+            title = "Лучший период"
+        case 1:
+            title = "Идеальные дни"
+        case 2:
+            title = "Трекеров завершено"
+        case 3:
+            title = "Среднее значение"
+        default:
+            break
+        }
+        
+        showInitialStub()
+        
+        var count = ""
+        
+        switch indexPath.row {
+        case 0:
+            count = "0"
+        case 1:
+            count = "0"
+        case 2:
+            count = "\(completedTrackers.count)"
+        case 3:
+            count = "0"
+        default:
+            break
+        }
+        cell.updateCell(from: title, count: count)
+        cell.selectionStyle = .none
+        cell.isUserInteractionEnabled = false
+        
+        return cell
+    }
+}
+// MARK: - TrackerRecordStoreDelegate
+extension StaticticsViewController: TrackerRecordStoreDelegate {
+    func recordStore() {
+        completedTrackers = trackerRecordStore.trackerRecords
+        statisticsTableView.reloadData()
     }
 }

@@ -11,6 +11,7 @@
 		910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 910C99902ACE044300931D57 /* AddTrackerViewController.swift */; };
 		9118AA6A2B4F67590067F306 /* FilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118AA692B4F67590067F306 /* FilterViewController.swift */; };
 		9118AA6C2B4F67A70067F306 /* FilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118AA6B2B4F67A70067F306 /* FilterCell.swift */; };
+		9118AA6E2B4FA59D0067F306 /* StatisticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9118AA6D2B4FA59D0067F306 /* StatisticsCell.swift */; };
 		912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E01792B388E5B00813647 /* OnboardingPageViewController.swift */; };
 		912E017C2B39B5F900813647 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E017B2B39B5F900813647 /* OnboardingViewController.swift */; };
 		912E019E2B3E34FD00813647 /* CreateCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912E019D2B3E34FD00813647 /* CreateCategoryViewController.swift */; };
@@ -52,6 +53,7 @@
 		910C99902ACE044300931D57 /* AddTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTrackerViewController.swift; sourceTree = "<group>"; };
 		9118AA692B4F67590067F306 /* FilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterViewController.swift; sourceTree = "<group>"; };
 		9118AA6B2B4F67A70067F306 /* FilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCell.swift; sourceTree = "<group>"; };
+		9118AA6D2B4FA59D0067F306 /* StatisticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsCell.swift; sourceTree = "<group>"; };
 		912E01792B388E5B00813647 /* OnboardingPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPageViewController.swift; sourceTree = "<group>"; };
 		912E017B2B39B5F900813647 /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		912E019D2B3E34FD00813647 /* CreateCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCategoryViewController.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				910C998E2ACDEFFC00931D57 /* StaticticsViewController.swift */,
+				9118AA6D2B4FA59D0067F306 /* StatisticsCell.swift */,
 			);
 			path = Statistics;
 			sourceTree = "<group>";
@@ -358,6 +361,7 @@
 				91D905F62B140F1F009C638A /* TrackerStore.swift in Sources */,
 				9178020C2B344817008289E2 /* ErrorReporting.swift in Sources */,
 				91D905FE2B2FACB5009C638A /* DaysValueTransformer.swift in Sources */,
+				9118AA6E2B4FA59D0067F306 /* StatisticsCell.swift in Sources */,
 				91F94DF12ADDC2880060C89E /* ColorsCollectionViewCell.swift in Sources */,
 				91F94DFA2AE47A320060C89E /* CategoryViewController.swift in Sources */,
 				912E017C2B39B5F900813647 /* OnboardingViewController.swift in Sources */,
