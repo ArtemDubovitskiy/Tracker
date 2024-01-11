@@ -11,7 +11,7 @@ final class FilterCell: UITableViewCell {
   
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .ypBackgroundDay
+        backgroundColor = .ypBackground
     }
     
     required init?(coder: NSCoder) {

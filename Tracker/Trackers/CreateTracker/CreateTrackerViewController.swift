@@ -46,8 +46,8 @@ final class CreateTrackerViewController: UIViewController {
         let label = UILabel()
         label.text = "Новая привычка"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypBlack
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,7 +56,7 @@ final class CreateTrackerViewController: UIViewController {
         let label = UILabel()
         label.text = "0 дней"
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -64,9 +64,9 @@ final class CreateTrackerViewController: UIViewController {
     private lazy var createTrackerName: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название трекера"
-        textField.textColor = .ypBlackDay
+        textField.textColor = .ypBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackgroundDay
+        textField.backgroundColor = .ypBackground
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -89,7 +89,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackgroundDay
+        tableView.backgroundColor = .ypBackground
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
@@ -100,7 +100,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private let scrollView: UIScrollView = {
         let scrollView = UIScrollView()
-        scrollView.backgroundColor = .ypWhiteDay
+        scrollView.backgroundColor = .ypWhite
         scrollView.showsVerticalScrollIndicator = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.isScrollEnabled = true
@@ -110,7 +110,7 @@ final class CreateTrackerViewController: UIViewController {
     
     private lazy var createTrackerCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .ypWhiteDay
+        collectionView.backgroundColor = .ypWhite
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.isScrollEnabled = false
         return collectionView
@@ -134,7 +134,7 @@ final class CreateTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Создать", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.setTitleColor(.ypWhiteDay, for: .normal)
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypGray
         button.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
@@ -164,7 +164,7 @@ final class CreateTrackerViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         addTapGestureToHideKeyboard()
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         
         setupCreateTrackerNameTextField()
         setupTableView()
@@ -204,7 +204,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     private func setupCreateTrackerView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scrollView)
@@ -307,7 +307,7 @@ final class CreateTrackerViewController: UIViewController {
             isColorSelected != nil
         {
             createButton.isEnabled = true
-            createButton.backgroundColor = .ypBlackDay
+            createButton.backgroundColor = .ypBlack
         } else {
             createButton.isEnabled = false
             createButton.backgroundColor = .ypGray
@@ -462,7 +462,7 @@ extension CreateTrackerViewController: UITableViewDataSource {
         let cell = UITableViewCell(style: .subtitle, reuseIdentifier: "cell")
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.text = cellButtonText[indexPath.row]
-        cell.textLabel?.textColor = .ypBlackDay
+        cell.textLabel?.textColor = .ypBlack
         cell.layer.masksToBounds = true
         
         cell.accessoryType = .disclosureIndicator

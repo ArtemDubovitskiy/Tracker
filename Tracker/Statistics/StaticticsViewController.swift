@@ -14,7 +14,7 @@ final class StaticticsViewController: UIViewController {
         let label = UILabel()
         label.text = "Статистика"
         label.font = UIFont.systemFont(ofSize: 34, weight: .bold)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +31,7 @@ final class StaticticsViewController: UIViewController {
         let label = UILabel()
         label.text = "Анализировать пока нечего"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -56,7 +56,7 @@ final class StaticticsViewController: UIViewController {
     }
     // MARK: - Setup View
     private func setupStatisticsTableView() {
-        statisticsTableView.backgroundColor = .ypWhiteDay
+        statisticsTableView.backgroundColor = .ypWhite
         statisticsTableView.delegate = self
         statisticsTableView.dataSource = self
         statisticsTableView.register(StatisticsCell.self, forCellReuseIdentifier: StatisticsCell.cellIdentifier)
@@ -64,7 +64,7 @@ final class StaticticsViewController: UIViewController {
     }
     
     private func setupStaticticsView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         view.addSubview(titleLabel)
         view.addSubview(staticticsImage)
         view.addSubview(staticticsLabel)

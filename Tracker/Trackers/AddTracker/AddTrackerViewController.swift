@@ -13,7 +13,7 @@ final class AddTrackerViewController: UIViewController {
         let label = UILabel()
         label.text = "Создание трекера"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -22,9 +22,9 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.tintColor = .ypBlack
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -34,9 +34,9 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.tintColor = .ypBlack
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -66,7 +66,7 @@ final class AddTrackerViewController: UIViewController {
     }
     // MARK: - Setup View
     private func setupAddTrackersView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         view.addSubview(titleAddTrackersLabel)
         view.addSubview(habitButton)
         view.addSubview(irregularEventButton)

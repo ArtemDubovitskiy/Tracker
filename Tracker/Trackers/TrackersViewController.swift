@@ -53,7 +53,7 @@ final class TrackersViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        collectionView.backgroundColor = .ypWhiteDay
+        collectionView.backgroundColor = .ypWhite
         collectionView.allowsMultipleSelection = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -72,7 +72,7 @@ final class TrackersViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("trackers.initial.label.text", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -89,7 +89,7 @@ final class TrackersViewController: UIViewController {
         let label = UILabel()
         label.text = NSLocalizedString("trackers.nothing.found", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -147,7 +147,7 @@ final class TrackersViewController: UIViewController {
     private func setupNavBar() {
         navigationItem.title = NSLocalizedString("app.title", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = true
-        navigationController?.navigationBar.tintColor = .ypBlackDay
+        navigationController?.navigationBar.tintColor = .ypBlack
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(named: "Add tracker"),
             style: .plain,
@@ -160,7 +160,7 @@ final class TrackersViewController: UIViewController {
     }
     
     private func setupTrackersView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         
         view.addSubview(initialImage)
         view.addSubview(initialLabel)

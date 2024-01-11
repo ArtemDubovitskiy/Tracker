@@ -21,8 +21,8 @@ final class CreateCategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Новая категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypBlack
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -30,9 +30,9 @@ final class CreateCategoryViewController: UIViewController {
     private lazy var createCategoryName: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Введите название категории"
-        textField.textColor = .ypBlackDay
+        textField.textColor = .ypBlack
         textField.layer.cornerRadius = 16
-        textField.backgroundColor = .ypBackgroundDay
+        textField.backgroundColor = .ypBackground
         textField.clearButtonMode = .whileEditing
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
@@ -48,9 +48,9 @@ final class CreateCategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.tintColor = .ypBlack
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapCreateCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -97,12 +97,12 @@ final class CreateCategoryViewController: UIViewController {
             createCategoryButton.backgroundColor = .ypGray
         } else {
             createCategoryButton.isEnabled = true
-            createCategoryButton.backgroundColor = .ypBlackDay
+            createCategoryButton.backgroundColor = .ypBlack
         }
     }
     // MARK: - Setup View
     private func setupCreateCategoryView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         createCategoryName.delegate = self
         createCategoryName.addTarget(self, 
                                      action: #selector(updateCreateCategoryButton),

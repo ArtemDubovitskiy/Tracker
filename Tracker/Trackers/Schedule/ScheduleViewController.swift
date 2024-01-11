@@ -18,15 +18,15 @@ final class ScheduleViewController: UIViewController {
         let label = UILabel()
         label.text = "Расписание"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypBlack
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     private lazy var scheduleTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypBackgroundDay
+        tableView.backgroundColor = .ypBackground
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
@@ -40,9 +40,9 @@ final class ScheduleViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.tintColor = .ypBlack
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, 
                          action: #selector(doneButtonTapped),
                          for: .touchUpInside)
@@ -80,7 +80,7 @@ final class ScheduleViewController: UIViewController {
     }
     
     private func setupScheduleView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         
         view.addSubview(titleLabel)
         view.addSubview(scheduleTableView)
@@ -145,7 +145,7 @@ extension ScheduleViewController: UITableViewDataSource {
         
         cell.textLabel?.text = "\(days.daysName)"
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-        cell.textLabel?.textColor = .ypBlackDay
+        cell.textLabel?.textColor = .ypBlack
         cell.layer.masksToBounds = true
         return cell
     }

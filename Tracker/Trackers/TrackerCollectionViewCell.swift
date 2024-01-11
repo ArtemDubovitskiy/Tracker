@@ -39,7 +39,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     
     private let emojiBackgroundView: UIView = {
         let view = UIView()
-        view.backgroundColor = .ypWhiteDay.withAlphaComponent(0.3)
+        view.backgroundColor = .ypWhite.withAlphaComponent(0.3)
         view.layer.cornerRadius = 12
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -56,7 +56,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let trackerDescritionLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypWhiteDay
+        label.textColor = .ypWhite
         label.numberOfLines = 0
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
@@ -65,7 +65,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // Quantity management
     private let quantitiManagmentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -73,7 +73,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private let numberOfDaysLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -91,7 +91,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     private lazy var plusTrackerButton: UIButton = {
         let button = UIButton(type: .custom)
         button.layer.cornerRadius = 17
-        button.tintColor = .ypWhiteDay
+        button.tintColor = .ypWhite
         button.addTarget(self,
                          action: #selector(plusTrackerButtonTapped),
                          for: .touchUpInside)
