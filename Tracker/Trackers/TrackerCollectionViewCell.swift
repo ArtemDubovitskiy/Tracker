@@ -134,7 +134,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
         trackerDescritionLabel.text = tracker.title
         emojiLabel.text = tracker.emoji
         self.pinTrackerImage.isHidden = tracker.pinned ? false : true
-        numberOfDaysLabel.text = formattedDays(completedDays)
+        numberOfDaysLabel.text = String.localizedStringWithFormat(NSLocalizedString("daysCount", comment: ""), completedDays)
         plusButtonSettings()
     }
     // MARK: - Private Methods
@@ -146,17 +146,6 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
 
         let image = isCompletedToday ? doneButtonImage : plusButtonImage
         plusTrackerButton.setImage(image, for: .normal)
-    }
-    
-    private func formattedDays(_ completedDays: Int) -> String {
-        let number = completedDays % 10
-        if number == 1 && number != 0 {
-            return "\(completedDays) день"
-        } else if number <= 4 && number > 1 {
-            return "\(completedDays) дня"
-        } else {
-            return "\(completedDays) дней"
-        }
     }
     // MARK: - Setup View
     private func setupTrackerCollectionView() {

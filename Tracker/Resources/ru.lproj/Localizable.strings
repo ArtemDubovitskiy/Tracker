@@ -1,0 +1,14 @@
+/* 
+  Localizable.strings
+  Tracker
+
+  Created by Artem Dubovitsky on 11.01.2024.
+  
+*/
+"app.title" = "Трекеры";
+"filter.title" = "Фильтры";
+"statistic.title" = "Статистика";
+"trackers.initial.label.text" = "Что будем отслеживать?";
+"trackers.nothing.found" = "Ничего не найдено";
+"searchBar.placeholder" = "Поиск";
+"cancel.button" = "Отменить";

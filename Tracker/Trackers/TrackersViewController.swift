@@ -39,9 +39,9 @@ final class TrackersViewController: UIViewController {
     
     private let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-        searchController.searchBar.placeholder = "Поиск"
+        searchController.searchBar.placeholder = NSLocalizedString("searchBar.placeholder", comment: "")
         searchController.searchBar.searchTextField.clearButtonMode = .never
-        searchController.searchBar.setValue("Отменить", forKey: "cancelButtonText")
+        searchController.searchBar.setValue(NSLocalizedString("cancel.button", comment: ""), forKey: "cancelButtonText")
         searchController.searchBar.tintColor = .ypBlue
         searchController.hidesNavigationBarDuringPresentation = false
         return searchController
@@ -69,7 +69,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var initialLabel: UILabel = {
         let label = UILabel()
-        label.text = "Что будем отслеживать?"
+        label.text = NSLocalizedString("trackers.initial.label.text", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypBlackDay
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -86,7 +86,7 @@ final class TrackersViewController: UIViewController {
     
     private lazy var searchLabel: UILabel = {
         let label = UILabel()
-        label.text = "Ничего не найдено"
+        label.text = NSLocalizedString("trackers.nothing.found", comment: "")
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         label.textColor = .ypBlackDay
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -133,7 +133,7 @@ final class TrackersViewController: UIViewController {
     }
     // MARK: - Setup View
     private func setupNavBar() {
-        navigationItem.title = "Трекеры"
+        navigationItem.title = NSLocalizedString("app.title", comment: "")
         navigationController?.navigationBar.prefersLargeTitles = true
         navigationController?.navigationBar.tintColor = .ypBlackDay
         navigationItem.leftBarButtonItem = UIBarButtonItem(
