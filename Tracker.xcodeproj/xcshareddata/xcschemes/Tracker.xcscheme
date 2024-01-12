@@ -39,11 +39,6 @@
                BlueprintName = "TrackerTests"
                ReferencedContainer = "container:Tracker.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "TrackerTests">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
    </TestAction>

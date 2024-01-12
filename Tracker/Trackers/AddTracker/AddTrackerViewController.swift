@@ -22,7 +22,7 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Привычка", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapHabitButton), for: .touchUpInside)
@@ -34,7 +34,7 @@ final class AddTrackerViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Нерегулярное событие", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapIrregularEventButton), for: .touchUpInside)
@@ -67,6 +67,7 @@ final class AddTrackerViewController: UIViewController {
     // MARK: - Setup View
     private func setupAddTrackersView() {
         view.backgroundColor = .ypWhite
+        habitButton.backgroundColor = .ypBlack
         view.addSubview(titleAddTrackersLabel)
         view.addSubview(habitButton)
         view.addSubview(irregularEventButton)

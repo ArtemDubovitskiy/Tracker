@@ -40,6 +40,7 @@ final class FilterViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.allowsMultipleSelection = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()

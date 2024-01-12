@@ -94,6 +94,7 @@ final class CreateTrackerViewController: UIViewController {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()

@@ -32,6 +32,7 @@ final class ScheduleViewController: UIViewController {
         tableView.isScrollEnabled = false
         tableView.allowsSelection = false
         tableView.separatorInset = .init(top: 0, left: 16, bottom: 0, right: 16)
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -40,7 +41,7 @@ final class ScheduleViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Готово", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.addTarget(self, 

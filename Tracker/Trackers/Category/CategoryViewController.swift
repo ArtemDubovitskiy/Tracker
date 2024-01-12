@@ -47,6 +47,7 @@ final class CategoryViewController: UIViewController {
         tableView.isScrollEnabled = true
         tableView.allowsMultipleSelection = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -55,7 +56,7 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlack
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
         button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
