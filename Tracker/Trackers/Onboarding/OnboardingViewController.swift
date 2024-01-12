@@ -20,7 +20,7 @@ final class OnboardingViewController: UIViewController {
         label.font = UIFont.systemFont(ofSize: 32, weight: .bold)
         label.textAlignment = .center
         label.numberOfLines = 2
-        label.textColor = .ypBlack
+        label.textColor = .ypBlackAny
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()

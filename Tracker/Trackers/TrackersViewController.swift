@@ -406,8 +406,8 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
         filteringTrackers()
     }
     
-    func editTracker(tracker: Tracker, editingTracker: Tracker?, category: String?) {
-        guard let category = category, let _ = editingTracker else { return }
+    func updateTracker(tracker: Tracker, editingTracker: Tracker?, category: String?) {
+        guard let category = category, let editingTracker = editingTracker else { return }
         try? self.trackerStore.editTracker(tracker, editingTracker: editingTracker)
         let foundCategory = self.categories.first { ctgry in
             ctgry.title == category

@@ -99,9 +99,11 @@ final class TrackerStore: NSObject {
     func editTracker(_ tracker: Tracker, editingTracker: Tracker?) throws {
         let editTracker = try fetchTracker(with: editingTracker)
         guard let editTracker = editTracker else { return }
+        editTracker.id = tracker.id
         editTracker.title = tracker.title
         editTracker.schedule = tracker.schedule as NSObject
         editTracker.emoji = tracker.emoji
+        editTracker.pinned = tracker.pinned
         editTracker.color = colorMarshalling.hexString(from: tracker.color)
         try context.save()
     }

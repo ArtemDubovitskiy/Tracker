@@ -8,7 +8,7 @@ import UIKit
 
 protocol CreateTrackerViewControllerDelegate: AnyObject {
     func createNewTracker(tracker: Tracker, category: String?)
-    func editTracker(tracker: Tracker, editingTracker: Tracker?, category: String?)
+    func updateTracker(tracker: Tracker, editingTracker: Tracker?, category: String?)
     func reloadCollectionView()
 }
 
@@ -285,13 +285,12 @@ final class CreateTrackerViewController: UIViewController {
         createTrackerName.text = tracker.title
         selectedCategory = category
         selectedDays = tracker.schedule
-
         isEmojiSelected?.row = emojies.firstIndex(of: tracker.emoji) ?? 0
         isColorSelected?.row = colors.firstIndex(where: {
             colorMarshalling.hexString(from: $0) == colorMarshalling.hexString(from: tracker.color)
         }) ?? 0
-        
-        daysCountLabel.text = "\(completedCount) дней"
+        daysCountLabel.text = String.localizedStringWithFormat(
+            NSLocalizedString("daysCount", comment: ""), completedCount)
     }
     // MARK: - Private Methods
     private func trackerTypeIrregularEvent() {
@@ -346,8 +345,8 @@ final class CreateTrackerViewController: UIViewController {
                 emoji: emoji,
                 schedule: self.selectedDays,
                 pinned: false)
-            if editTracker ?? false {
-                delegate?.editTracker(
+            if editTracker == true {
+                delegate?.updateTracker(
                     tracker: newTracker,
                     editingTracker: editingTracker,
                     category: selectedCategory.title)
@@ -361,7 +360,7 @@ final class CreateTrackerViewController: UIViewController {
             }
         } else {
             let newTracker = Tracker(
-                id: editTrackerId ?? UUID(),
+                id: UUID(),
                 title: trackerName,
                 color: color,
                 emoji: emoji,
