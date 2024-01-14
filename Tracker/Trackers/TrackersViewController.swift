@@ -53,7 +53,7 @@ final class TrackersViewController: UIViewController {
             frame: .zero,
             collectionViewLayout: UICollectionViewFlowLayout()
         )
-        collectionView.backgroundColor = .ypWhite
+        collectionView.backgroundColor = .clear
         collectionView.allowsMultipleSelection = false
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +114,11 @@ final class TrackersViewController: UIViewController {
         dateFiltering()
         coreDataSetup()
         reloadVisibleCategories()
-        showInitialStub()
+        if trackerStore.trackers.count > 0 {
+            showSearchStub()
+        } else {
+            showInitialStub()
+        }
         
         setupNavBar()
         setupTrackersView()
@@ -235,7 +239,8 @@ final class TrackersViewController: UIViewController {
     }
     // MARK: - Private Methods
     private func showInitialStub() {
-        let emptyVisibleCategories = visibleCategories.isEmpty
+        let emptyVisibleCategories = trackerStore.trackers.count > 0 || 
+        visibleCategories.isEmpty
         collectionView.isHidden = emptyVisibleCategories
         searchImage.isHidden = emptyVisibleCategories
         searchLabel.isHidden = emptyVisibleCategories
@@ -251,8 +256,8 @@ final class TrackersViewController: UIViewController {
     private func showSearchStub() {
         let emptyVisibleCategories = visibleCategories.isEmpty
         collectionView.isHidden = emptyVisibleCategories
-        initialImage.isHidden = emptyVisibleCategories
-        initialLabel.isHidden = emptyVisibleCategories
+        initialImage.isHidden = true
+        initialLabel.isHidden = true
         searchImage.isHidden = !emptyVisibleCategories
         searchLabel.isHidden = !emptyVisibleCategories
     }
@@ -554,6 +559,11 @@ extension TrackersViewController: UICollectionViewDelegate {
                     guard let self = self else { return }
                     do {
                         try self.trackerStore.pinTracker(tracker, value: false)
+                        if trackerStore.trackers.count > 0 {
+                            self.showSearchStub()
+                        } else {
+                            self.showInitialStub()
+                        }
                     } catch {
                         errorReporting.showAlert(
                             title: "Error!",
@@ -579,6 +589,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                     }.count
                 )
                 self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "edit"])
+                self.collectionView.reloadData()
                 self.present(createTrackerViewController, animated: true)
             })
             
@@ -604,6 +615,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                         self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
                         self.reloadVisibleCategories()
                         self.showInitialStub()
+                        self.showSearchStub()
                     }
                 alertController.addAction(deleteAction)
                 
@@ -617,6 +629,7 @@ extension TrackersViewController: UICollectionViewDelegate {
             }
             return UIMenu(title: "", children: [pinAction, editAction, deleteAction])
         }
+        self.collectionView.reloadData()
         return configuration
     }
 

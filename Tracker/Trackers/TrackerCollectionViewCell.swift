@@ -65,7 +65,7 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // Quantity management
     private let quantitiManagmentView: UIView = {
         let view = UIView()
-        view.backgroundColor = .ypWhite
+        view.backgroundColor = .clear
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -142,10 +142,8 @@ final class TrackerCollectionViewCell: UICollectionViewCell {
     // MARK: - Private Methods
     private func plusButtonSettings() {
         plusTrackerButton.backgroundColor = trackerCard.backgroundColor
-        
         let plusTrackerButtonOpacity: Float = isCompletedToday ? 0.3 : 1
         plusTrackerButton.layer.opacity = plusTrackerButtonOpacity
-
         let image = isCompletedToday ? doneButtonImage : plusButtonImage
         plusTrackerButton.setImage(image, for: .normal)
     }

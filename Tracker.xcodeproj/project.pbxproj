@@ -124,6 +124,8 @@
 		917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 		91A7ABAD2B5079F50088B951 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		91C41B8B2B52EF4F00F5B0A8 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-GB"; path = "en-GB.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
+		91C41B8C2B52EF4F00F5B0A8 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
 		91C4AD272AC317A400488630 /* Tracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tracker.swift; sourceTree = "<group>"; };
 		91C4AD292AC323C100488630 /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 				en,
 				Base,
 				ru,
+				"en-GB",
 			);
 			mainGroup = 91469F162AA6876B003A3B06;
 			packageReferences = (
@@ -615,6 +618,7 @@
 			children = (
 				9118AA7C2B50149A0067F306 /* en */,
 				9118AA7F2B5017EB0067F306 /* ru */,
+				91C41B8C2B52EF4F00F5B0A8 /* en-GB */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -624,6 +628,7 @@
 			children = (
 				9118AA832B501ABC0067F306 /* en */,
 				9118AA852B501ABD0067F306 /* ru */,
+				91C41B8B2B52EF4F00F5B0A8 /* en-GB */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
