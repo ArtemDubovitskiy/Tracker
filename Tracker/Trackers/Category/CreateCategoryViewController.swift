@@ -13,7 +13,7 @@ protocol CreateCategoryViewControllerDelegate: AnyObject {
 final class CreateCategoryViewController: UIViewController {
     weak var delegate: CreateCategoryViewControllerDelegate?
     var existingCategory: TrackerCategory?
-    private (set) var categoryViewModel = CategoryViewModel()
+    private var categoryViewModel = CategoryViewModel()
     private let errorReporting = ErrorReporting()
     var isEditCategory = Bool()
     // MARK: - UI-Elements

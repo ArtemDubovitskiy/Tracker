@@ -16,7 +16,7 @@ protocol FilterViewControllerDelegate: AnyObject {
 final class FilterViewController: UIViewController {
     weak var delegate: FilterViewControllerDelegate?
     static var filterIndex: Int = 0
-    var trackerFilters = ["Все трекеры",
+    private var trackerFilters = ["Все трекеры",
                          "Трекеры на сегодня",
                          "Завершенные",
                          "Не завершенные"]

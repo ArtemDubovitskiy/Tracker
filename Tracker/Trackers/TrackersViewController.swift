@@ -275,9 +275,10 @@ final class TrackersViewController: UIViewController {
     }
 
     private func reloadVisibleCategories() {
+        categories = trackerCategoryStore.trackerCategories
         let pinCategory = "Закрепленные"
         pinnedCategory = TrackerCategory(title: pinCategory, trackers: pinnedTrackers)
-        visibleCategories = categories.map { category -> TrackerCategory in
+        visibleCategories = categories.map { category in
             let filterTrackers = category.trackers.filter { tracker -> Bool in
                 let pinnedCondition = pinnedTrackers.contains { $0.id == tracker.id }
                 let dateCondition = tracker.schedule.contains { day in
@@ -292,17 +293,17 @@ final class TrackersViewController: UIViewController {
             return TrackerCategory(
                 title: category.title,
                 trackers: filterTrackers)
-        }
-        visibleCategories = visibleCategories.filter { !$0.trackers.isEmpty }
+        }.filter { !$0.trackers.isEmpty }
         if let pinCategory = pinnedCategory, !pinCategory.trackers.isEmpty {
             visibleCategories.insert(pinCategory, at: 0)
         }
+        
         filterButtonVisibility()
     }
     
     private func isTrackerCompletedToday(id: UUID) -> Bool {
-        completedTrackers.contains {
-            isSameTrackerRecord(trackerRecord: $0, id: id)
+        completedTrackers.contains { trackerRecord in
+            isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
         }
     }
     
@@ -434,6 +435,7 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     }
     
     func reloadCollectionView() {
+        reloadVisibleCategories()
         self.collectionView.reloadData()
     }
 }
@@ -468,6 +470,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
     private func trackersInSelectedDay(isCompleted: Bool) {
         let selectedTrackers = completedTrackers.filter { date(date1: $0.date,
                                                                     date2: currentDate )}
+        categories = trackerCategoryStore.trackerCategories
         visibleCategories = categories.map { category -> TrackerCategory in
             let categories = category.trackers.filter { tracker in
                 let shedule = tracker.schedule
@@ -479,7 +482,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
                         return day.rawValue == cerrentDate
                     }
                 } else {
-                    return selectedTrackers.contains { $0.trackerId == tracker.id }
+                    return !selectedTrackers.contains { $0.trackerId == tracker.id }
                 }
             }
             return TrackerCategory(title: category.title, trackers: categories)
@@ -488,7 +491,7 @@ extension TrackersViewController: FilterViewControllerDelegate {
         visibleCategories.forEach { category in
             category.trackers.forEach { tracker in
                 let isCompletedToday = completedTrackers.contains { recordTracker in
-                    recordTracker.trackerId == tracker.id
+                    recordTracker.trackerId == tracker.id && date(date1: recordTracker.date, date2: currentDate)
                 }
                 isCompletedTracker[tracker.id] = isCompletedToday
             }
@@ -538,7 +541,6 @@ extension TrackersViewController: UICollectionViewDelegate {
                         point: CGPoint) -> UIContextMenuConfiguration? {
         let tracker = self.visibleCategories[indexPath.section].trackers[indexPath.row]
         let index = "\(indexPath.row):\(indexPath.section)" as NSString
-        
         let configuration = UIContextMenuConfiguration(identifier: index,
                                                        previewProvider: nil) { _ -> UIMenu? in
             var pinAction: UIAction

@@ -82,7 +82,7 @@ final class TrackerStore: NSObject {
         trackerCoreData.schedule = tracker.schedule as NSObject
     }
     
-    func pinTracker(_ tracker: Tracker?, value: Bool) throws {
+    func pinTracker(_ tracker: Tracker, value: Bool) throws {
         let pinTracker = try fetchTracker(with: tracker)
         guard let pinTracker = pinTracker else { return }
         pinTracker.pinned = value

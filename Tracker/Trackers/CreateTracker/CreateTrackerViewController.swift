@@ -350,6 +350,7 @@ final class CreateTrackerViewController: UIViewController {
                     tracker: newTracker,
                     editingTracker: editingTracker,
                     category: selectedCategory.title)
+                delegate?.reloadCollectionView()
             } else {
                 delegate?.createNewTracker(
                     tracker: newTracker,
