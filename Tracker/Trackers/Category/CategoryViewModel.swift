@@ -22,20 +22,44 @@ final class CategoryViewModel {
         do {
             try self.trackerCategoryStore.addCategory(TrackerCategory(title: name, trackers: []))
         } catch {
+            // TODO: "Обработать ошибку"
             print("Error add category: \(error.localizedDescription)")
         }
     }
     
-    func addNewTrackerToCategory(to title: String?, tracker: Tracker) {
+    func addTrackerToCategory(to category: TrackerCategory, tracker: Tracker) {
         do {
-            try self.trackerCategoryStore.addNewTrackerToCategory(to: title, tracker: tracker)
+            try self.trackerCategoryStore.addTrackerToCategory(to: category, tracker: tracker)
         } catch {
+            // TODO: "Обработать ошибку"
             print("Error add new tracker to category: \(error.localizedDescription)")
+        }
+    }
+    
+    func deleteCategory(_ category: TrackerCategory) {
+        do {
+            try self.trackerCategoryStore.deleteCategory(category)
+        } catch {
+            // TODO: "Обработать ошибку"
+            print("Error delete category: \(error.localizedDescription)")
+        }
+    }
+    
+    func editCategory(category: TrackerCategory?, title: String) {
+        do {
+            try self.trackerCategoryStore.editCaregory(category: category, title: title)
+        } catch {
+            // TODO: "Обработать ошибку"
+            print("Error edit category: \(error.localizedDescription)")
         }
     }
     
     func selectCategory(_ index: Int) {
         self.selectedCategory = self.categories[index]
+    }
+    
+    func checkingSavedCategory(_ title: String) -> Bool {
+        return categories.contains(where: { $0.title == title })
     }
 }
 // MARK: - TrackerCategoryStoreDelegate

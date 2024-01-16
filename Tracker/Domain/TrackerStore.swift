@@ -14,6 +14,7 @@ enum TrackerStoreError: Error {
     case decodingErrorInvalidEmoji
     case decodingErrorInvalidSchedule
     case decodingErrorInvalid
+    case decodingErrorInvalidFetchTracker
 }
 
 protocol TrackerStoreDelegate: AnyObject {
@@ -80,6 +81,44 @@ final class TrackerStore: NSObject {
         trackerCoreData.emoji = tracker.emoji
         trackerCoreData.schedule = tracker.schedule as NSObject
     }
+    
+    func pinTracker(_ tracker: Tracker, value: Bool) throws {
+        let pinTracker = try fetchTracker(with: tracker)
+        guard let pinTracker = pinTracker else { return }
+        pinTracker.pinned = value
+        try context.save()
+    }
+    
+    func deleteTracker(_ tracker: Tracker?) throws {
+        let deleteTracker = try fetchTracker(with: tracker)
+        guard let deleteTracker = deleteTracker else { return }
+        context.delete(deleteTracker)
+        try context.save()
+    }
+    
+    func editTracker(_ tracker: Tracker, editingTracker: Tracker?) throws {
+        let editTracker = try fetchTracker(with: editingTracker)
+        guard let editTracker = editTracker else { return }
+        editTracker.id = tracker.id
+        editTracker.title = tracker.title
+        editTracker.schedule = tracker.schedule as NSObject
+        editTracker.emoji = tracker.emoji
+        editTracker.pinned = tracker.pinned
+        editTracker.color = colorMarshalling.hexString(from: tracker.color)
+        try context.save()
+    }
+    
+    func fetchTracker(with tracker: Tracker?) throws -> TrackerCoreData? {
+        guard let tracker = tracker else {
+            throw TrackerStoreError.decodingErrorInvalidFetchTracker
+        }
+        let fetchRequest: NSFetchRequest<TrackerCoreData> = TrackerCoreData.fetchRequest()
+        fetchRequest.predicate = NSPredicate(
+            format: "id == %@",
+            tracker.id as CVarArg)
+        let result = try context.fetch(fetchRequest)
+        return result.first
+    }
     // MARK: - Private Methods
     private func tracker(from trackersCoreData: TrackerCoreData) throws -> Tracker {
         guard let id = trackersCoreData.id else {
@@ -101,13 +140,15 @@ final class TrackerStore: NSObject {
         guard let schedule = trackersCoreData.schedule else {
             throw TrackerStoreError.decodingErrorInvalidSchedule
         }
+        let pinned = trackersCoreData.pinned
         
         return Tracker(
             id: id,
             title: title,
             color: colorMarshalling.color(from: color),
             emoji: emoji,
-            schedule: schedule as! [WeekDay])
+            schedule: schedule as! [WeekDay],
+            pinned: pinned)
     }
 }
 // MARK: - NSFetchedResultsControllerDelegate

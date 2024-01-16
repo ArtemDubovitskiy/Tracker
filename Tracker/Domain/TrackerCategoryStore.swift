@@ -68,30 +68,44 @@ final class TrackerCategoryStore: NSObject {
         try context.save()
     }
     
-    func addNewTrackerToCategory(to title: String?, tracker: Tracker) throws {
+    func addTrackerToCategory(to category: TrackerCategory, tracker: Tracker) throws {
         let trackerCoreData = try trackerStore.createTracker(tracker)
         
-        if let category = try? fetchTrackerCategory(with: title) {
+        if let category = try? fetchTrackerCategory(with: category) {
             guard let trackers = category.trackers else { return }
             guard var newTrackerCoreData = trackers.allObjects as? [TrackerCoreData] else { return }
             newTrackerCoreData.append(trackerCoreData)
             category.trackers = NSSet(array: newTrackerCoreData)
         } else {
             let newCategory = TrackerCategoryCoreData(context: context)
-            newCategory.title = title
+            newCategory.title = category.title
             newCategory.trackers = NSSet(array: [trackerCoreData])
         }
         try context.save()
     }
     
-    func fetchTrackerCategory(with title: String?) throws -> TrackerCategoryCoreData? {
-        guard let title = title else {
+    func deleteCategory(_ category: TrackerCategory?) throws {
+        let deleteCategory = try fetchTrackerCategory(with: category)
+        guard let deleteCategory = deleteCategory else { return }
+        context.delete(deleteCategory)
+        try context.save()
+    }
+    
+    func editCaregory(category: TrackerCategory?, title: String) throws {
+        let editCaregory = try fetchTrackerCategory(with: category)
+        guard let editCaregory = editCaregory else { return }
+        editCaregory.title = title
+        try context.save()
+    }
+    
+    func fetchTrackerCategory(with category: TrackerCategory?) throws -> TrackerCategoryCoreData? {
+        guard let category = category else {
             throw TrackerCategoryStoreError.decodingErrorInvalidFetchTitle
         }
         let fetchRequest: NSFetchRequest<TrackerCategoryCoreData> = TrackerCategoryCoreData.fetchRequest()
         fetchRequest.predicate = NSPredicate(
             format: "title == %@",
-            title as CVarArg)
+            category.title as CVarArg)
         let result = try context.fetch(fetchRequest)
         return result.first
     }

@@ -8,13 +8,14 @@ import UIKit
 
 final class CategoryViewController: UIViewController {
     private (set) var categoryViewModel = CategoryViewModel()
+    private let errorReporting = ErrorReporting()
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "Категория"
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .ypBlackDay
-        label.backgroundColor = .ypWhiteDay
+        label.textColor = .ypBlack
+        label.backgroundColor = .ypWhite
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
@@ -31,7 +32,7 @@ final class CategoryViewController: UIViewController {
         let label = UILabel()
         label.text = "Привычки и события можно\n объединять по смыслу"
         label.font = UIFont.systemFont(ofSize: 12, weight: .medium)
-        label.textColor = .ypBlackDay
+        label.textColor = .ypBlack
         label.numberOfLines = 2
         label.textAlignment = .center
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -40,12 +41,13 @@ final class CategoryViewController: UIViewController {
     
     private lazy var categoryTableView: UITableView = {
         let tableView = UITableView()
-        tableView.backgroundColor = .ypWhiteDay
+        tableView.backgroundColor = .ypWhite
         tableView.layer.cornerRadius = 16
         tableView.rowHeight = UITableView.automaticDimension
         tableView.isScrollEnabled = true
         tableView.allowsMultipleSelection = false
         tableView.separatorStyle = .singleLine
+        tableView.separatorColor = .ypGray
         tableView.translatesAutoresizingMaskIntoConstraints = false
         return tableView
     }()
@@ -54,9 +56,9 @@ final class CategoryViewController: UIViewController {
         let button = UIButton()
         button.setTitle("Добавить категорию", for: .normal)
         button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        button.tintColor = .ypBlackDay
+        button.setTitleColor(.ypWhite, for: .normal)
         button.layer.cornerRadius = 16
-        button.backgroundColor = .ypBlackDay
+        button.backgroundColor = .ypBlack
         button.addTarget(self, action: #selector(didTapAddCategoryButton), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -86,7 +88,7 @@ final class CategoryViewController: UIViewController {
     }
     
     private func setupCategoryView() {
-        view.backgroundColor = .ypWhiteDay
+        view.backgroundColor = .ypWhite
         view.addSubview(titleLabel)
         view.addSubview(stubImage)
         view.addSubview(stubLabel)
@@ -170,6 +172,51 @@ extension CategoryViewController: UITableViewDelegate {
             self.dismiss(animated: true)
         }
     }
+    
+    func tableView(_ tableView: UITableView,
+                   contextMenuConfigurationForRowAt indexPath: IndexPath,
+                   point: CGPoint) -> UIContextMenuConfiguration? {
+        let category = self.categoryViewModel.categories[indexPath.row]
+        
+        let configuration = UIContextMenuConfiguration(identifier: nil,
+                                                       previewProvider: nil) { _ -> UIMenu? in
+            let editAction = UIAction(title: "Редактировать") { [weak self] _ in
+                guard let self = self else { return }
+                let createCategoryViewController = CreateCategoryViewController()
+                createCategoryViewController.delegate = self
+                createCategoryViewController.editCategory(category)
+                createCategoryViewController.isEditCategory = true
+                self.present(createCategoryViewController, animated: true, completion: nil)
+            }
+            
+            let deleteAction = UIAction(title: "Удалить", attributes: .destructive) { [weak self] _ in
+                guard let self = self else { return }
+                let alertController = UIAlertController(
+                    title: nil,
+                    message: "Эта категория точно не нужна?",
+                    preferredStyle: .actionSheet)
+                
+                let deleteAction = UIAlertAction(
+                    title: "Удалить",
+                    style: .destructive) { _ in
+                        self.categoryViewModel.deleteCategory(category)
+                        self.categoryTableView.reloadData()
+                        self.showInitialStub()
+                    }
+                alertController.addAction(deleteAction)
+                
+                let cancelAction = UIAlertAction(
+                    title: "Отменить",
+                    style: .cancel,
+                    handler: nil)
+                
+                alertController.addAction(cancelAction)
+                self.present(alertController, animated: true, completion: nil)
+            }
+            return UIMenu(title: "", children: [editAction, deleteAction])
+        }
+        return configuration
+    }
 }
 // MARK: - UITableViewDataSource
 extension CategoryViewController: UITableViewDataSource {
@@ -189,7 +236,7 @@ extension CategoryViewController: UITableViewDataSource {
             let category = categoryViewModel.categories[indexPath.row]
             cell.textLabel?.text = category.title
             cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
-            cell.textLabel?.textColor = .ypBlackDay
+            cell.textLabel?.textColor = .ypBlack
             cell.layer.masksToBounds = true
             
             if category.title == categoryViewModel.selectedCategory?.title {
@@ -204,8 +251,7 @@ extension CategoryViewController: UITableViewDataSource {
 }
 // MARK: - CreateCategoryViewControllerDelegate
 extension CategoryViewController: CreateCategoryViewControllerDelegate {
-    func addNewCategory(category: String) {
-        categoryViewModel.addCategory(category)
+    func reload() {
         self.categoryTableView.reloadData()
         showInitialStub()
     }

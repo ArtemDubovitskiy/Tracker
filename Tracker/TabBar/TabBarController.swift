@@ -12,14 +12,14 @@ final class TabBarController: UITabBarController {
         
         let trackersViewController = UINavigationController(rootViewController: TrackersViewController())
         trackersViewController.tabBarItem = UITabBarItem(
-            title: "Трекеры",
+            title: NSLocalizedString("app.title", comment: ""),
             image: UIImage(named: "Trackers"),
             selectedImage: nil
         )
         
         let staticticsViewController = StaticticsViewController()
         staticticsViewController.tabBarItem = UITabBarItem(
-            title: "Статистика",
+            title: NSLocalizedString("statistic.title", comment: ""),
             image: UIImage(named: "Stats"),
             selectedImage: nil
         )
@@ -28,7 +28,7 @@ final class TabBarController: UITabBarController {
         if #available(iOS 13.0, *) {
             let tabBarAppearance: UITabBarAppearance = UITabBarAppearance()
             tabBarAppearance.configureWithDefaultBackground()
-            tabBarAppearance.backgroundColor = UIColor.ypWhiteDay
+            tabBarAppearance.backgroundColor = UIColor.ypWhite
             UITabBar.appearance().standardAppearance = tabBarAppearance
 
             if #available(iOS 15.0, *) {

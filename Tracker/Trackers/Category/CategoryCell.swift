@@ -11,7 +11,7 @@ final class CategoryCell: UITableViewCell {
   
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: .default, reuseIdentifier: reuseIdentifier)
-        backgroundColor = .ypBackgroundDay
+        backgroundColor = .ypBackground
     }
     
     required init?(coder: NSCoder) {
