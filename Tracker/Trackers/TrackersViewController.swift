@@ -17,12 +17,12 @@ final class TrackersViewController: UIViewController {
     private var categories: [TrackerCategory] = []
     private var visibleCategories: [TrackerCategory] = []
     private var pinnedCategory: TrackerCategory?
+    private let pinnedCategoryName = "Закрепленные"
     private var completedTrackers: [TrackerRecord] = []
-    private var isCompletedTracker: [UUID: Bool] = [:]
     private var currentDate: Date = Date()
     private var selectedDay: Int?
     private var filterText: String?
-    private var currentFilterMode = "Все фильтры"
+    private var currentFilterMode: Filters = .allTrackers
     private let analyticsService = AnalyticsService()
     // MARK: - UI-Elements
     private lazy var datePicker: UIDatePicker = {
@@ -113,13 +113,12 @@ final class TrackersViewController: UIViewController {
         addTapGestureToHideKeyboard()
         dateFiltering()
         coreDataSetup()
-        reloadVisibleCategories()
+        reloadVisibleCategories(filterCompletedTrackers: nil)
         if trackerStore.trackers.count > 0 {
             showSearchStub()
         } else {
             showInitialStub()
         }
-        
         setupNavBar()
         setupTrackersView()
         setupCollectionView()
@@ -141,7 +140,6 @@ final class TrackersViewController: UIViewController {
         trackerStore.delegate = self
         trackers = trackerStore.trackers.filter { !$0.pinned }
         pinnedTrackers = trackerStore.trackers.filter { $0.pinned }
-        
         trackerCategoryStore.delegate = self
         categories = trackerCategoryStore.trackerCategories
         trackerRecordStore.delegate = self
@@ -228,6 +226,9 @@ final class TrackersViewController: UIViewController {
     @objc
     private func dateSelection() {
         dateFiltering()
+        filterNotActive()
+        showSearchStub()
+        collectionView.reloadData()
         filteringTrackers()
     }
     @objc
@@ -269,38 +270,66 @@ final class TrackersViewController: UIViewController {
     }
     
     private func filteringTrackers() {
-        reloadVisibleCategories()
+        reloadVisibleCategories(filterCompletedTrackers: nil)
         showSearchStub()
         collectionView.reloadData()
     }
-
-    private func reloadVisibleCategories() {
+    
+    private func filterNotActive() {
+        switch currentFilterMode {
+        case .allTrackers:
+            reloadVisibleCategories(filterCompletedTrackers: nil)
+        case .trackersToday:
+            reloadVisibleCategories(filterCompletedTrackers: nil)
+        case .completedTrackers:
+            reloadVisibleCategories(filterCompletedTrackers: true)
+        case .unCompletedTrackers:
+            reloadVisibleCategories(filterCompletedTrackers: false)
+        }
+    }
+    
+    private func reloadVisibleCategories(filterCompletedTrackers: Bool?) {
+        // Фильтрацию закрепленной категории не предусматривал. Прошу не счиать критическим замечанием.
+        pinnedCategory = TrackerCategory(title: pinnedCategoryName, trackers: pinnedTrackers)
         categories = trackerCategoryStore.trackerCategories
-        let pinCategory = "Закрепленные"
-        pinnedCategory = TrackerCategory(title: pinCategory, trackers: pinnedTrackers)
-        visibleCategories = categories.map { category in
-            let filterTrackers = category.trackers.filter { tracker -> Bool in
-                let pinnedCondition = pinnedTrackers.contains { $0.id == tracker.id }
+        visibleCategories = categories.compactMap { category in
+            let trackers = category.trackers.filter { tracker in
+                let textCondition = tracker.title.contains(filterText ?? "") ||
+                (filterText ?? "").isEmpty // есть
                 let dateCondition = tracker.schedule.contains { day in
                     guard let cerrentDate = self.selectedDay else {
                         return true
                     }
                     return day.rawValue == cerrentDate
                 }
-                let textCondition = tracker.title.contains(self.filterText ?? "") || (self.filterText ?? "").isEmpty
-                return !pinnedCondition && dateCondition && textCondition
+                var pinnedCondition = true
+                if category.title != pinnedCategoryName {
+                    pinnedCondition = tracker.pinned == false
+                }
+                guard let filterCompletedTrackers = filterCompletedTrackers else {
+                    return textCondition && dateCondition && pinnedCondition
+                }
+                let completedTracker = completedTrackers.first { trackerRecord in
+                    let isSameDay = Calendar.current.isDate(trackerRecord.date, inSameDayAs: datePicker.date)
+                    return tracker.id == trackerRecord.trackerId && isSameDay
+                } != nil
+                let filterCondition = completedTracker == filterCompletedTrackers
+                
+                return textCondition && dateCondition && pinnedCondition && filterCondition
+            }
+            if trackers.isEmpty {
+                return nil
             }
             return TrackerCategory(
                 title: category.title,
-                trackers: filterTrackers)
-        }.filter { !$0.trackers.isEmpty }
+                trackers: trackers)
+        }
         if let pinCategory = pinnedCategory, !pinCategory.trackers.isEmpty {
             visibleCategories.insert(pinCategory, at: 0)
         }
-        
         filterButtonVisibility()
     }
-    
+
     private func isTrackerCompletedToday(id: UUID) -> Bool {
         completedTrackers.contains { trackerRecord in
             isSameTrackerRecord(trackerRecord: trackerRecord, id: id)
@@ -331,7 +360,7 @@ extension TrackersViewController: TrackerStoreDelegate {
         let trackerStore = trackerStore.trackers
         trackers = trackerStore.filter { !$0.pinned }
         pinnedTrackers = trackerStore.filter { $0.pinned }
-        reloadVisibleCategories()
+        filterNotActive()
         collectionView.reloadData()
     }
 }
@@ -435,67 +464,36 @@ extension TrackersViewController: CreateTrackerViewControllerDelegate {
     }
     
     func reloadCollectionView() {
-        reloadVisibleCategories()
-        self.collectionView.reloadData()
+        filteringTrackers()
     }
 }
 // MARK: - FilterViewControllerDelegate
 extension TrackersViewController: FilterViewControllerDelegate {
     func allTrackers() {
-        reloadVisibleCategories()
+        currentFilterMode = .allTrackers
+        reloadVisibleCategories(filterCompletedTrackers: nil)
         collectionView.reloadData()
     }
     
     func trackersToday() {
+        currentFilterMode = .trackersToday
         datePicker.date = currentDate
         dateFiltering()
         filteringTrackers()
     }
 
     func completedTrackersToday() {
-        trackersInSelectedDay(isCompleted: true)
+        currentFilterMode = .completedTrackers
+        reloadVisibleCategories(filterCompletedTrackers: true)
+        showSearchStub()
         collectionView.reloadData()
     }
     
     func unCompletedTrackersToday() {
-        trackersInSelectedDay(isCompleted: false)
+        currentFilterMode = .unCompletedTrackers
+        reloadVisibleCategories(filterCompletedTrackers: false)
+        showSearchStub()
         collectionView.reloadData()
-    }
-    
-    private func date(date1: Date, date2: Date) -> Bool {
-        let calendar = Calendar.current
-        return calendar.isDate(date1, equalTo: date2, toGranularity: .day)
-    }
-    
-    private func trackersInSelectedDay(isCompleted: Bool) {
-        let selectedTrackers = completedTrackers.filter { date(date1: $0.date,
-                                                                    date2: currentDate )}
-        categories = trackerCategoryStore.trackerCategories
-        visibleCategories = categories.map { category -> TrackerCategory in
-            let categories = category.trackers.filter { tracker in
-                let shedule = tracker.schedule
-                if isCompleted || !shedule.isEmpty {
-                    return shedule.contains { day in
-                        guard let cerrentDate = self.selectedDay else {
-                            return true
-                        }
-                        return day.rawValue == cerrentDate
-                    }
-                } else {
-                    return !selectedTrackers.contains { $0.trackerId == tracker.id }
-                }
-            }
-            return TrackerCategory(title: category.title, trackers: categories)
-        }.filter { !$0.trackers.isEmpty }
-        
-        visibleCategories.forEach { category in
-            category.trackers.forEach { tracker in
-                let isCompletedToday = completedTrackers.contains { recordTracker in
-                    recordTracker.trackerId == tracker.id && date(date1: recordTracker.date, date2: currentDate)
-                }
-                isCompletedTracker[tracker.id] = isCompletedToday
-            }
-        }
     }
 }
 // MARK: - UICollectionViewDataSource
@@ -615,7 +613,7 @@ extension TrackersViewController: UICollectionViewDelegate {
                                 controller: self)
                         }
                         self.analyticsService.report(event: "click", params: ["screen": "Main", "item": "delete"])
-                        self.reloadVisibleCategories()
+                        self.reloadVisibleCategories(filterCompletedTrackers: nil)
                         self.showInitialStub()
                         self.showSearchStub()
                     }

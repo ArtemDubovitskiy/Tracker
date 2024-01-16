@@ -16,11 +16,8 @@ protocol FilterViewControllerDelegate: AnyObject {
 final class FilterViewController: UIViewController {
     weak var delegate: FilterViewControllerDelegate?
     static var filterIndex: Int = 0
-    private var trackerFilters = ["Все трекеры",
-                         "Трекеры на сегодня",
-                         "Завершенные",
-                         "Не завершенные"]
-    var selectedFilter = "Все трекеры"
+    private var trackerFilters: [Filters] = Filters.allCases
+    private var selectedFilter: Filters?
     // MARK: - UI-Elements
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
@@ -87,7 +84,7 @@ extension FilterViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView,
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath) {
-        if indexPath.row == trackerFilters.count - 1 {
+        if indexPath.row == Filters.allCases.count - 1 {
             cell.layer.cornerRadius = 16
             cell.layer.masksToBounds = true
             cell.layer.maskedCorners = [.layerMinXMaxYCorner, .layerMaxXMaxYCorner]
@@ -140,7 +137,7 @@ extension FilterViewController: UITableViewDataSource {
             for: indexPath) as? FilterCell else { return UITableViewCell() }
         let filterText = trackerFilters[indexPath.row]
         
-        cell.textLabel?.text = filterText
+        cell.textLabel?.text = filterText.rawValue
         cell.textLabel?.font = UIFont.systemFont(ofSize: 17, weight: .regular)
         cell.textLabel?.textColor = .ypBlack
         cell.layer.masksToBounds = true

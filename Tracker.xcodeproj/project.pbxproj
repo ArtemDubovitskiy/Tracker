@@ -32,6 +32,7 @@
 		917A84432B507D2000A5E411 /* SnapshotTesting in Frameworks */ = {isa = PBXBuildFile; productRef = 917A84422B507D2000A5E411 /* SnapshotTesting */; };
 		917E26BC2ACF0837009AF644 /* TrackerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */; };
 		917E26BE2AD546FA009AF644 /* CreateTrackerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */; };
+		91B2AF2F2B563021002F3A55 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91B2AF2E2B563021002F3A55 /* Filters.swift */; };
 		91C41B8A2B516F5000F5B0A8 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 91A7ABAD2B5079F50088B951 /* XCTest.framework */; platformFilter = ios; };
 		91C4AD222AC1FF1200488630 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */; };
 		91C4AD282AC317A400488630 /* Tracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C4AD272AC317A400488630 /* Tracker.swift */; };
@@ -124,6 +125,7 @@
 		917E26BB2ACF0837009AF644 /* TrackerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackerCollectionViewCell.swift; sourceTree = "<group>"; };
 		917E26BD2AD546F9009AF644 /* CreateTrackerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateTrackerViewController.swift; sourceTree = "<group>"; };
 		91A7ABAD2B5079F50088B951 /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		91B2AF2E2B563021002F3A55 /* Filters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
 		91C41B8B2B52EF4F00F5B0A8 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = "en-GB"; path = "en-GB.lproj/Localizable.stringsdict"; sourceTree = "<group>"; };
 		91C41B8C2B52EF4F00F5B0A8 /* en-GB */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "en-GB"; path = "en-GB.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		91C4AD212AC1FF1200488630 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
@@ -191,8 +193,9 @@
 		9118AA682B4F672C0067F306 /* Filter */ = {
 			isa = PBXGroup;
 			children = (
-				9118AA692B4F67590067F306 /* FilterViewController.swift */,
+				91B2AF2E2B563021002F3A55 /* Filters.swift */,
 				9118AA6B2B4F67A70067F306 /* FilterCell.swift */,
+				9118AA692B4F67590067F306 /* FilterViewController.swift */,
 			);
 			path = Filter;
 			sourceTree = "<group>";
@@ -579,6 +582,7 @@
 				9118AA6A2B4F67590067F306 /* FilterViewController.swift in Sources */,
 				91D905D02B13C7B6009C638A /* TrackerModel.xcdatamodeld in Sources */,
 				91F94DED2ADD9A040060C89E /* ScheduleViewController.swift in Sources */,
+				91B2AF2F2B563021002F3A55 /* Filters.swift in Sources */,
 				912E017A2B388E5B00813647 /* OnboardingPageViewController.swift in Sources */,
 				910C99912ACE044300931D57 /* AddTrackerViewController.swift in Sources */,
 				91E7A2502B0C965200DE7ABE /* UIViewController+Extensions.swift in Sources */,
